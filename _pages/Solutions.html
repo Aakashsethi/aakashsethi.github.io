@@ -1,0 +1,20 @@
+---
+permalink: /Solutions/
+path: "/Solutions/"
+type: pages
+layout: archive
+author_profile: true
+---
+<div class="solutions-list">
+  {% assign solutions = site.pages | where: "category", "solutions" %}
+  
+  {% for post in solutions %}
+    <div class="solution-block">
+      <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+      <p>{{ post.description }}</p>
+      <small>{% include reading-time.html %}</small>
+    </div>
+  {% else %}
+    <p>No solutions found.</p>
+  {% endfor %}
+</div>
