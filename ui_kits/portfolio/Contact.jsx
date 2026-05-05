@@ -214,24 +214,41 @@ function Contact() {
           <div className="collab-divider-line" />
         </div>
 
-        {/* ── Right: calendar ── */}
+        {/* ── Right: booking card ── */}
         <div className="collab-col">
           <div className="collab-col-header">
             <span className="collab-step">02</span>
             <span className="collab-col-title">Pick a time to meet</span>
           </div>
-          <div className="book-chips">
-            <span className="book-chip"><i data-lucide="clock" style={{width:13,height:13}}></i> 60 min</span>
-            <span className="book-chip"><i data-lucide="calendar" style={{width:13,height:13}}></i> Mon – Fri</span>
-            <span className="book-chip"><i data-lucide="video" style={{width:13,height:13}}></i> Google Meet</span>
-          </div>
-          <div className="book-frame-wrap">
-            <iframe
-              src={CAL_SRC}
-              className="book-frame"
-              frameBorder="0"
-              title="Schedule a meeting with Aakash Sethi"
-            />
+
+          <div className="cal-card">
+            <div className="cal-card-avatar">A</div>
+            <div className="cal-card-name">Aakash Sethi</div>
+            <div className="cal-card-title-text">60-min Strategy Session</div>
+
+            <div className="cal-card-chips">
+              <span className="cal-chip"><i data-lucide="clock" style={{width:13,height:13}}></i> 60 min</span>
+              <span className="cal-chip"><i data-lucide="calendar" style={{width:13,height:13}}></i> Mon – Fri</span>
+              <span className="cal-chip"><i data-lucide="video" style={{width:13,height:13}}></i> Google Meet</span>
+            </div>
+
+            <p className="cal-card-desc">
+              This is mutual evaluation — not a pitch. We'll discuss the decision you're facing,
+              whether you're forming it or executing it, and if working together makes sense.
+            </p>
+
+            <div className="cal-card-steps">
+              <div className="cal-step"><span className="cal-step-num">1</span><span>Fill in your details on the left</span></div>
+              <div className="cal-step"><span className="cal-step-num">2</span><span>Click below to pick your time slot</span></div>
+              <div className="cal-step"><span className="cal-step-num">3</span><span>Submit the form — your Meet link arrives by email</span></div>
+            </div>
+
+            <a className="cal-book-btn" href={CAL_SRC} target="_blank" rel="noopener noreferrer">
+              <i data-lucide="calendar-plus" style={{width:16,height:16}}></i>
+              Book a time →
+            </a>
+
+            <p className="cal-card-note muted small">Opens Google Calendar · No account required</p>
           </div>
         </div>
 
