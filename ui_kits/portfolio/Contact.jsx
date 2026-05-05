@@ -4,23 +4,67 @@ const { useState } = React;
 const CONTACT_ENDPOINT = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:4001/contact'
   : 'https://portfolio-contact-j70g.onrender.com/contact';
+
 const CAL_SRC = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ0Rltasz4uqIKognJ1oONG3bLqe3bE9jel0fDDq2SZACLOBezQkjj6vLqgNZs8OFl2iebj8GqKK?gv=true';
+const MEET_LINK = 'https://meet.google.com/wza-dnjb-byb';
+
+const WHERE_OPTIONS = [
+  "I'm actively job searching",
+  "I'm getting ready to job search",
+  "I'm exploring options and pressure-testing ideas",
+  "I've received an offer and need help evaluating it",
+  "I'm paused / unsure",
+];
+
+const SUPPORT_OPTIONS = [
+  'I have a direction and want help executing it well',
+  'I have a few viable directions and need to choose thoughtfully',
+  'I know something needs to change, but I\'m not ready to choose yet',
+];
+
+const TIMELINE_OPTIONS = [
+  'Active urgency (offer in hand, deadline or layoff)',
+  'Next 3–6 months',
+  'Exploring deliberately, no fixed timeline',
+];
+
+function RadioGroup({ name, options, value, onChange }) {
+  return (
+    <div className="radio-group">
+      {options.map(opt => (
+        <label key={opt} className={`radio-option${value === opt ? ' selected' : ''}`}>
+          <input type="radio" name={name} value={opt} checked={value === opt}
+                 onChange={() => onChange(opt)} />
+          <span>{opt}</span>
+        </label>
+      ))}
+    </div>
+  );
+}
 
 function Contact() {
-  const [form, setForm]       = useState({ name: '', email: '', message: '' });
+  const [form, setForm] = useState({
+    name: '', email: '', linkedin: '',
+    role: '', decision: '', where: '',
+    direction: '', support: '', useful: '', timeline: '',
+    agree: false,
+  });
   const [booking, setBooking] = useState(false);
   const [status, setStatus]   = useState('idle');
   const [errMsg, setErrMsg]   = useState('');
 
+  const set = (key) => (e) => setForm({ ...form, [key]: e.target ? e.target.value : e });
+
   const onSubmit = async (e) => {
     e.preventDefault();
+    if (!form.agree) { setErrMsg('Please confirm you understand before submitting.'); return; }
     setStatus('sending');
     setErrMsg('');
     try {
       const res = await fetch(CONTACT_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, booking: booking ? 'yes' : 'no' }),
+        body: JSON.stringify({ ...form, booking: booking ? 'yes' : 'no', meetLink: MEET_LINK }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Something went wrong.');
@@ -37,72 +81,121 @@ function Contact() {
         <span className="eyebrow">COLLABORATE</span>
         <h2 className="section-title">Working on something serious?</h2>
         <p className="section-lede">
-          Fastest path: email <a href="mailto:aakash.sethi7@gmail.com"><b>aakash.sethi7@gmail.com</b></a>.
-          Or do both below — share what you're working on <em>and</em> book a time in one go. I'll come prepared.
+          Fill in your details and pick a time — this is mutual evaluation, not a pitch.
+          I'll review your responses beforehand so we can make the most of our time together.
         </p>
       </header>
 
       <div className="collab-grid">
 
-        {/* ── Left: message form ── */}
+        {/* ── Left: intake form ── */}
         <div className="collab-col">
           <div className="collab-col-header">
             <span className="collab-step">01</span>
-            <span className="collab-col-title">Tell me what you're working on</span>
+            <span className="collab-col-title">Enter your details</span>
           </div>
 
           {status === 'sent' ? (
             <div className="contact-sent">
               <span className="live-dot" />
               <div>
-                <b>Message sent{booking ? ' + meeting booked' : ''}.</b>
+                <b>Submitted{booking ? ' + meeting booked' : ''}.</b>
                 <div className="muted small">
                   {booking
-                    ? "You'll get a calendar confirmation, and I'll come prepared. — A."
+                    ? <>Your Google Meet link: <a href={MEET_LINK} target="_blank" rel="noopener noreferrer">{MEET_LINK}</a>. I'll come prepared. — A.</>
                     : "I'll write back within a couple of days. — A."}
                 </div>
               </div>
             </div>
           ) : (
             <form className="contact-form" onSubmit={onSubmit}>
+
+              {/* Basic */}
               <div className="row">
                 <div className="field">
-                  <label>Your name</label>
-                  <input required value={form.name}
-                         onChange={e => setForm({...form, name: e.target.value})}
-                         placeholder="Ada Lovelace" />
+                  <label>Name <span className="req">*</span></label>
+                  <input required value={form.name} onChange={set('name')} placeholder="Ada Lovelace" />
                 </div>
                 <div className="field">
-                  <label>Email</label>
-                  <input type="email" value={form.email}
-                         onChange={e => setForm({...form, email: e.target.value})}
-                         placeholder="ada@analytical.engine" />
+                  <label>Email <span className="req">*</span></label>
+                  <input required type="email" value={form.email} onChange={set('email')} placeholder="ada@analytical.engine" />
                 </div>
               </div>
+
               <div className="field">
-                <label>What are you working on?</label>
-                <textarea required rows={5} value={form.message}
-                          onChange={e => setForm({...form, message: e.target.value})}
-                          placeholder="A sentence or three. I'd rather hear the messy version." />
+                <label>LinkedIn profile <span className="optional">(optional)</span></label>
+                <input type="url" value={form.linkedin} onChange={set('linkedin')} placeholder="https://linkedin.com/in/yourname" />
               </div>
 
+              {/* Situation */}
+              <div className="intake-section-label">Your situation</div>
+
+              <div className="field">
+                <label>Current role & company <span className="req">*</span></label>
+                <input required value={form.role} onChange={set('role')}
+                       placeholder="e.g. Senior Engineer at Acme (or most recent role if you've left)" />
+              </div>
+
+              <div className="field">
+                <label>What specific decision are you facing right now? <span className="req">*</span></label>
+                <textarea required rows={3} value={form.decision} onChange={set('decision')}
+                          placeholder="What prompted you to book this call? A few sentences is plenty." />
+              </div>
+
+              <div className="field">
+                <label>Where are you today? <span className="req">*</span></label>
+                <RadioGroup name="where" options={WHERE_OPTIONS} value={form.where} onChange={set('where')} />
+              </div>
+
+              {/* Direction */}
+              <div className="intake-section-label">Direction & support</div>
+
+              <div className="field">
+                <label>One plausible direction for your next career step <span className="req">*</span></label>
+                <textarea required rows={2} value={form.direction} onChange={set('direction')}
+                          placeholder="Even if it's not final — what's one direction you're considering?" />
+              </div>
+
+              <div className="field">
+                <label>What kind of support would help you most?</label>
+                <RadioGroup name="support" options={SUPPORT_OPTIONS} value={form.support} onChange={set('support')} />
+              </div>
+
+              <div className="field">
+                <label>What would make this conversation feel useful to you? <span className="req">*</span></label>
+                <textarea required rows={2} value={form.useful} onChange={set('useful')}
+                          placeholder="What outcome would make this call worth your time?" />
+              </div>
+
+              <div className="field">
+                <label>Your timeline for making a career move</label>
+                <RadioGroup name="timeline" options={TIMELINE_OPTIONS} value={form.timeline} onChange={set('timeline')} />
+              </div>
+
+              {/* Agree */}
               <label className="booking-check">
-                <input type="checkbox" checked={booking}
-                       onChange={e => setBooking(e.target.checked)} />
-                <span>I'm also booking a meeting on the calendar →</span>
+                <input type="checkbox" checked={form.agree}
+                       onChange={e => setForm({ ...form, agree: e.target.checked })} />
+                <span>I understand this will be added to a secure mailing list. I can unsubscribe at any time. <span className="req">*</span></span>
               </label>
 
-              <div className="contact-actions">
-                <button type="submit" className="btn btn-primary" disabled={status === 'sending'}>
-                  {status === 'sending' ? 'Sending…' : booking ? 'Send + I\'ve booked →' : 'Send message →'}
-                </button>
-              </div>
+              <label className="booking-check" style={{marginTop: 'var(--sp-2)'}}>
+                <input type="checkbox" checked={booking}
+                       onChange={e => setBooking(e.target.checked)} />
+                <span>I'm also booking a time on the calendar →</span>
+              </label>
+
               {status === 'error' && (
-                <p style={{color:'var(--danger-500)',fontSize:14,marginTop:'var(--sp-3)'}}>
+                <p style={{color:'var(--danger-500)',fontSize:14,marginTop:'var(--sp-2)'}}>
                   {errMsg}
                 </p>
               )}
-              <p className="collab-hint muted small">or open a GitHub issue · or DM on LinkedIn</p>
+
+              <div className="contact-actions">
+                <button type="submit" className="btn btn-primary" disabled={status === 'sending'}>
+                  {status === 'sending' ? 'Sending…' : booking ? 'Submit + I\'ve booked →' : 'Submit →'}
+                </button>
+              </div>
             </form>
           )}
         </div>
@@ -124,6 +217,11 @@ function Contact() {
             <span className="book-chip"><i data-lucide="clock" style={{width:13,height:13}}></i> 60 min</span>
             <span className="book-chip"><i data-lucide="calendar" style={{width:13,height:13}}></i> Mon – Fri</span>
             <span className="book-chip"><i data-lucide="video" style={{width:13,height:13}}></i> Google Meet</span>
+          </div>
+          <div className="meet-link-pill">
+            <i data-lucide="video" style={{width:13,height:13}}></i>
+            <span>Meeting link: </span>
+            <a href={MEET_LINK} target="_blank" rel="noopener noreferrer">{MEET_LINK}</a>
           </div>
           <div className="book-frame-wrap">
             <iframe
