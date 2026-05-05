@@ -100,11 +100,18 @@ function Contact() {
               <span className="live-dot" />
               <div>
                 <b>Submitted{booking ? ' + meeting booked' : ''}.</b>
-                <div className="muted small">
+                <div className="muted small" style={{marginBottom: booking ? 'var(--sp-3)' : 0}}>
                   {booking
-                    ? <>Your Google Meet link: <a href={MEET_LINK} target="_blank" rel="noopener noreferrer">{MEET_LINK}</a>. I'll come prepared. — A.</>
+                    ? "I'll review your details before we meet. — A."
                     : "I'll write back within a couple of days. — A."}
                 </div>
+                {booking && (
+                  <div className="meet-reveal">
+                    <i data-lucide="video" style={{width:14,height:14}}></i>
+                    <span>Your meeting link:</span>
+                    <a href={MEET_LINK} target="_blank" rel="noopener noreferrer">{MEET_LINK}</a>
+                  </div>
+                )}
               </div>
             </div>
           ) : (
@@ -217,11 +224,6 @@ function Contact() {
             <span className="book-chip"><i data-lucide="clock" style={{width:13,height:13}}></i> 60 min</span>
             <span className="book-chip"><i data-lucide="calendar" style={{width:13,height:13}}></i> Mon – Fri</span>
             <span className="book-chip"><i data-lucide="video" style={{width:13,height:13}}></i> Google Meet</span>
-          </div>
-          <div className="meet-link-pill">
-            <i data-lucide="video" style={{width:13,height:13}}></i>
-            <span>Meeting link: </span>
-            <a href={MEET_LINK} target="_blank" rel="noopener noreferrer">{MEET_LINK}</a>
           </div>
           <div className="book-frame-wrap">
             <iframe

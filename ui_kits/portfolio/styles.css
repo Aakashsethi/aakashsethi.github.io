@@ -528,6 +528,19 @@ section { padding: 0 0 var(--sp-24); }
 }
 .radio-option:hover:not(.selected) { border-color: var(--border-strong); }
 
+.meet-reveal {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--signal-50);
+  border: 1px solid var(--signal-300);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: var(--fs-sm);
+  font-family: var(--font-mono);
+  margin-top: var(--sp-2);
+}
+.meet-reveal a { color: var(--signal-700); font-weight: 600; text-decoration: none; }
+.meet-reveal a:hover { text-decoration: underline; }
+
 .meet-link-pill {
   display: inline-flex; align-items: center; gap: 6px;
   background: var(--signal-50);
