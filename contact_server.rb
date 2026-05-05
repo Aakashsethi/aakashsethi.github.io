@@ -99,7 +99,40 @@ post '/contact' do
     category: 'Portfolio Contact'
   )
 
-  Mailtrap::Client.new(api_key: MAILTRAP_API_KEY).send(mail)
+  client = Mailtrap::Client.new(api_key: MAILTRAP_API_KEY)
+  client.send(mail)
+
+  # Confirmation email to the user with the Meet link
+  if booking == 'yes' && !blank?(email)
+    confirmation_body = <<~TEXT
+      Hi #{name},
+
+      Thanks for reaching out. Your details have been received and I'll review them before we meet.
+
+      ───────────────────────────────────────
+      YOUR GOOGLE MEET LINK
+      ───────────────────────────────────────
+      #{meet_link}
+
+      Use this link to join at your scheduled time. A calendar confirmation with the exact time was sent separately when you booked.
+
+      Looking forward to the conversation.
+
+      — Aakash Sethi
+        aakash.sethi7@gmail.com
+        https://aakashsethi.github.io
+      ───────────────────────────────────────
+    TEXT
+
+    confirmation = Mailtrap::Mail::Base.new(
+      from:     { email: FROM_EMAIL, name: 'Aakash Sethi' },
+      to:       [{ email: email, name: name }],
+      subject:  'Your meeting details — Aakash Sethi',
+      text:     confirmation_body,
+      category: 'Portfolio Contact'
+    )
+    client.send(confirmation)
+  end
 
   { ok: true }.to_json
 rescue Mailtrap::Error => e
