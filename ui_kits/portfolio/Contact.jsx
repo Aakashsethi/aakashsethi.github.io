@@ -3,7 +3,7 @@ const { useState } = React;
 
 const CONTACT_ENDPOINT = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:4001/contact'
-  : 'https://portfolio-contact-PLACEHOLDER.onrender.com/contact';
+  : 'https://portfolio-contact-cfbp.onrender.com/contact';
 const CAL_SRC = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ0Rltasz4uqIKognJ1oONG3bLqe3bE9jel0fDDq2SZACLOBezQkjj6vLqgNZs8OFl2iebj8GqKK?gv=true';
 
 function Contact() {
