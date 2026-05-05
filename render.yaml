@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: portfolio-contact
+    runtime: ruby
+    buildCommand: bundle install
+    startCommand: bundle exec ruby contact_server.rb
+    envVars:
+      - key: MAILTRAP_API_KEY
+        value: 97fe49880467c1d31b2951d70c854d81
+      - key: TO_EMAIL
+        value: aakash.sethi7@gmail.com
+      - key: FROM_EMAIL
+        value: hello@tnufa.ai

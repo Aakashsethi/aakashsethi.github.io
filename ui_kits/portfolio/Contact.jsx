@@ -1,13 +1,16 @@
 /* global React */
 const { useState } = React;
 
-const CONTACT_ENDPOINT = 'http://localhost:4001/contact';
+const CONTACT_ENDPOINT = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:4001/contact'
+  : 'https://portfolio-contact-PLACEHOLDER.onrender.com/contact';
 const CAL_SRC = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ0Rltasz4uqIKognJ1oONG3bLqe3bE9jel0fDDq2SZACLOBezQkjj6vLqgNZs8OFl2iebj8GqKK?gv=true';
 
 function Contact() {
-  const [form, setForm]     = useState({ name: '', email: '', message: '' });
-  const [status, setStatus] = useState('idle');
-  const [errMsg, setErrMsg] = useState('');
+  const [form, setForm]       = useState({ name: '', email: '', message: '' });
+  const [booking, setBooking] = useState(false);
+  const [status, setStatus]   = useState('idle');
+  const [errMsg, setErrMsg]   = useState('');
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +20,7 @@ function Contact() {
       const res = await fetch(CONTACT_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, booking: booking ? 'yes' : 'no' }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Something went wrong.');
@@ -52,8 +55,12 @@ function Contact() {
             <div className="contact-sent">
               <span className="live-dot" />
               <div>
-                <b>Message sent.</b>
-                <div className="muted small">I'll write back within a couple of days. — A.</div>
+                <b>Message sent{booking ? ' + meeting booked' : ''}.</b>
+                <div className="muted small">
+                  {booking
+                    ? "You'll get a calendar confirmation, and I'll come prepared. — A."
+                    : "I'll write back within a couple of days. — A."}
+                </div>
               </div>
             </div>
           ) : (
@@ -78,9 +85,16 @@ function Contact() {
                           onChange={e => setForm({...form, message: e.target.value})}
                           placeholder="A sentence or three. I'd rather hear the messy version." />
               </div>
+
+              <label className="booking-check">
+                <input type="checkbox" checked={booking}
+                       onChange={e => setBooking(e.target.checked)} />
+                <span>I'm also booking a meeting on the calendar →</span>
+              </label>
+
               <div className="contact-actions">
                 <button type="submit" className="btn btn-primary" disabled={status === 'sending'}>
-                  {status === 'sending' ? 'Sending…' : 'Send message →'}
+                  {status === 'sending' ? 'Sending…' : booking ? 'Send + I\'ve booked →' : 'Send message →'}
                 </button>
               </div>
               {status === 'error' && (
