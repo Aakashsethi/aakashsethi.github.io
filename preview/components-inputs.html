@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Inputs & Form</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding: 24px; background: var(--bg); display:grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 620px; }
+  .field { display:flex; flex-direction:column; gap: 6px; }
+  label { font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  input, textarea { font-family: var(--font-sans); font-size: 14px; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-elev); color: var(--fg); outline: none; transition: border-color 120ms; }
+  input:focus, textarea:focus { border-color: var(--signal-500); box-shadow: 0 0 0 3px rgba(245,165,36,0.18); }
+  .full { grid-column: 1 / -1; }
+</style>
+</head>
+<body>
+  <div class="field"><label>Name</label><input value="Aakash"></div>
+  <div class="field"><label>Email</label><input value="hi@aakash.sethi"></div>
+  <div class="field full"><label>Message</label><textarea rows="3">I'd like to collaborate on…</textarea></div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Brand — Wordmark & Positioning</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding: 22px 24px; background: var(--bg); }
+  .top { display:flex; gap: 24px; align-items:center; padding-bottom: 16px; border-bottom: 1px solid var(--hairline); }
+  .wm { font-family: var(--font-mono); font-weight: 600; font-size: 32px; letter-spacing: -0.01em; color: var(--fg); }
+  .dot { display:inline-block; width: 8px; height: 8px; border-radius: 999px; background: var(--signal-500); margin: 0 2px; transform: translateY(-2px); }
+  .mono-mark { width: 56px; height: 56px; background: var(--ink-950); color: var(--ink-50); border-radius: 12px; display:flex; align-items:center; justify-content:center; font-family: var(--font-mono); font-weight: 700; font-size: 24px; flex-shrink:0; }
+  .slash { color: var(--signal-500); }
+  .who { font-family: var(--font-sans); font-weight: 600; font-size: 14px; color: var(--fg); }
+  .who .muted { color: var(--fg-muted); font-weight: 400; }
+  .roles { display:flex; flex-wrap:wrap; gap: 6px; margin-top: 12px; }
+  .role { font-family: var(--font-mono); font-size: 11px; padding: 3px 9px; border-radius: 999px; background: var(--bg-sunken); color: var(--fg); border: 1px solid var(--border); letter-spacing: 0.04em; }
+  .role.accent { background: rgba(245,165,36,0.12); color: var(--signal-700); border-color: rgba(245,165,36,0.30); }
+  .tnufa {
+    margin-top: 14px;
+    display:flex; align-items:center; justify-content:space-between; gap: 12px;
+    padding: 10px 14px;
+    background: var(--ink-950); color: var(--ink-50);
+    border-radius: 8px;
+  }
+  .tnufa .lhs { display:flex; align-items:center; gap: 10px; font-family: var(--font-mono); font-size: 13px; }
+  .tnufa .live { width: 7px; height: 7px; border-radius: 999px; background: var(--term-500); box-shadow: 0 0 0 3px rgba(46,191,122,0.2); }
+  .tnufa .url { color: var(--signal-300); }
+  .tnufa .cta { font-family: var(--font-sans); font-weight: 600; font-size: 12px; color: var(--ink-950); background: var(--signal-500); padding: 5px 10px; border-radius: 6px; }
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="mono-mark">a<span class="slash">/</span>s</div>
+    <div>
+      <div class="wm">aakash<span class="dot"></span>sethi</div>
+      <div class="who" style="margin-top:6px">
+        Inventionist <span class="muted">·</span> AI research enthusiast <span class="muted">·</span> Product Owner <span class="muted">·</span> a great salesperson
+      </div>
+    </div>
+  </div>
+  <div class="roles">
+    <span class="role accent">INVENTIONIST</span>
+    <span class="role">AI RESEARCH</span>
+    <span class="role">PRODUCT OWNER</span>
+    <span class="role">SALES</span>
+  </div>
+  <div class="tnufa">
+    <div class="lhs"><span class="live"></span> Now building <b style="font-weight:600">Tnufa</b> · <span class="url">tnufa.ai →</span></div>
+    <span class="cta">Visit Tnufa.ai →</span>
+  </div>
+</body>
+</html>

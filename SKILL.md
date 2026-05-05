@@ -1,0 +1,9 @@
+---
+name: aakash-sethi-design
+description: Use this skill to generate well-branded interfaces and assets for Aakash Sethi (Inventionist · AI research enthusiast · Product Owner · sales) and his project Tnufa.ai. Contains essential design guidelines, colors, type tokens, fonts (incl. Bookerly), Lucide iconography, and a portfolio UI kit for prototyping.
+user-invocable: true
+---
+
+Read the README.md file within this skill, and explore the other available files.
+If creating visual artifacts (slides, mocks, throwaway prototypes, etc), copy assets out and create static HTML files for the user to view. If working on production code, you can copy assets and read the rules here to become an expert in designing with this brand.
+If the user invokes this skill without any other guidance, ask them what they want to build or design, ask some questions, and act as an expert designer who outputs HTML artifacts _or_ production code, depending on the need.

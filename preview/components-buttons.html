@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Buttons</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding: 24px; background: var(--bg); display:flex; flex-direction:column; gap: 14px; }
+  .row { display:flex; gap: 10px; align-items:center; }
+  .btn { font-family: var(--font-sans); font-weight: 600; font-size: 14px; padding: 10px 16px; border-radius: 8px; border: 1px solid transparent; cursor: pointer; transition: all 120ms var(--ease-out); display:inline-flex; align-items:center; gap: 8px; }
+  .btn-primary { background: var(--signal-500); color: var(--ink-950); }
+  .btn-primary:hover { background: var(--signal-600); }
+  .btn-secondary { background: var(--bg-elev); color: var(--fg); border-color: var(--border); }
+  .btn-secondary:hover { border-color: var(--border-strong); background: var(--bg-sunken); }
+  .btn-ghost { background: transparent; color: var(--fg); }
+  .btn-ghost:hover { background: var(--bg-sunken); }
+  .btn-dark { background: var(--ink-950); color: var(--ink-50); }
+  .lbl { font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted); width: 80px; }
+</style>
+</head>
+<body>
+  <div class="row"><span class="lbl">Primary</span><button class="btn btn-primary">Get in touch →</button><button class="btn btn-primary" style="padding:6px 12px;font-size:13px">Small</button></div>
+  <div class="row"><span class="lbl">Secondary</span><button class="btn btn-secondary">View on GitHub ↗</button></div>
+  <div class="row"><span class="lbl">Ghost</span><button class="btn btn-ghost">Read post →</button></div>
+  <div class="row"><span class="lbl">Dark</span><button class="btn btn-dark">Download CV</button></div>
+</body>
+</html>

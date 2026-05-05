@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Background — dot grid</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 0; background: var(--ink-950); height: 280px; position:relative; overflow:hidden; }
+  .grid { position:absolute; inset: 0;
+    background-image: radial-gradient(rgba(246,246,244,0.18) 1px, transparent 1px);
+    background-size: 12px 12px;
+  }
+  .content { position:relative; padding: 28px; color: var(--ink-50); }
+  h1 { font-family: var(--font-display); font-size: 56px; font-weight: 800; line-height:1; letter-spacing: -0.025em; margin:0; }
+  .accent { color: var(--signal-500); }
+  .e { color: rgba(246,246,244,0.6); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="content">
+    <div class="e">DARK MODE · DOT-GRID HERO</div>
+    <h1 style="margin-top:14px">i build<br>ai that ships<span class="accent">.</span></h1>
+  </div>
+</body>
+</html>

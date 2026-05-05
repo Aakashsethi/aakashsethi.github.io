@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Project Card</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding: 20px; background: var(--bg); }
+  .card { padding: 24px; border:1px solid var(--border); background: var(--bg-elev); border-radius: 8px; transition: border-color 120ms var(--ease-out); cursor:pointer; max-width: 620px; }
+  .card:hover { border-color: var(--border-strong); }
+  .meta { display:flex; gap: 14px; }
+  .title { font-family: var(--font-sans); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; margin: 8px 0 6px; color: var(--fg); display:flex; justify-content:space-between; align-items:center; }
+  .desc { font-size: 14px; color: var(--fg-muted); line-height: 1.5; max-width: 480px; }
+  .tags { display:flex; gap: 6px; margin-top: 14px; }
+  .tag { font-family: var(--font-mono); font-size: 11px; padding: 2px 8px; border-radius: 4px; background: var(--bg-sunken); color: var(--fg-muted); border:1px solid var(--hairline); }
+  .arrow { color: var(--fg-muted); }
+  .card:hover .arrow { color: var(--signal-700); }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="meta">
+      <span class="eyebrow">PROJECT · 2025</span>
+      <span class="eyebrow" style="color:var(--term-700)">● SHIPPED</span>
+    </div>
+    <div class="title">Lattice — a coding agent that's actually fast<span class="arrow">→</span></div>
+    <div class="desc">A retrieval-first coding agent built on a custom symbol index. p95 lookup at 12ms across a 2M-loc monorepo.</div>
+    <div class="tags"><span class="tag">rust</span><span class="tag">retrieval</span><span class="tag">agents</span></div>
+  </div>
+</body>
+</html>

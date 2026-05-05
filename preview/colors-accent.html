@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Colors — Brand</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px; background: var(--bg); }
+  .row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+  .sw { display: flex; flex-direction: column; gap: 6px; }
+  .chip { aspect-ratio: 1.6; border-radius: 6px; border: 1px solid rgba(0,0,0,0.06); }
+  .label { font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted); display:flex; justify-content:space-between; }
+  .label b { color: var(--fg); font-weight: 500; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background:#FFF7E6"></div><div class="label"><b>50</b><span>FFF7E6</span></div></div>
+    <div class="sw"><div class="chip" style="background:#FFECC2"></div><div class="label"><b>100</b><span>FFECC2</span></div></div>
+    <div class="sw"><div class="chip" style="background:#FFCF66"></div><div class="label"><b>300</b><span>FFCF66</span></div></div>
+    <div class="sw"><div class="chip" style="background:#F5A524"></div><div class="label"><b>500</b><span>F5A524</span></div></div>
+    <div class="sw"><div class="chip" style="background:#D88812"></div><div class="label"><b>600</b><span>D88812</span></div></div>
+    <div class="sw"><div class="chip" style="background:#A86307"></div><div class="label"><b>700</b><span>A86307</span></div></div>
+    <div class="sw"><div class="chip" style="background:#0A0B0D"></div><div class="label" style="color:var(--fg-subtle)"><b style="color:var(--fg-muted)">contrast</b><span>AAA</span></div></div>
+  </div>
+  <p class="eyebrow" style="margin-top:18px">Signal Amber · primary accent · used surgically</p>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Type — Scale</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding: 20px; background: var(--bg); display:flex; flex-direction:column; gap: 6px; }
+  .row { display: flex; align-items: baseline; gap: 16px; padding: 4px 0; border-bottom: 1px dashed var(--hairline); }
+  .meta { font-family: var(--font-mono); font-size: 10px; color: var(--fg-muted); width: 56px; flex-shrink:0; }
+  .text { font-family: var(--font-sans); color: var(--fg); letter-spacing: -0.01em; }
+</style>
+</head>
+<body>
+  <div class="row"><div class="meta">64 / 700</div><div class="text" style="font-size:48px;font-weight:700;letter-spacing:-0.02em">Display</div></div>
+  <div class="row"><div class="meta">36 / 700</div><div class="text" style="font-size:32px;font-weight:700;letter-spacing:-0.02em">Heading 2</div></div>
+  <div class="row"><div class="meta">22 / 600</div><div class="text" style="font-size:22px;font-weight:600">Subhead</div></div>
+  <div class="row"><div class="meta">16 / 400</div><div class="text" style="font-size:16px">Body — the standard reading size.</div></div>
+  <div class="row"><div class="meta">14 / 400</div><div class="text" style="font-size:14px;color:var(--fg-muted)">Small / caption text</div></div>
+</body>
+</html>

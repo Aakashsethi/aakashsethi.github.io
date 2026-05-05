@@ -1,0 +1,21 @@
+title: Aakash Sethi — AI Software Engineer
+email: aakash.sethi7@gmail.com
+description: >-
+  AI Software Engineer. AWS Certified Solutions Architect Professional.
+  Building Tnufa.ai. Five years across Vanguard, Mercedes-Benz Financial Services, and Burpez.
+baseurl: ""
+url: ""
+github_username: Aakashsethi
+
+# Build settings — no theme, pure static SPA
+plugins:
+  - jekyll-feed
+
+# Exclude files that Jekyll shouldn't try to process
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - SKILL.md
+  - node_modules/
+  - vendor/

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Colors — Neutrals</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px; background: var(--bg); }
+  .row { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; }
+  .sw { display: flex; flex-direction: column; gap: 4px; }
+  .chip { aspect-ratio: 1; border-radius: 4px; border: 1px solid rgba(0,0,0,0.06); }
+  .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--fg-muted); text-align:center; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background:#FFFFFF;border-color:#E5E5E5"></div><div class="lbl">white</div></div>
+    <div class="sw"><div class="chip" style="background:#FBFBF8"></div><div class="lbl">paper</div></div>
+    <div class="sw"><div class="chip" style="background:#F6F6F4"></div><div class="lbl">50</div></div>
+    <div class="sw"><div class="chip" style="background:#ECEDEF"></div><div class="lbl">100</div></div>
+    <div class="sw"><div class="chip" style="background:#D9DCE0"></div><div class="lbl">200</div></div>
+    <div class="sw"><div class="chip" style="background:#B6BAC2"></div><div class="lbl">300</div></div>
+    <div class="sw"><div class="chip" style="background:#7C828D"></div><div class="lbl">400</div></div>
+    <div class="sw"><div class="chip" style="background:#5C6370"></div><div class="lbl">500</div></div>
+    <div class="sw"><div class="chip" style="background:#2A2E35"></div><div class="lbl">700</div></div>
+    <div class="sw"><div class="chip" style="background:#0A0B0D"></div><div class="lbl">950</div></div>
+  </div>
+  <p class="eyebrow" style="margin-top:18px">Warm-leaning ink scale · paper at top, near-black at bottom</p>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Colors — Semantic</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px; background: var(--bg); display:flex; flex-direction:column; gap:10px; }
+  .row { display: flex; align-items:center; gap: 12px; padding: 10px 14px; border:1px solid var(--border); border-radius: 8px; background: var(--bg-elev); }
+  .dot { width: 14px; height: 14px; border-radius: 999px; flex-shrink:0; }
+  .name { font-family: var(--font-mono); font-size: 12px; color: var(--fg); }
+  .hex { font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted); margin-left:auto; }
+  .desc { font-size: 12px; color: var(--fg-muted); }
+</style>
+</head>
+<body>
+  <div class="row"><div class="dot" style="background:#F5A524"></div><div class="name">--accent</div><div class="desc">primary CTA · focus · status</div><div class="hex">#F5A524</div></div>
+  <div class="row"><div class="dot" style="background:#2EBF7A"></div><div class="name">--term-500</div><div class="desc">live / online / running</div><div class="hex">#2EBF7A</div></div>
+  <div class="row"><div class="dot" style="background:#4A8DF5"></div><div class="name">--info-500</div><div class="desc">informational only</div><div class="hex">#4A8DF5</div></div>
+  <div class="row"><div class="dot" style="background:#E5484D"></div><div class="name">--danger-500</div><div class="desc">destructive · errors</div><div class="hex">#E5484D</div></div>
+</body>
+</html>

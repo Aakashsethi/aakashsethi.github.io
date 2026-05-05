@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Radii & Shadows</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding: 24px; background: var(--bg); display:flex; gap: 18px; align-items:flex-end; }
+  .col { display:flex; flex-direction:column; align-items:center; gap: 8px; }
+  .box { width: 64px; height: 64px; background: var(--bg-elev); border:1px solid var(--border); }
+  .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--fg-muted); }
+  .sep { width: 1px; align-self: stretch; background: var(--hairline); margin: 0 4px; }
+</style>
+</head>
+<body>
+  <div class="col"><div class="box" style="border-radius:0"></div><div class="lbl">r-0</div></div>
+  <div class="col"><div class="box" style="border-radius:4px"></div><div class="lbl">r-2 / 4px</div></div>
+  <div class="col"><div class="box" style="border-radius:8px"></div><div class="lbl">r-3 / 8px</div></div>
+  <div class="col"><div class="box" style="border-radius:12px"></div><div class="lbl">r-4 / 12px</div></div>
+  <div class="col"><div class="box" style="border-radius:999px"></div><div class="lbl">pill</div></div>
+  <div class="sep"></div>
+  <div class="col"><div class="box" style="border:0;box-shadow:var(--shadow-1)"></div><div class="lbl">shadow-1</div></div>
+  <div class="col"><div class="box" style="border:0;box-shadow:var(--shadow-2)"></div><div class="lbl">shadow-2</div></div>
+  <div class="col"><div class="box" style="border:0;box-shadow:var(--shadow-3)"></div><div class="lbl">shadow-3</div></div>
+</body>
+</html>

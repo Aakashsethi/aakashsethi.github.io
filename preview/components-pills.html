@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pills & Status</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding: 24px; background: var(--bg); display:flex; flex-direction:column; gap: 14px; }
+  .row { display:flex; gap: 10px; align-items:center; flex-wrap:wrap; }
+  .pill { font-family: var(--font-mono); font-size: 11px; padding: 4px 10px; border-radius: 999px; border: 1px solid; display:inline-flex; gap:6px; align-items:center; letter-spacing: 0.04em; text-transform: uppercase; }
+  .dot { width: 7px; height: 7px; border-radius:999px; }
+  .live { background: rgba(46,191,122,0.10); color: var(--term-700); border-color: rgba(46,191,122,0.30); }
+  .live .dot { background: var(--term-500); box-shadow: 0 0 0 3px rgba(46,191,122,0.15); }
+  .accent { background: rgba(245,165,36,0.12); color: var(--signal-700); border-color: rgba(245,165,36,0.30); }
+  .neutral { background: var(--bg-sunken); color: var(--fg-muted); border-color: var(--border); }
+  .danger { background: rgba(229,72,77,0.08); color: #B62C30; border-color: rgba(229,72,77,0.25); }
+  .tag { font-family: var(--font-mono); font-size: 11px; padding: 3px 8px; border-radius: 4px; background: var(--bg-sunken); color: var(--fg-muted); border:1px solid var(--hairline); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <span class="pill live"><span class="dot"></span>Available</span>
+    <span class="pill accent">In progress</span>
+    <span class="pill neutral">Archived</span>
+    <span class="pill danger">Deprecated</span>
+  </div>
+  <div class="row">
+    <span class="tag">typescript</span>
+    <span class="tag">rust</span>
+    <span class="tag">llm-evals</span>
+    <span class="tag">retrieval</span>
+    <span class="tag">infra</span>
+  </div>
+</body>
+</html>

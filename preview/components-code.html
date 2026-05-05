@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Code Block</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px; background: var(--bg); }
+  pre { margin: 0; }
+  .k { color: #F5A524; }
+  .s { color: #2EBF7A; }
+  .c { color: #7C828D; }
+  .f { color: #ECEDEF; }
+  .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--fg-muted); margin-top: 10px; text-transform: uppercase; letter-spacing: 0.1em; }
+</style>
+</head>
+<body>
+<pre><code><span class="c">// retrieval-first coding agent</span>
+<span class="k">async fn</span> <span class="f">build</span>(idea: <span class="k">&str</span>) -&gt; Result&lt;Ship&gt; {
+  <span class="k">let</span> ctx = retrieve(idea, <span class="s">"workspace"</span>).await?;
+  agent.run(ctx).await
+}</code></pre>
+<div class="lbl">CODE BLOCK · INK-900 BG · NO LIFT</div>
+</body>
+</html>

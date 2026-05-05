@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Type — Mono & Bookerly</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding: 20px; background: var(--bg); display:flex; flex-direction:column; gap: 16px; }
+  .mono-block { font-family: var(--font-mono); font-size: 13px; color: var(--fg); line-height: 1.6; }
+  .mono-block .c { color: var(--fg-muted); }
+  .mono-block .a { color: var(--signal-700); }
+  .quote { font-family: var(--font-serif); font-style: italic; font-weight: 400; font-size: 22px; line-height:1.4; color: var(--fg); border-left: 2px solid var(--signal-500); padding-left: 18px; }
+  .reading { font-family: 'Bookerly', Georgia, serif; font-size: 16px; line-height: 1.6; color: var(--fg); max-width: 540px; }
+  .eyebrow-row { display:flex; gap:18px; }
+</style>
+</head>
+<body>
+  <div class="eyebrow-row">
+    <span class="eyebrow">JETBRAINS MONO</span>
+    <span class="eyebrow" style="color:var(--signal-700)">BOOKERLY · READING + QUOTE</span>
+  </div>
+  <div class="mono-block">
+    <span class="c">// JetBrains Mono — IDs, paths, code</span><br>
+    <span class="a">const</span> ship = (idea) =&gt; <span class="a">await</span> build(idea);
+  </div>
+  <div class="reading">Bookerly, set at 16/26, is the editorial reading face — warm, calm, designed for long passages.</div>
+  <div class="quote">"Retrieval isn't the hard part. The hard part is deciding what's worth retrieving."</div>
+</body>
+</html>

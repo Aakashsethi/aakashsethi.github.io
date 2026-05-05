@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Iconography — Lucide</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<script src="https://unpkg.com/lucide@0.395.0/dist/umd/lucide.min.js"></script>
+<style>
+  body { margin:0; padding: 24px; background: var(--bg); }
+  .grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 12px; }
+  .cell { display:flex; flex-direction:column; align-items:center; gap: 6px; padding: 10px 4px; border:1px solid var(--hairline); border-radius: 6px; background: var(--bg-elev); }
+  .cell svg { width: 20px; height: 20px; color: var(--fg); stroke-width: 1.5; }
+  .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--fg-muted); }
+</style>
+</head>
+<body>
+  <div class="grid" id="g"></div>
+  <p class="eyebrow" style="margin-top:14px">Lucide · 1.5px stroke · sized 16/20/24 · inherits currentColor</p>
+  <script>
+    const icons = ['github','mail','rss','arrow-right','arrow-up-right','external-link','terminal','cpu','code','file-text','calendar','play','search','book-open','bot','zap'];
+    const g = document.getElementById('g');
+    icons.forEach(n => {
+      const cell = document.createElement('div'); cell.className = 'cell';
+      cell.innerHTML = `<i data-lucide="${n}"></i><span class="lbl">${n}</span>`;
+      g.appendChild(cell);
+    });
+    lucide.createIcons();
+  </script>
+</body>
+</html>
