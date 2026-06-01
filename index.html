@@ -15,12 +15,13 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/lucide@0.395.0/dist/umd/lucide.min.js"></script>
-<!-- Site config (no secrets) -->
+<!-- Site config (no secrets — channel IDs and public URLs only) -->
 <script>
-  fetch('/data/site_config.json')
-    .then(r => r.json())
-    .then(cfg => { window.SITE_CONFIG = cfg; })
-    .catch(() => { window.SITE_CONFIG = {}; });
+  window.SITE_CONFIG = {
+    youtubeChannelId: "UCVdpOAxaSsi19DsGCsjr35w",
+    linkedinUrl: "https://linkedin.com/in/aakash-sethi-007",
+    githubUsername: "Aakashsethi"
+  };
 </script>
 </head>
 <body>
@@ -33,8 +34,7 @@
 <script type="text/babel" src="ui_kits/portfolio/YouTubeFeed.jsx"></script>
 <script type="text/babel" src="ui_kits/portfolio/LinkedInFeed.jsx"></script>
 <script type="text/babel" src="ui_kits/portfolio/Education.jsx"></script>
-<script type="text/babel" src="ui_kits/portfolio/Culinary.jsx"></script>
-<script type="text/babel" src="ui_kits/portfolio/Photography.jsx"></script>
+<script type="text/babel" src="ui_kits/portfolio/Hobbies.jsx"></script>
 <script type="text/babel" src="ui_kits/portfolio/About.jsx"></script>
 <script type="text/babel" src="ui_kits/portfolio/Contact.jsx"></script>
 <script type="text/babel" src="ui_kits/portfolio/ProjectModal.jsx"></script>

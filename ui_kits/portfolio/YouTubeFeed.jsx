@@ -10,7 +10,6 @@ function YouTubeFeed() {
   const [videos, setVideos]   = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState(null);
-  const [active, setActive]   = useState(null);
 
   useEffect(() => {
     if (!CHANNEL_ID) { setLoading(false); return; }
@@ -71,7 +70,7 @@ function YouTubeFeed() {
       {!loading && !error && (
         <div className="yt-grid">
           {videos.map(v => (
-            <div key={v.id} className="yt-card" onClick={() => setActive(v)}>
+            <a key={v.id} className="yt-card" href={v.link} target="_blank" rel="noopener noreferrer">
               <div className="yt-thumb-wrap">
                 <img src={v.thumb} alt={v.title} className="yt-thumb" loading="lazy" />
                 <div className="yt-play"><i data-lucide="play-circle" /></div>
@@ -80,26 +79,8 @@ function YouTubeFeed() {
                 <p className="yt-title">{v.title}</p>
                 <span className="eyebrow">{timeAgo(v.published)}</span>
               </div>
-            </div>
+            </a>
           ))}
-        </div>
-      )}
-
-      {active && (
-        <div className="yt-modal-overlay" onClick={() => setActive(null)}>
-          <div className="yt-modal" onClick={e => e.stopPropagation()}>
-            <button className="yt-modal-close" onClick={() => setActive(null)}>✕</button>
-            <div className="yt-embed-wrap">
-              <iframe
-                src={`https://www.youtube.com/embed/${active.id}?autoplay=1`}
-                allow="autoplay; encrypted-media"
-                allowFullScreen
-                frameBorder="0"
-                title={active.title}
-              />
-            </div>
-            <p className="yt-modal-title">{active.title}</p>
-          </div>
         </div>
       )}
     </section>

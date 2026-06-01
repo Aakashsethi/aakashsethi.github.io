@@ -744,6 +744,9 @@ section { padding: 0 0 var(--sp-24); }
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
   transition: transform 120ms, border-color 120ms;
 }
 .yt-card:hover { transform: translateY(-3px); border-color: var(--signal-500); }
@@ -811,6 +814,34 @@ section { padding: 0 0 var(--sp-24); }
 @keyframes spin { to { transform: rotate(360deg); } }
 .feed-placeholder { text-align: center; padding: var(--sp-10) 0; }
 .feed-placeholder-img { max-height: 160px; border-radius: 12px; margin: 0 auto; object-fit: cover; opacity: 0.6; }
+
+/* ============ Hobbies tabs ============ */
+.hobbies-tabs {
+  display: flex; gap: var(--sp-2);
+  margin-bottom: var(--sp-10);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: var(--sp-1);
+}
+.hobbies-tab {
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font-sans); font-size: 15px; font-weight: 600;
+  color: var(--fg-muted); padding: var(--sp-3) var(--sp-5);
+  border-radius: 8px 8px 0 0; transition: color 120ms, background 120ms;
+  position: relative;
+}
+.hobbies-tab:hover { color: var(--fg); background: var(--bg-elev); }
+.hobbies-tab.active { color: var(--fg); }
+.hobbies-tab.active::after {
+  content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
+  height: 2px; background: var(--signal-500); border-radius: 2px 2px 0 0;
+}
+
+/* Photo lightbox */
+.photo-lightbox {
+  background: var(--ink-950); border-radius: 16px;
+  width: 100%; max-width: 780px; overflow: hidden; position: relative;
+}
+.photo-lightbox-img { width: 100%; max-height: 70vh; object-fit: contain; display: block; background: #000; }
 
 /* ============ Recipe card with image ============ */
 .recipe-card--img {
