@@ -812,3 +812,33 @@ section { padding: 0 0 var(--sp-24); }
 .feed-placeholder { text-align: center; padding: var(--sp-10) 0; }
 .feed-placeholder-img { max-height: 160px; border-radius: 12px; margin: 0 auto; object-fit: cover; opacity: 0.6; }
 
+/* ============ Recipe card with image ============ */
+.recipe-card--img {
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 140ms, border-color 140ms;
+}
+.recipe-card--img:hover { transform: translateY(-4px); border-color: var(--signal-500); }
+.recipe-img-wrap { aspect-ratio: 4/3; overflow: hidden; }
+.recipe-img { width: 100%; height: 100%; object-fit: cover; transition: transform 300ms; display: block; }
+.recipe-card--img:hover .recipe-img { transform: scale(1.06); }
+.recipe-body { padding: var(--sp-4) var(--sp-5); }
+
+/* Recipe lightbox */
+.recipe-modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 1000;
+  display: flex; align-items: center; justify-content: center; padding: var(--sp-6);
+}
+.recipe-modal {
+  background: var(--bg-elev); border-radius: 16px; width: 100%; max-width: 520px;
+  overflow: hidden; position: relative;
+}
+.recipe-modal-close {
+  position: absolute; top: 12px; right: 14px; background: rgba(0,0,0,0.5);
+  border: none; color: #fff; font-size: 16px; cursor: pointer; border-radius: 999px;
+  width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; z-index: 10;
+}
+.recipe-modal-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+.recipe-modal-body { padding: var(--sp-5) var(--sp-6); }
+
