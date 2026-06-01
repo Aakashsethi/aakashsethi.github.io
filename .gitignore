@@ -3,3 +3,8 @@ _site
 .jekyll-cache
 .jekyll-metadata
 vendor
+
+.env
+*.env
+.env.*
+generate_site_images.py

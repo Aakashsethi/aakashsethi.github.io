@@ -7,6 +7,7 @@
 <meta name="description" content="AI Software Engineer. AWS Certified Solutions Architect Pro. Building Tnufa.ai — workforce mobility through skill embeddings. Five years across Vanguard, Mercedes-Benz Financial Services, and Burpez.">
 <meta property="og:title" content="Aakash Sethi — AI Software Engineer">
 <meta property="og:description" content="I build systems that ship.">
+<meta property="og:image" content="/assets/ai/hero_bg.png">
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="colors_and_type.css">
 <link rel="stylesheet" href="ui_kits/portfolio/styles.css">
@@ -14,13 +15,23 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/lucide@0.395.0/dist/umd/lucide.min.js"></script>
+<!-- Site config (no secrets) -->
+<script>
+  fetch('/data/site_config.json')
+    .then(r => r.json())
+    .then(cfg => { window.SITE_CONFIG = cfg; })
+    .catch(() => { window.SITE_CONFIG = {}; });
+</script>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel" src="ui_kits/portfolio/data.jsx"></script>
 <script type="text/babel" src="ui_kits/portfolio/Chrome.jsx"></script>
 <script type="text/babel" src="ui_kits/portfolio/Hero.jsx"></script>
+<script type="text/babel" src="ui_kits/portfolio/LiveStrip.jsx"></script>
 <script type="text/babel" src="ui_kits/portfolio/Work.jsx"></script>
+<script type="text/babel" src="ui_kits/portfolio/YouTubeFeed.jsx"></script>
+<script type="text/babel" src="ui_kits/portfolio/LinkedInFeed.jsx"></script>
 <script type="text/babel" src="ui_kits/portfolio/Education.jsx"></script>
 <script type="text/babel" src="ui_kits/portfolio/Culinary.jsx"></script>
 <script type="text/babel" src="ui_kits/portfolio/Photography.jsx"></script>

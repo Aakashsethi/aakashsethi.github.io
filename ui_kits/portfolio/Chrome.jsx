@@ -3,12 +3,12 @@ const { useState } = React;
 
 function Header({ active, onNav }) {
   const tabs = [
-    { id: 'home', label: 'Home' },
-    { id: 'work', label: 'Work' },
-    { id: 'education', label: 'Education' },
-    { id: 'culinary', label: 'Culinary' },
-    { id: 'photography', label: 'Photography' },
-    { id: 'about', label: 'About' },
+    { id: 'home',        label: 'Home' },
+    { id: 'work',        label: 'Work' },
+    { id: 'youtube',     label: '▶ YouTube' },
+    { id: 'linkedin',    label: 'in LinkedIn' },
+    { id: 'education',   label: 'Education' },
+    { id: 'about',       label: 'About' },
   ];
   return (
     <header className="site-header">

@@ -1,4 +1,4 @@
-/* global React, ReactDOM, Header, Footer, Hero, StatStrip, Work, Education, Culinary, Photography, About, Contact, Book, ProjectModal */
+/* global React, ReactDOM, Header, Footer, Hero, StatStrip, LiveStrip, Work, Education, Culinary, Photography, About, Contact, Book, ProjectModal, YouTubeFeed, LinkedInFeed */
 const { useState, useEffect } = React;
 
 function App() {
@@ -16,20 +16,25 @@ function App() {
   return (
     <div>
       <Header active={page} onNav={onNav} />
+      <LiveStrip />
       <main className="container">
         {page === 'home' && (
           <>
             <Hero onNav={onNav} />
             <StatStrip />
             <Work onOpen={setOpenProj} />
+            <YouTubeFeed />
+            <LinkedInFeed />
           </>
         )}
-        {page === 'work' && <Work onOpen={setOpenProj} />}
-        {page === 'education' && <Education onOpen={setOpenProj} />}
-        {page === 'culinary' && <Culinary />}
-        {page === 'photography' && <Photography />}
-        {page === 'about' && <About />}
-        {page === 'contact' && <Contact />}
+        {page === 'work'       && <Work onOpen={setOpenProj} />}
+        {page === 'youtube'    && <YouTubeFeed />}
+        {page === 'linkedin'   && <LinkedInFeed />}
+        {page === 'education'  && <Education onOpen={setOpenProj} />}
+        {page === 'culinary'   && <Culinary />}
+        {page === 'photography'&& <Photography />}
+        {page === 'about'      && <About />}
+        {page === 'contact'    && <Contact />}
       </main>
       <Footer />
       <ProjectModal p={openProj} onClose={()=>setOpenProj(null)} />

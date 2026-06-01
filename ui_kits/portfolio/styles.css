@@ -692,3 +692,123 @@ section { padding: 0 0 var(--sp-24); }
   line-height: 1.6;
 }
 .modal-actions { display: flex; gap: var(--sp-3); margin-top: var(--sp-6); flex-wrap: wrap; }
+
+/* ============ Hero image overlay ============ */
+.hero-img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(10,10,15,0.82) 0%, rgba(10,10,15,0.55) 60%, rgba(10,10,15,0.75) 100%);
+  pointer-events: none;
+}
+
+/* ============ Live Strip ============ */
+.live-strip {
+  display: flex; align-items: center; gap: 0;
+  background: var(--ink-950);
+  border-bottom: 1px solid var(--border);
+  padding: 10px var(--sp-12);
+  overflow-x: auto;
+  scrollbar-width: none;
+  max-width: 100%;
+}
+.live-strip::-webkit-scrollbar { display: none; }
+.live-strip-item { display: flex; align-items: center; gap: var(--sp-2); white-space: nowrap; padding: 0 var(--sp-5); }
+.live-strip-item .eyebrow { color: var(--fg-muted); font-size: 10px; }
+.live-val { font-size: 12px; font-weight: 600; color: var(--ink-50); }
+.live-strip-divider { width: 1px; height: 20px; background: var(--border); flex-shrink: 0; }
+.live-dot {
+  display: inline-block; width: 7px; height: 7px; border-radius: 999px;
+  background: var(--term-500);
+  box-shadow: 0 0 0 3px rgba(46,191,122,0.2);
+  animation: pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* ============ Section header ============ */
+.section-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: var(--sp-8); gap: var(--sp-4); flex-wrap: wrap;
+}
+.section-title { font-size: clamp(24px, 4vw, 36px); font-weight: 700; margin: var(--sp-1) 0 0; letter-spacing: -0.02em; }
+.btn-sm { font-size: 13px; padding: 7px 14px; }
+
+/* ============ YouTube Feed ============ */
+.yt-feed { margin: var(--sp-20) 0; }
+.yt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--sp-5);
+}
+.yt-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 120ms, border-color 120ms;
+}
+.yt-card:hover { transform: translateY(-3px); border-color: var(--signal-500); }
+.yt-thumb-wrap { position: relative; aspect-ratio: 16/9; overflow: hidden; background: var(--ink-900); }
+.yt-thumb { width: 100%; height: 100%; object-fit: cover; transition: transform 200ms; }
+.yt-card:hover .yt-thumb { transform: scale(1.04); }
+.yt-play {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.35); opacity: 0; transition: opacity 150ms;
+  color: #fff; font-size: 42px;
+}
+.yt-card:hover .yt-play { opacity: 1; }
+.yt-info { padding: var(--sp-4); }
+.yt-title { font-size: 13px; font-weight: 600; line-height: 1.4; margin: 0 0 var(--sp-2); color: var(--fg); }
+.yt-modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000;
+  display: flex; align-items: center; justify-content: center; padding: var(--sp-6);
+}
+.yt-modal {
+  background: var(--ink-950); border-radius: 16px; width: 100%; max-width: 800px;
+  overflow: hidden; position: relative;
+}
+.yt-modal-close {
+  position: absolute; top: 12px; right: 16px; background: none; border: none;
+  color: var(--ink-300); font-size: 18px; cursor: pointer; z-index: 10;
+}
+.yt-modal-close:hover { color: #fff; }
+.yt-embed-wrap { position: relative; aspect-ratio: 16/9; }
+.yt-embed-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
+.yt-modal-title { padding: var(--sp-4) var(--sp-5); font-size: 14px; font-weight: 600; color: var(--ink-100); margin: 0; }
+
+/* ============ LinkedIn Feed ============ */
+.li-feed { margin: var(--sp-20) 0; }
+.li-list { display: flex; flex-direction: column; gap: var(--sp-4); }
+.li-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: var(--sp-5) var(--sp-6);
+  transition: border-color 120ms;
+}
+.li-card:hover { border-color: var(--signal-400); }
+.li-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--sp-3); }
+.li-tag {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  border: 1px solid; border-radius: 999px; padding: 2px 10px;
+}
+.li-body { font-size: 14px; line-height: 1.65; color: var(--fg); white-space: pre-wrap; margin: 0 0 var(--sp-4); }
+.li-card-footer { display: flex; align-items: center; gap: var(--sp-4); }
+.li-expand {
+  background: none; border: none; color: var(--signal-500); font-size: 13px;
+  cursor: pointer; font-weight: 600; padding: 0;
+}
+.li-expand:hover { color: var(--signal-600); }
+.li-link { font-size: 13px; font-weight: 600; color: var(--fg-muted); text-decoration: none; }
+.li-link:hover { color: var(--signal-500); }
+
+/* ============ Feed utilities ============ */
+.feed-loading { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-8) 0; }
+.spinner {
+  width: 18px; height: 18px; border-radius: 999px;
+  border: 2px solid var(--border); border-top-color: var(--signal-500);
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.feed-placeholder { text-align: center; padding: var(--sp-10) 0; }
+.feed-placeholder-img { max-height: 160px; border-radius: 12px; margin: 0 auto; object-fit: cover; opacity: 0.6; }
+

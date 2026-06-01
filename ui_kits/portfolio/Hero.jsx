@@ -1,8 +1,9 @@
 /* global React */
 function Hero({ onNav }) {
   return (
-    <section className="hero">
+    <section className="hero" style={{backgroundImage:'url(/assets/ai/hero_bg.png)', backgroundSize:'cover', backgroundPosition:'center'}}>
       <div className="hero-grid" aria-hidden="true" />
+      <div className="hero-img-overlay" aria-hidden="true" />
       <div className="hero-inner">
         <div className="eyebrow hero-eyebrow">
           <span className="live-dot" /> Available · open to collab
