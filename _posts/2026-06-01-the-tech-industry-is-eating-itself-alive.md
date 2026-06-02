@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "custom"
+title: "The Tech Industry Is Eating Itself Alive"
 date: 2026-06-01
 categories: ["AI Engineering"]
 tags: [AIEngineering, ArtificialIntelligence, TechIndustry, MachineLearning, SoftwareEngineering]

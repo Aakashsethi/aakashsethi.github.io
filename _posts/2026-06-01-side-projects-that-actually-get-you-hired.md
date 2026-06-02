@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "auto"
+title: "Side Projects That Actually Get You Hired"
 date: 2026-06-01
 categories: ["Career"]
 tags: [SoftwareEngineering, AIEngineering, CareerAdvice, TechJobs, SideProjects]
