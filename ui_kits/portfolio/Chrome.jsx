@@ -2,6 +2,8 @@
 const { useState } = React;
 
 function Header({ active, onNav }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const tabs = [
     { id: 'home',        label: 'Home' },
     { id: 'work',        label: 'Work' },
@@ -11,25 +13,52 @@ function Header({ active, onNav }) {
     { id: 'hobbies',     label: 'Curriculars' },
     { id: 'about',       label: 'About' },
   ];
+
+  const handleNav = (id) => { setMenuOpen(false); onNav(id); };
+
   return (
-    <header className="site-header">
-      <a className="wordmark" href="#" onClick={(e)=>{e.preventDefault(); onNav('home');}}>
-        aakash<span className="wm-dot" />sethi
-      </a>
-      <nav className="site-nav">
-        {tabs.map(t => (
-          <a key={t.id}
-             href="#"
-             onClick={(e)=>{e.preventDefault(); onNav(t.id);}}
-             style={active===t.id ? {color:'var(--signal-700)'} : {}}>
-            {t.label}
-          </a>
-        ))}
-        <a href="#" onClick={(e)=>{e.preventDefault(); onNav('contact');}} className="nav-cta">
-          Collaborate <span className="arr">→</span>
+    <>
+      <header className="site-header">
+        <a className="wordmark" href="#" onClick={(e)=>{e.preventDefault(); handleNav('home');}}>
+          aakash<span className="wm-dot" />sethi
         </a>
-      </nav>
-    </header>
+        <nav className="site-nav">
+          {tabs.map(t => (
+            <a key={t.id}
+               href="#"
+               onClick={(e)=>{e.preventDefault(); handleNav(t.id);}}
+               style={active===t.id ? {color:'var(--signal-700)'} : {}}>
+              {t.label}
+            </a>
+          ))}
+          <a href="#" onClick={(e)=>{e.preventDefault(); handleNav('contact');}} className="nav-cta">
+            Collaborate <span className="arr">→</span>
+          </a>
+        </nav>
+        <button className="hamburger" onClick={() => setMenuOpen(true)} aria-label="Open menu">
+          <span /><span /><span />
+        </button>
+      </header>
+
+      {menuOpen && (
+        <div className="mobile-nav-overlay" onClick={() => setMenuOpen(false)}>
+          <div className="mobile-nav" onClick={e => e.stopPropagation()}>
+            <button className="mobile-nav-close" onClick={() => setMenuOpen(false)}>✕</button>
+            <div className="mobile-nav-wordmark">aakash<span className="wm-dot" />sethi</div>
+            {tabs.map(t => (
+              <a key={t.id} href="#"
+                 className={active === t.id ? 'mobile-nav-active' : ''}
+                 onClick={(e)=>{e.preventDefault(); handleNav(t.id);}}>
+                {t.label}
+              </a>
+            ))}
+            <a href="#" className="nav-cta" onClick={(e)=>{e.preventDefault(); handleNav('contact');}}>
+              Collaborate →
+            </a>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
