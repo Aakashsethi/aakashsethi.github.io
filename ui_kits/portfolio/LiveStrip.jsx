@@ -17,7 +17,7 @@ function LiveStrip() {
 
   return (
     <div className="ticker-wrap">
-      <div className="ticker-label">in LinkedIn</div>
+      <div className="ticker-label">MyLogs</div>
       <div className="ticker-track">
         <div className="ticker-inner">
           {items.map((p, i) => (

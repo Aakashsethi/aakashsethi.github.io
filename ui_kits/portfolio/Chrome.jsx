@@ -8,7 +8,7 @@ function Header({ active, onNav }) {
     { id: 'home',        label: 'Home' },
     { id: 'work',        label: 'Work' },
     { id: 'youtube',     label: '▶ YouTube' },
-    { id: 'linkedin',    label: 'in LinkedIn' },
+    { id: 'linkedin',    label: 'MyLogs' },
     { id: 'education',   label: 'Education' },
     { id: 'hobbies',     label: 'Curriculars' },
     { id: 'about',       label: 'About' },
