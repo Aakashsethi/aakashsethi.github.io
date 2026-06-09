@@ -10,64 +10,143 @@ share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7467620205540802561"
 ---
 
-Your RAG pipeline is already obsolete.
+Your RAG pipeline is already obsolete. I don't mean that as clickbait — I mean it architecturally. The retrieve-then-generate pattern that defined 2023 has quietly been replaced by something fundamentally different, and most engineers I talk to are still shipping the old design into production. They're hitting the same walls I hit building Tnufa.ai, and reaching for the same fixes that don't work: better prompts, bigger embedding models, more chunks. None of that addresses the real problem, which is that a fixed pipeline cannot answer a question that requires reasoning about what to retrieve.
 
-Here’s what replaced it — and most engineers are still building the old way.
+## Why Vanilla RAG Breaks in Production
 
-In 2023, RAG was simple:
-→ User asks question
-→ Retrieve relevant chunks
-→ Stuff into prompt
-→ Generate answer
+The classic RAG flow is four steps:
 
-That works in demos. It breaks in production.
+1. User asks a question
+2. Embed the query, retrieve top-K chunks via vector similarity
+3. Stuff chunks into the prompt
+4. Generate an answer
 
-It fails when the question needs multiple retrieval steps. When the answer requires comparing documents. When retrieved context contradicts itself. When the user’s real intent doesn’t match their literal query.
+This works beautifully in demos. It works fine for "summarize this document" or "what does our policy say about X." It collapses the moment your query requires:
 
-I ran into every one of these building Tnufa.ai. The fix wasn’t a better prompt. It was a different architecture.
+- **Multiple retrieval steps.** "Compare our Q2 risk exposure to last year" needs two retrievals, not one.
+- **Document comparison.** Top-K similarity doesn't know what "comparison" means.
+- **Conflict resolution.** If two retrieved chunks contradict each other, vanilla RAG just shoves both into context and lets the LLM hallucinate a reconciliation.
+- **Intent mismatch.** Users rarely phrase queries the way documents are written. "Are we exposed to rate hikes?" doesn't semantically match "duration risk in fixed income holdings."
 
-Vanilla RAG: Fixed pipeline. Retrieve → Generate. One shot. Done.
+When I was building retrieval for Tnufa.ai, I watched users ask perfectly reasonable questions and get confidently wrong answers. The fix wasn't a prompt tweak. It was a different architecture entirely.
 
-Agentic RAG: Autonomous loop. Plan → Retrieve → Reason → Critique → Rewrite → Reflect → repeat until confident.
+> The retrieval layer is now the hardest part of your AI stack. Not the model. Not the prompt. The retrieval architecture.
 
-The system doesn’t just answer the question. It decides how to answer it.
+## Vanilla RAG vs Agentic RAG: The Real Difference
 
-Here’s the same query through both systems:
+Vanilla RAG is a **pipeline**: Retrieve → Generate. One shot. Done.
 
-“What’s the risk exposure in our Q2 portfolio vs last year?”
+Agentic RAG is a **loop**: Plan → Retrieve → Reason → Critique → Rewrite → Reflect → repeat until confident.
 
-Vanilla RAG: Retrieves the most semantically similar chunks for “risk exposure.” Misses the year-over-year comparison entirely. Returns a confident-sounding wrong answer.
+The difference isn't "more steps." The difference is that the system decides how to answer the question instead of executing a fixed recipe.
 
-Agentic RAG:
-→ Plans: “I need Q2 2026, Q2 2025, and a delta framework”
-→ Retrieves each independently
-→ Identifies the gap
-→ Critiques its own answer for completeness
-→ Returns a structured, accurate comparison
+Here's the same query through both architectures:
 
-The output difference isn’t marginal. Organizations shipping Agentic RAG for financial analysis, legal research, and internal knowledge tools are outperforming vanilla RAG on accuracy benchmarks — by sizeable margins.
+**Query:** "What's the risk exposure in our Q2 portfolio vs last year?"
 
-What you actually need to build it:
+**Vanilla RAG:**
+- Embeds "risk exposure Q2 portfolio last year"
+- Retrieves top-5 semantically similar chunks
+- Most chunks are about current Q2 risk; one mentions "year-over-year" tangentially
+- Generates a confident answer about current Q2 risk that completely misses the comparison
 
-1. Planner layer — decides what to retrieve and in what order
-2. Tool-calling retrieval — agent calls retrieval as a tool, not a fixed step
-3. Self-critique loop — system evaluates its own output before returning
-4. Context management — controls what stays in the window across steps
-5. Budget enforcement — caps the loop so it doesn’t spin forever
+**Agentic RAG:**
+- Planner decomposes: "I need Q2 2026 risk, Q2 2025 risk, and a delta framework"
+- Issues three independent retrievals as tool calls
+- Notices Q2 2025 retrieval returned weak matches → reformulates query → retries
+- Drafts an answer
+- Critic checks: "Did I answer both sides of the comparison? Did I quantify the delta?"
+- Returns structured comparison with citations
 
-Most engineers I talk to are still building 1-2-3 pipelines.
+The output difference isn't marginal. Teams shipping agentic patterns for financial analysis, legal research, and internal knowledge tools are reporting accuracy gains in the 20–40% range on real benchmarks — not toy datasets.
 
-The ones getting hired at AI-first companies are building 1-5 systems.
+## The Five Components You Actually Need
 
-Here’s what nobody tells you: the retrieval layer is now the hardest part of your AI stack. Not the model. Not the prompt. The retrieval architecture.
+If you're building agentic RAG, here's the minimum architecture:
 
-If you’re building RAG right now — start with the assumption that one retrieval call will not be enough.
+### 1. Planner Layer
 
-Design for loops, not pipelines.
+A reasoning step that takes the user query and outputs a retrieval plan — what to fetch, in what order, with what filters. This is usually a smaller, fast LLM call with a structured output schema.
 
-─────────────────────────────────────────────
+```python
+class RetrievalPlan(BaseModel):
+    sub_queries: list[str]
+    requires_comparison: bool
+    time_filters: list[str] | None
+    confidence_threshold: float
+```
 
-Have you shipped an Agentic RAG system? What was the hardest part to get right?
+### 2. Tool-Calling Retrieval
+
+Retrieval is exposed as a tool the agent calls, not a hardcoded step. The agent can call it once, five times, or zero times.
+
+```python
+tools = [
+    {"name": "search_docs", "params": {"query": str, "filters": dict}},
+    {"name": "fetch_document", "params": {"doc_id": str}},
+    {"name": "compare_periods", "params": {"metric": str, "p1": str, "p2": str}},
+]
+```
+
+### 3. Self-Critique Loop
+
+After generating a draft answer, a critic prompt evaluates: Is this complete? Are claims supported by retrieved context? Are there gaps? If the critic flags issues, the agent loops back.
+
+### 4. Context Management
+
+You cannot dump every retrieved chunk into every step. You need explicit policies for what stays in the window: summarized prior turns, retained citations, dropped irrelevant chunks. Tools like LangGraph and LlamaIndex's workflows give you state primitives for this.
+
+### 5. Budget Enforcement
+
+Without a hard cap, agents will loop forever on ambiguous questions. Cap iterations, tool calls, and tokens.
+
+```yaml
+agent_budget:
+  max_iterations: 6
+  max_tool_calls: 12
+  max_tokens: 32000
+  timeout_seconds: 45
+```
+
+## What Nobody Tells You About Building This
+
+I'll be blunt: the hard part isn't writing the planner prompt. It's everything around the loop.
+
+**Observability gets exponentially harder.** A vanilla RAG trace has 2 spans. An agentic trace has 15–30. You need LangSmith, Langfuse, or homegrown tracing from day one. If you can't see why the agent made a decision, you can't debug it.
+
+**Latency becomes your enemy.** A vanilla RAG response is 1–3 seconds. An agentic response can be 10–30. You'll need parallel tool calls (most frameworks support this), streaming intermediate state to the UI, and aggressive caching of sub-query results.
+
+**Cost compounds fast.** Six iterations × four tool calls × two LLM passes = ~50x the token spend of vanilla RAG. Use a cheap model (Haiku, Gemini Flash, GPT-4o-mini) for the planner and critic. Reserve your frontier model for the final synthesis.
+
+**Evaluation has to change.** End-to-end accuracy isn't enough. You need per-step evals: Did the planner decompose correctly? Did retrieval surface the right chunks? Did the critic catch the gap? RAGAS and TruLens help, but you'll write custom evals for your domain.
+
+## When You Should (and Shouldn't) Go Agentic
+
+Agentic RAG isn't free. If your use case is "answer FAQ from a 50-page policy doc," vanilla RAG is fine and you're wasting money going agentic.
+
+Reach for agentic when:
+
+- Queries require multi-hop reasoning across documents
+- Answers need comparison, aggregation, or synthesis
+- Your retrieval corpus is large and heterogeneous (PDFs, databases, APIs)
+- Wrong answers have real cost — finance, legal, medical, compliance
+- Users phrase queries differently from how documents are written
+
+Stick with vanilla when:
+
+- Latency budget is under 2 seconds
+- Corpus is small and homogeneous
+- Cost per query needs to stay sub-cent
+- Questions are predictable in shape
+
+## The Takeaway
+
+If you're starting a RAG project today, start with the assumption that one retrieval call will not be enough. Design for loops, not pipelines. Build the planner and critic from day one — retrofitting them later means rewriting your state management, your tracing, and your evals.
+
+The engineers I see getting hired at AI-first companies right now aren't the ones who can wire up a vector DB. They're the ones who can design an agent loop that's fast, observable, bounded, and accurate. That's the bar.
+
+Pick one query in your current RAG system that you know returns weak answers. Trace it. Then ask: would a planner have decomposed it better? Would a critic have caught the gap? If yes, you already know what to build next.
 
 ---
-[View on LinkedIn](https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7467620205540802561){:target="_blank"}
+
+*Originally posted on [LinkedIn](https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7467620205540802561).*
