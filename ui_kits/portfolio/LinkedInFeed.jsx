@@ -42,14 +42,16 @@ function LinkedInFeed() {
     return map[theme] || 'var(--signal-500)';
   };
 
+  const isLinkedInUrl = (url) => url && url.includes('linkedin.com');
+
   return (
     <section className="li-feed">
       <div className="section-header">
         <div>
           <div className="eyebrow">
-            <span className="live-dot" /> LinkedIn · auto-updated daily
+            <span className="live-dot" /> BLOG · updated weekly
           </div>
-          <h2 className="section-title">Recent Posts</h2>
+          <h2 className="section-title">Writing</h2>
         </div>
         <a href="https://linkedin.com/in/aakash-sethi-007" target="_blank" rel="noopener" className="btn btn-ghost-dark btn-sm">
           Follow on LinkedIn →
@@ -67,29 +69,53 @@ function LinkedInFeed() {
 
       {!loading && posts.length > 0 && (
         <div className="li-list">
-          {posts.map((p, i) => (
-            <div key={i} className="li-card">
-              <div className="li-card-top">
-                <span className="li-tag" style={{borderColor: themeColor(p.theme), color: themeColor(p.theme)}}>
-                  {(p.theme || 'post').replace('_', ' ')}
-                </span>
-                <span className="eyebrow">{timeAgo(p.date)}</span>
+          {posts.map((p, i) => {
+            const isExpanded = expanded === i;
+            const hasBlogUrl = p.blog_url && p.blog_url !== '';
+
+            return (
+              <div key={i} className="li-card">
+                <div className="li-card-top">
+                  <span className="li-tag" style={{borderColor: themeColor(p.theme), color: themeColor(p.theme)}}>
+                    {(p.theme || 'post').replace('_', ' ')}
+                  </span>
+                  <span className="eyebrow">{timeAgo(p.date)}</span>
+                </div>
+                <p className="li-body">
+                  {isExpanded ? (p.content || p.topic || '') : preview(p.content || p.topic)}
+                </p>
+                <div className="li-card-footer">
+                  {/* Expand/collapse or direct blog link */}
+                  {!isExpanded && hasBlogUrl ? (
+                    <a href={p.blog_url} className="li-expand">
+                      Read more →
+                    </a>
+                  ) : !isExpanded ? (
+                    <button className="li-expand" onClick={() => setExpanded(i)}>
+                      Read more →
+                    </button>
+                  ) : (
+                    <>
+                      <button className="li-expand" onClick={() => setExpanded(null)}>
+                        Show less ↑
+                      </button>
+                      {hasBlogUrl && (
+                        <a href={p.blog_url} className="li-link">
+                          Read full article →
+                        </a>
+                      )}
+                    </>
+                  )}
+                  {/* LinkedIn link — only show for real LinkedIn URLs */}
+                  {p.post_url && isLinkedInUrl(p.post_url) && (
+                    <a href={p.post_url} target="_blank" rel="noopener" className="li-link">
+                      View on LinkedIn →
+                    </a>
+                  )}
+                </div>
               </div>
-              <p className="li-body">
-                {expanded === i ? (p.content || p.topic || '') : preview(p.content || p.topic)}
-              </p>
-              <div className="li-card-footer">
-                <button className="li-expand" onClick={() => setExpanded(expanded === i ? null : i)}>
-                  {expanded === i ? 'Show less ↑' : 'Read more ↓'}
-                </button>
-                {p.post_url && (
-                  <a href={p.post_url} target="_blank" rel="noopener" className="li-link">
-                    View on LinkedIn →
-                  </a>
-                )}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </section>
