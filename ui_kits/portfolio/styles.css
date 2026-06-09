@@ -700,21 +700,52 @@ section { padding: 0 0 var(--sp-24); }
   pointer-events: none;
 }
 
-/* ============ Live Strip ============ */
-.live-strip {
-  display: flex; align-items: center; gap: 0;
+/* ============ LinkedIn Ticker ============ */
+.ticker-wrap {
+  display: flex; align-items: center;
   background: var(--ink-950);
-  border-bottom: 1px solid var(--border);
-  padding: 10px var(--sp-12);
-  overflow-x: auto;
-  scrollbar-width: none;
-  max-width: 100%;
+  border-bottom: 1px solid var(--ink-800);
+  height: 38px;
+  overflow: hidden;
+  user-select: none;
 }
-.live-strip::-webkit-scrollbar { display: none; }
-.live-strip-item { display: flex; align-items: center; gap: var(--sp-2); white-space: nowrap; padding: 0 var(--sp-5); }
-.live-strip-item .eyebrow { color: var(--fg-muted); font-size: 10px; }
-.live-val { font-size: 12px; font-weight: 600; color: var(--ink-50); }
-.live-strip-divider { width: 1px; height: 20px; background: var(--border); flex-shrink: 0; }
+.ticker-label {
+  flex-shrink: 0;
+  padding: 0 var(--sp-5);
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--signal-500);
+  border-right: 1px solid var(--ink-700);
+  height: 100%;
+  display: flex; align-items: center;
+  white-space: nowrap;
+}
+.ticker-track { flex: 1; overflow: hidden; height: 100%; display: flex; align-items: center; }
+.ticker-inner {
+  display: flex; align-items: center;
+  white-space: nowrap;
+  animation: ticker-scroll 35s linear infinite;
+}
+.ticker-inner:hover { animation-play-state: paused; }
+.ticker-item {
+  display: inline-flex; align-items: center; gap: var(--sp-3);
+  padding: 0 var(--sp-6);
+  font-size: 12.5px; font-weight: 500;
+  color: var(--ink-300);
+  text-decoration: none;
+  transition: color 120ms;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.ticker-item:hover { color: var(--signal-300); text-decoration: none; }
+.ticker-sep { color: var(--ink-600); font-size: 16px; line-height: 1; }
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ============ Live dot (used elsewhere) ============ */
 .live-dot {
   display: inline-block; width: 7px; height: 7px; border-radius: 999px;
   background: var(--term-500);
@@ -976,8 +1007,8 @@ html, body { overflow-x: hidden; }
   .hero-ctas { flex-direction: column; align-items: flex-start; }
   .hero-ctas .btn { width: 100%; justify-content: center; }
 
-  /* Live strip */
-  .live-strip { padding: 10px var(--sp-5); }
+  /* Ticker */
+  .ticker-label { padding: 0 var(--sp-3); font-size: 10px; }
 
   /* Stat strip */
   .stat-strip { grid-template-columns: repeat(2, 1fr); gap: var(--sp-5); }
@@ -1035,7 +1066,7 @@ html, body { overflow-x: hidden; }
 @media (max-width: 480px) {
   .hero-title { font-size: clamp(34px, 11vw, 56px); }
   .section-title { font-size: clamp(26px, 7vw, 36px); }
-  .live-strip-item { padding: 0 var(--sp-3); }
+  .ticker-item { padding: 0 var(--sp-4); font-size: 12px; }
   .yt-grid { grid-template-columns: 1fr; }
   .ft-right { flex-direction: column; gap: var(--sp-3); }
 }
