@@ -24,8 +24,10 @@ function LinkedInFeed() {
     return 'just now';
   };
 
-  const preview = (text, n = 180) =>
-    text.length > n ? text.slice(0, n).trimEnd() + '…' : text;
+  const preview = (text, n = 180) => {
+    if (!text) return '';
+    return text.length > n ? text.slice(0, n).trimEnd() + '…' : text;
+  };
 
   const themeColor = (theme) => {
     const map = {
@@ -74,7 +76,7 @@ function LinkedInFeed() {
                 <span className="eyebrow">{timeAgo(p.date)}</span>
               </div>
               <p className="li-body">
-                {expanded === i ? p.content : preview(p.content)}
+                {expanded === i ? (p.content || p.topic || '') : preview(p.content || p.topic)}
               </p>
               <div className="li-card-footer">
                 <button className="li-expand" onClick={() => setExpanded(expanded === i ? null : i)}>
