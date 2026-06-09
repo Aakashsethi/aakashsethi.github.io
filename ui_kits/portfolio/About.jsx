@@ -1,35 +1,35 @@
 /* global React */
 
 const ROLES = [
-  { co: 'Amazon', loc: 'Hicksville, NY', role: 'L1 Associate', period: 'Jun 2025 – Present',
+  { co: 'Amazon', loc: 'Hicksville, NY', role: 'L1 Associate', period: '2025 – Present',
     bullets: [
       'Operate WMS and automation tools for high-volume order fulfillment.',
       'Sustained productivity across 10–12 hour shifts; safety + quality compliance.',
     ] },
-  { co: 'Burpez', loc: 'Newark, NJ', role: 'Software Engineer', period: 'Apr 2024 – Apr 2025',
+  { co: 'Burpez', loc: 'Newark, NJ', role: 'Software Engineer', period: '2024 – 2025',
     bullets: [
       'Built a cloud-kitchen ops platform on the MERN stack.',
       'React + Redux frontend; Node/Express + MongoDB; AWS Kinesis for realtime order/inventory streaming.',
       'Scaled REST services to 5,000+ daily users.',
     ] },
-  { co: 'Babson Acquisition Partners', loc: 'New Jersey', role: 'Barista & Baker', period: 'Apr 2024 – Mar 2025',
+  { co: 'Babson Acquisition Partners', loc: 'New Jersey', role: 'Barista & Baker', period: '2024 – 2025',
     bullets: [
       'Baked croissants daily; developed custom flavor offerings.',
       'A year of customer-service and operations craft — feeds the systems work above.',
     ] },
-  { co: 'Vanguard', loc: 'Malvern, PA', role: 'Software Engineer', period: 'Mar 2023 – Nov 2023',
+  { co: 'Vanguard', loc: 'Malvern, PA', role: 'Software Engineer', period: '2023',
     bullets: [
       'Automated ETF primary-market trading systems on AWS ECS, Lambda, CodeDeploy with blue/green.',
       'Containerized microservices via Docker; integrated CloudWatch + API Gateway.',
       'Lifted test coverage from 45% → 85% in two quarters with Mocha + Postman.',
     ] },
-  { co: 'Mercedes-Benz Financial Services', loc: 'Farmington Hills, MI', role: 'Technology Analyst', period: 'May 2021 – Mar 2022',
+  { co: 'Mercedes-Benz Financial Services', loc: 'Farmington Hills, MI', role: 'Technology Analyst', period: '2021 – 2022',
     bullets: [
       'Migrated SOAP APIs to RESTful microservices for Daimler Truck Financial Services on Java/Spring Boot — 30% latency reduction.',
       'Automated CI/CD with JUnit; supported ServiceNow setup and migration.',
       'Partnered with finance and account teams on customer-lifecycle ops.',
     ] },
-  { co: 'Industry Mojo', loc: 'Short Hills, NJ', role: 'CRM & Data Operations Intern', period: 'Jan 2020 – Jan 2021',
+  { co: 'Industry Mojo', loc: 'Short Hills, NJ', role: 'CRM & Data Operations Intern', period: '2020 – 2021',
     bullets: [
       'Built and tested a client-facing web portal (HTML/CSS/JS).',
       'Automated price-list entries in Microsoft Dynamics 365.',
