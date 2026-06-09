@@ -16,181 +16,339 @@ permalink: /blog/
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="/colors_and_type.css">
 <style>
-  *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body { font-family: var(--font-sans); background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    background: #FAFAF8;
+    color: var(--fg);
+    -webkit-font-smoothing: antialiased;
+  }
 
   /* ── Topbar ── */
   .topbar {
-    background: var(--ink-950);
-    border-bottom: 1px solid var(--ink-800);
-    height: 52px;
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(250,250,248,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--ink-100);
+    height: 56px;
+    display: flex;
+    align-items: center;
+    padding: 0 clamp(16px, 5vw, 48px);
+  }
+  .topbar-inner {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 var(--sp-12);
-    position: sticky; top: 0; z-index: 100;
   }
-  .topbar-left { display: flex; align-items: center; gap: var(--sp-5); }
-  .topbar-back { font-family: var(--font-mono); font-size: 12px; color: var(--ink-400); text-decoration: none; letter-spacing: 0.04em; transition: color 120ms; }
-  .topbar-back:hover { color: var(--signal-300); }
-  .topbar-wordmark { font-family: var(--font-mono); font-weight: 600; font-size: 16px; color: var(--ink-50); text-decoration: none; letter-spacing: -0.01em; }
-  .wm-dot { display: inline-block; width: 5px; height: 5px; background: var(--signal-500); border-radius: 999px; margin: 0 1px 2px; vertical-align: middle; }
-  .topbar-book { font-family: var(--font-mono); font-size: 12px; background: var(--signal-500); color: #000; padding: 6px 14px; border-radius: 999px; text-decoration: none; font-weight: 600; letter-spacing: 0.02em; transition: background 150ms; }
-  .topbar-book:hover { background: var(--signal-300); }
+  .topbar-left { display: flex; align-items: center; gap: 20px; }
+  .topbar-back {
+    font-family: var(--font-mono); font-size: 12px; color: var(--ink-400);
+    text-decoration: none; letter-spacing: 0.04em; transition: color 120ms;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .topbar-back:hover { color: var(--signal-600); }
+  .topbar-wordmark {
+    font-family: var(--font-mono); font-weight: 700; font-size: 15px;
+    color: var(--ink-950); text-decoration: none; letter-spacing: -0.02em;
+  }
+  .wm-dot {
+    display: inline-block; width: 5px; height: 5px;
+    background: var(--signal-500); border-radius: 50%;
+    margin: 0 1px 2px; vertical-align: middle;
+  }
+  .topbar-divider { width: 1px; height: 18px; background: var(--ink-200); }
+  .topbar-cta {
+    font-family: var(--font-sans); font-size: 13px; font-weight: 600;
+    color: #fff; background: var(--ink-950); padding: 8px 18px;
+    border-radius: 999px; text-decoration: none; letter-spacing: -0.01em;
+    transition: background 150ms, transform 100ms; white-space: nowrap;
+  }
+  .topbar-cta:hover { background: var(--signal-600); transform: translateY(-1px); }
 
   /* ── Hero ── */
   .blog-hero {
-    background: var(--ink-950);
-    border-bottom: 1px solid var(--ink-800);
-    padding: var(--sp-16) var(--sp-12) var(--sp-12);
+    border-bottom: 1px solid var(--ink-100);
+    padding: 64px clamp(16px, 5vw, 48px) 52px;
   }
-  .blog-hero-inner { max-width: 880px; margin: 0 auto; }
-  .blog-eyebrow { font-family: var(--font-mono); font-size: 11px; color: var(--signal-500); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--sp-3); }
-  .blog-hero h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 800; letter-spacing: -0.03em; color: var(--ink-50); margin: 0 0 var(--sp-4); line-height: 1.1; }
-  .blog-hero-desc { font-size: 16px; color: var(--ink-400); max-width: 560px; line-height: 1.6; margin: 0; }
+  .blog-hero-inner { max-width: 720px; margin: 0 auto; }
+  .blog-eyebrow {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+    color: var(--signal-600); letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .blog-hero h1 {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 800; letter-spacing: -0.03em; color: var(--ink-950);
+    margin: 0 0 16px; line-height: 1.08;
+  }
+  .blog-hero-desc {
+    font-size: 17px; color: var(--ink-500); max-width: 540px; line-height: 1.65;
+    font-family: var(--font-sans);
+  }
+  .blog-hero-meta {
+    display: flex; align-items: center; gap: 16px; margin-top: 28px; flex-wrap: wrap;
+  }
+  .hero-author {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hero-avatar {
+    width: 32px; height: 32px; background: var(--ink-950); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+    color: var(--signal-500); flex-shrink: 0;
+  }
+  .hero-author-name { font-size: 14px; font-weight: 600; color: var(--ink-700); }
+  .hero-sep { font-size: 12px; color: var(--ink-300); }
+  .hero-post-count { font-family: var(--font-mono); font-size: 12px; color: var(--ink-400); }
 
-  /* ── Search + Filters ── */
+  /* ── Controls bar ── */
   .blog-controls {
-    background: var(--ink-950);
-    border-bottom: 1px solid var(--ink-800);
-    padding: var(--sp-5) var(--sp-12);
+    background: rgba(250,250,248,0.96);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--ink-100);
+    padding: 14px clamp(16px, 5vw, 48px);
     display: flex;
     align-items: center;
-    gap: var(--sp-4);
+    gap: 12px;
     flex-wrap: wrap;
-    position: sticky; top: 52px; z-index: 90;
+    position: sticky; top: 56px; z-index: 90;
   }
-  .search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 360px; }
+  .controls-inner {
+    width: 100%; max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .search-wrap {
+    position: relative; min-width: 200px; max-width: 280px; flex-shrink: 0;
+  }
   .search-input {
-    width: 100%;
-    background: var(--ink-900);
-    border: 1px solid var(--ink-700);
-    border-radius: 8px;
-    padding: 8px 12px 8px 36px;
-    font-family: var(--font-sans);
-    font-size: 14px;
-    color: var(--fg);
-    outline: none;
-    transition: border-color 150ms;
+    width: 100%; background: #fff; border: 1px solid var(--ink-200); border-radius: 8px;
+    padding: 8px 12px 8px 34px; font-family: var(--font-sans); font-size: 14px;
+    color: var(--fg); outline: none; transition: border-color 150ms, box-shadow 150ms;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
   }
-  .search-input::placeholder { color: var(--ink-500); }
-  .search-input:focus { border-color: var(--signal-600); }
-  .search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--ink-500); font-size: 14px; pointer-events: none; }
-  .tag-filters { display: flex; flex-wrap: wrap; gap: var(--sp-2); flex: 1; }
+  .search-input::placeholder { color: var(--ink-400); }
+  .search-input:focus { border-color: var(--signal-500); box-shadow: 0 0 0 3px rgba(245,165,36,0.12); }
+  .search-icon {
+    position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+    color: var(--ink-400); font-size: 13px; pointer-events: none;
+  }
+  .tag-filters { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
   .tag-btn {
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase;
-    background: transparent; border: 1px solid var(--ink-700); border-radius: 4px;
-    color: var(--ink-400); padding: 4px 10px; cursor: pointer; transition: all 150ms;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em;
+    text-transform: uppercase; background: #fff; border: 1px solid var(--ink-200);
+    border-radius: 6px; color: var(--ink-500); padding: 5px 12px; cursor: pointer;
+    transition: all 150ms; box-shadow: 0 1px 2px rgba(0,0,0,0.04);
   }
-  .tag-btn:hover { border-color: var(--signal-600); color: var(--signal-300); }
-  .tag-btn.active { background: var(--signal-500); border-color: var(--signal-500); color: #000; font-weight: 600; }
-  .clear-btn { font-family: var(--font-mono); font-size: 11px; color: var(--ink-500); background: none; border: none; cursor: pointer; padding: 4px 8px; transition: color 120ms; display: none; }
-  .clear-btn:hover { color: var(--signal-300); }
+  .tag-btn:hover { border-color: var(--signal-500); color: var(--signal-600); background: rgba(245,165,36,0.05); }
+  .tag-btn.active { background: var(--signal-500); border-color: var(--signal-500); color: #fff; font-weight: 700; box-shadow: 0 2px 6px rgba(245,165,36,0.25); }
+  .clear-btn {
+    font-family: var(--font-mono); font-size: 11px; color: var(--ink-400);
+    background: none; border: none; cursor: pointer; padding: 5px 8px;
+    transition: color 120ms; display: none; letter-spacing: 0.04em;
+  }
+  .clear-btn:hover { color: var(--signal-600); }
   .clear-btn.visible { display: block; }
-  .results-count { font-family: var(--font-mono); font-size: 11px; color: var(--ink-500); letter-spacing: 0.04em; white-space: nowrap; margin-left: auto; }
+  .results-count {
+    font-family: var(--font-mono); font-size: 12px; color: var(--ink-400);
+    letter-spacing: 0.04em; white-space: nowrap; margin-left: auto;
+  }
 
-  /* ── Post list ── */
-  .blog-list { max-width: 880px; margin: 0 auto; padding: var(--sp-10) var(--sp-12); }
+  /* ── Post grid ── */
+  .blog-list {
+    max-width: 1100px; margin: 0 auto;
+    padding: 48px clamp(16px, 5vw, 48px) 80px;
+  }
+
   .post-row {
     display: grid;
-    grid-template-columns: 120px 1fr;
-    gap: var(--sp-6) var(--sp-8);
-    padding: var(--sp-7) 0;
-    border-top: 1px solid var(--hairline);
+    grid-template-columns: 110px 1fr;
+    gap: 0 32px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--ink-100);
     text-decoration: none;
     color: inherit;
     transition: background 150ms;
-    border-radius: 4px;
-    animation: fadeIn 300ms ease both;
+    border-radius: 8px;
+    animation: fadeIn 350ms cubic-bezier(.16,1,.3,1) both;
+    position: relative;
   }
-  .post-row:last-child { border-bottom: 1px solid var(--hairline); }
-  .post-row:hover { background: var(--bg-elev); }
-  .post-row-date { font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted); letter-spacing: 0.04em; padding-top: 3px; }
-  .post-row-body {}
-  .post-row-title { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; color: var(--fg); margin: 0 0 var(--sp-2); line-height: 1.3; transition: color 150ms; }
+  .post-row:first-child { border-top: 1px solid var(--ink-100); }
+  .post-row:hover { background: #F5F5F1; padding-left: 12px; padding-right: 12px; margin: 0 -12px; }
+  .post-row-date {
+    font-family: var(--font-mono); font-size: 11px; color: var(--ink-400);
+    letter-spacing: 0.04em; padding-top: 4px; line-height: 1.4;
+  }
+  .post-row-title {
+    font-size: 18px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink-950);
+    margin: 0 0 8px; line-height: 1.35; transition: color 150ms;
+  }
   .post-row:hover .post-row-title { color: var(--signal-600); }
-  .post-row-excerpt { font-size: 14px; color: var(--fg-muted); line-height: 1.6; margin: 0 0 var(--sp-3); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .post-row-tags { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
-  .post-row-tag {
-    font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em;
-    color: var(--signal-600); border: 1px solid var(--signal-700); border-radius: 4px;
-    padding: 2px 7px; cursor: pointer; transition: all 120ms; background: transparent;
+  .post-row-excerpt {
+    font-size: 14px; color: var(--ink-500); line-height: 1.65; margin: 0 0 12px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   }
-  .post-row-tag:hover { background: rgba(245,165,36,0.12); color: var(--signal-300); }
-  .post-row-tag.match { background: rgba(245,165,36,0.15); color: var(--signal-300); border-color: var(--signal-500); }
-  .post-row-meta { display: flex; align-items: center; gap: var(--sp-3); margin-top: var(--sp-2); }
-  .post-row-cat { font-family: var(--font-mono); font-size: 10px; color: var(--ink-500); letter-spacing: 0.04em; text-transform: uppercase; }
-  .post-row-readtime { font-family: var(--font-mono); font-size: 10px; color: var(--ink-600); }
+  .post-row-bottom {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .post-row-tag {
+    font-family: var(--font-mono); font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--signal-600); background: rgba(245,165,36,0.08);
+    border: 1px solid rgba(245,165,36,0.25); border-radius: 4px;
+    padding: 3px 8px; cursor: pointer; transition: all 120ms;
+  }
+  .post-row-tag:hover { background: rgba(245,165,36,0.18); color: var(--signal-700); border-color: var(--signal-500); }
+  .post-row-tag.match { background: var(--signal-500); color: #fff; border-color: var(--signal-500); }
+  .post-row-sep { color: var(--ink-300); font-size: 10px; }
+  .post-row-readtime { font-family: var(--font-mono); font-size: 11px; color: var(--ink-400); }
+  .post-row-cat { font-family: var(--font-mono); font-size: 11px; color: var(--ink-400); text-transform: uppercase; letter-spacing: 0.04em; }
 
   /* Empty state */
-  .empty-state { text-align: center; padding: var(--sp-20) 0; color: var(--fg-muted); }
-  .empty-state h3 { font-size: 20px; font-weight: 600; margin: 0 0 var(--sp-3); color: var(--fg); }
-  .empty-state p { font-size: 14px; }
+  .empty-state { text-align: center; padding: 80px 0; }
+  .empty-state h3 { font-size: 20px; font-weight: 700; margin: 0 0 10px; color: var(--ink-700); letter-spacing: -0.01em; }
+  .empty-state p { font-size: 14px; color: var(--ink-400); }
 
-  /* Animations */
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  /* ── CTA strip ── */
+  .blog-cta {
+    max-width: 1100px; margin: 0 auto;
+    padding: 0 clamp(16px, 5vw, 48px) 80px;
+  }
+  .blog-cta-inner {
+    background: var(--ink-950); border-radius: 16px;
+    padding: 40px 40px; display: flex; align-items: center;
+    justify-content: space-between; gap: 24px; flex-wrap: wrap;
+    position: relative; overflow: hidden;
+  }
+  .blog-cta-inner::before {
+    content: ''; position: absolute; top: -80px; right: -80px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(245,165,36,0.14) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .blog-cta-left { flex: 1; min-width: 240px; }
+  .blog-cta-eyebrow {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--signal-500); margin-bottom: 10px;
+  }
+  .blog-cta-headline {
+    font-size: clamp(18px, 2.5vw, 24px); font-weight: 800;
+    letter-spacing: -0.02em; color: var(--ink-50); line-height: 1.25;
+  }
+  .blog-cta-sub {
+    font-size: 14px; color: var(--ink-400); line-height: 1.55; margin-top: 8px;
+  }
+  .blog-cta-btn {
+    font-family: var(--font-sans); font-size: 14px; font-weight: 700;
+    color: var(--ink-950); background: var(--signal-500); padding: 13px 28px;
+    border-radius: 999px; text-decoration: none; white-space: nowrap;
+    transition: background 150ms, transform 100ms; flex-shrink: 0;
+  }
+  .blog-cta-btn:hover { background: var(--signal-300); transform: translateY(-2px); }
 
-  /* Footer */
-  .blog-footer { border-top: 1px solid var(--hairline); padding: var(--sp-8) var(--sp-12); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--sp-4); }
-  .blog-footer-left { font-family: var(--font-mono); font-size: 12px; color: var(--fg-muted); }
-  .blog-footer-link { font-family: var(--font-mono); font-size: 12px; color: var(--signal-600); text-decoration: none; }
-  .blog-footer-link:hover { color: var(--signal-300); }
+  /* ── Animations ── */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .blog-hero { animation: fadeIn 400ms cubic-bezier(.16,1,.3,1) both; }
 
+  /* ── Footer ── */
+  .blog-footer {
+    border-top: 1px solid var(--ink-100);
+    padding: 24px clamp(16px, 5vw, 48px);
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+  }
+  .blog-footer-left { font-family: var(--font-mono); font-size: 12px; color: var(--ink-400); }
+  .blog-footer-link { font-family: var(--font-mono); font-size: 12px; color: var(--signal-600); text-decoration: none; transition: color 120ms; }
+  .blog-footer-link:hover { color: var(--signal-500); }
+
+  /* ── Mobile ── */
   @media (max-width: 640px) {
-    .topbar { padding: 0 var(--sp-5); }
-    .topbar-book { display: none; }
-    .blog-hero { padding: var(--sp-10) var(--sp-5) var(--sp-8); }
-    .blog-controls { padding: var(--sp-4) var(--sp-5); top: 52px; }
-    .blog-list { padding: var(--sp-6) var(--sp-5); }
-    .post-row { grid-template-columns: 1fr; gap: var(--sp-2); }
-    .post-row-date { padding-top: 0; }
-    .blog-footer { padding: var(--sp-6) var(--sp-5); }
+    .topbar-cta { font-size: 12px; padding: 7px 14px; }
+    .blog-hero { padding: 40px 18px 36px; }
+    .blog-controls { top: 56px; }
+    .controls-inner { gap: 8px; }
+    .blog-list { padding: 28px 18px 56px; }
+    .post-row { grid-template-columns: 1fr; gap: 4px; }
+    .post-row-date { font-size: 10px; }
+    .post-row:hover { padding-left: 8px; padding-right: 8px; margin: 0 -8px; }
+    .blog-cta { padding: 0 18px 56px; }
+    .blog-cta-inner { padding: 28px 22px; border-radius: 12px; }
+    .blog-footer { padding: 20px 18px; }
   }
 </style>
 </head>
 <body>
 
 <!-- Topbar -->
-<div class="topbar">
-  <div class="topbar-left">
-    <a class="topbar-back" href="/">← home</a>
-    <a class="topbar-wordmark" href="/">aakash<span class="wm-dot"></span>sethi</a>
+<nav class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-left">
+      <a class="topbar-back" href="/">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,18 9,12 15,6"/></svg>
+        home
+      </a>
+      <div class="topbar-divider"></div>
+      <a class="topbar-wordmark" href="/">aakash<span class="wm-dot"></span>sethi</a>
+    </div>
+    <a class="topbar-cta" href="/#contact">Book a session →</a>
   </div>
-  <a class="topbar-book" href="/#contact">Book a session →</a>
-</div>
+</nav>
 
 <!-- Hero -->
 <div class="blog-hero">
   <div class="blog-hero-inner">
     <div class="blog-eyebrow">Writing · MyLogs</div>
-    <h1>Ideas I keep shipping back to.</h1>
+    <h1>Ideas I keep shipping back&nbsp;to.</h1>
     <p class="blog-hero-desc">AI engineering, agentic systems, AWS architecture, fintech, and building a consulting practice. Updated as I ship.</p>
+    <div class="blog-hero-meta">
+      <div class="hero-author">
+        <div class="hero-avatar">AS</div>
+        <span class="hero-author-name">Aakash Sethi</span>
+      </div>
+      <span class="hero-sep">·</span>
+      <span class="hero-post-count" id="heroPostCount"></span>
+    </div>
   </div>
 </div>
 
-<!-- Search + Tag filters -->
+<!-- Controls -->
 <div class="blog-controls">
-  <div class="search-wrap">
-    <span class="search-icon">🔍</span>
-    <input class="search-input" id="searchInput" type="text" placeholder="Search posts…" autocomplete="off">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input class="search-input" id="searchInput" type="text" placeholder="Search posts…" autocomplete="off">
+    </div>
+    <div class="tag-filters" id="tagFilters"></div>
+    <button class="clear-btn" id="clearBtn" onclick="clearFilters()">✕ clear</button>
+    <span class="results-count" id="resultsCount"></span>
   </div>
-  <div class="tag-filters" id="tagFilters"></div>
-  <button class="clear-btn" id="clearBtn" onclick="clearFilters()">✕ clear</button>
-  <span class="results-count" id="resultsCount"></span>
 </div>
 
 <!-- Post list -->
 <div class="blog-list" id="postList"></div>
 
-<!-- Footer -->
-<div class="blog-footer">
-  <span class="blog-footer-left">© 2026 · Aakash Sethi</span>
-  <a class="blog-footer-link" href="/#contact">Book a 1-on-1 session →</a>
+<!-- CTA -->
+<div class="blog-cta">
+  <div class="blog-cta-inner">
+    <div class="blog-cta-left">
+      <div class="blog-cta-eyebrow">Work with me</div>
+      <div class="blog-cta-headline">Building AI systems or need a senior technical mentor?</div>
+      <div class="blog-cta-sub">AI architecture · AWS design · LLM / RAG · 1-on-1 mentoring</div>
+    </div>
+    <a class="blog-cta-btn" href="/#contact">Book a free intro call →</a>
+  </div>
 </div>
 
+<!-- Footer -->
+<footer class="blog-footer">
+  <span class="blog-footer-left">© 2026 · Aakash Sethi</span>
+  <a class="blog-footer-link" href="/">← Back to home</a>
+</footer>
+
 <script>
-// Jekyll injects all posts at build time
 const POSTS = [
   {% for post in site.posts %}
   {
@@ -206,31 +364,32 @@ const POSTS = [
   {% endfor %}
 ];
 
-// Collect all unique tags across all posts
 const ALL_TAGS = [...new Set(POSTS.flatMap(p => p.tags))].sort();
 
 let activeTag = '';
 let searchQuery = '';
 
-// Read ?tag= from URL on load
 const urlParams = new URLSearchParams(window.location.search);
 const initTag = urlParams.get('tag') || '';
 
+document.getElementById('heroPostCount').textContent = POSTS.length + ' post' + (POSTS.length !== 1 ? 's' : '');
+
 function readTime(words) {
-  return Math.max(1, Math.round(words / 200)) + ' min read';
+  return Math.max(1, Math.round(words / 200)) + ' min';
 }
 
 function buildTagFilters() {
   const wrap = document.getElementById('tagFilters');
-  wrap.innerHTML = ALL_TAGS.map(tag => `
-    <button class="tag-btn${tag === activeTag ? ' active' : ''}"
-      onclick="filterByTag('${tag}')">${tag}</button>
-  `).join('');
+  wrap.innerHTML = ALL_TAGS.map(tag =>
+    `<button class="tag-btn${tag === activeTag ? ' active' : ''}" onclick="filterByTag('${tag.replace(/'/g,"\\'")}')">
+      ${tag}
+    </button>`
+  ).join('');
 }
 
 function filterByTag(tag) {
   activeTag = activeTag === tag ? '' : tag;
-  const url = activeTag ? `/blog/?tag=${encodeURIComponent(activeTag)}` : '/blog/';
+  const url = activeTag ? '/blog/?tag=' + encodeURIComponent(activeTag) : '/blog/';
   history.pushState({}, '', url);
   render();
 }
@@ -272,38 +431,37 @@ function render() {
   }
 
   list.innerHTML = filtered.map((p, i) => `
-    <a class="post-row" href="${p.url}" style="animation-delay:${i * 40}ms">
+    <a class="post-row" href="${p.url}" style="animation-delay:${i * 50}ms">
       <div class="post-row-date">${p.date}</div>
       <div class="post-row-body">
         <div class="post-row-title">${p.title}</div>
         <div class="post-row-excerpt">${p.excerpt}</div>
-        <div class="post-row-tags">
-          ${p.tags.map(t => `<span class="post-row-tag${t.toLowerCase() === activeTag.toLowerCase() ? ' match' : ''}"
-            onclick="event.preventDefault(); filterByTag('${t}')">${t}</span>`).join('')}
-        </div>
-        <div class="post-row-meta">
-          <span class="post-row-cat">${(p.categories[0] || '').replace(/%20/g, ' ')}</span>
-          <span class="post-row-readtime">${readTime(p.words)}</span>
+        <div class="post-row-bottom">
+          ${p.tags.map(t => `<span class="post-row-tag${t.toLowerCase() === activeTag.toLowerCase() && activeTag ? ' match' : ''}"
+            onclick="event.preventDefault(); filterByTag('${t.replace(/'/g,"\\'")}')">${t}</span>`).join('')}
+          ${p.tags.length && (p.categories[0] || p.words) ? '<span class="post-row-sep">·</span>' : ''}
+          ${p.categories[0] ? `<span class="post-row-cat">${p.categories[0].replace(/%20/g,' ')}</span>` : ''}
+          ${(p.categories[0] && p.words) ? '<span class="post-row-sep">·</span>' : ''}
+          <span class="post-row-readtime">${readTime(p.words)} read</span>
         </div>
       </div>
     </a>
   `).join('');
 }
 
-// Search input
 document.getElementById('searchInput').addEventListener('input', function() {
   searchQuery = this.value;
   render();
 });
 
-// Handle browser back/forward
 window.addEventListener('popstate', function() {
   const p = new URLSearchParams(window.location.search);
   activeTag = p.get('tag') || '';
+  document.getElementById('searchInput').value = '';
+  searchQuery = '';
   render();
 });
 
-// Init
 activeTag = initTag;
 render();
 </script>
