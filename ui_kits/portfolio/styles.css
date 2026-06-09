@@ -266,6 +266,57 @@ section { padding: 0 0 var(--sp-24); }
 .li-dot.live { background: var(--term-500); box-shadow: 0 0 0 3px rgba(46,191,122,0.18); }
 .kit-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 
+/* ============ Work / Experience ============ */
+.work { padding: var(--sp-20) 0; }
+.work-timeline { display: flex; flex-direction: column; gap: 0; }
+.work-card {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--sp-8);
+  padding: var(--sp-8) 0;
+  border-top: 1px solid var(--hairline);
+}
+.work-card:last-child { border-bottom: 1px solid var(--hairline); }
+.work-card-left { padding-top: 2px; }
+.work-period {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--fg-muted);
+  letter-spacing: 0.04em;
+  margin-bottom: var(--sp-1);
+}
+.work-loc {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-500);
+  letter-spacing: 0.03em;
+}
+.work-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--sp-3); }
+.work-co {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  margin: 0 0 var(--sp-1);
+}
+.work-role {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--signal-700);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.work-bullets {
+  margin: var(--sp-3) 0 var(--sp-4);
+  padding-left: 1.2em;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--fg);
+}
+.work-bullets li { margin-bottom: var(--sp-2); }
+.work-stack { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+
 /* ============ Education / transcripts ============ */
 .edu-table {
   width: 100%;
@@ -1038,6 +1089,10 @@ html, body { overflow-x: hidden; }
   /* LinkedIn feed */
   .li-card { padding: var(--sp-4); }
   .li-card-top { flex-direction: column; align-items: flex-start; gap: var(--sp-2); }
+
+  /* Work */
+  .work-card { grid-template-columns: 1fr; gap: var(--sp-2); }
+  .work-card-left { display: flex; gap: var(--sp-3); align-items: baseline; }
 
   /* Education */
   .edu-grid { grid-template-columns: 1fr !important; }

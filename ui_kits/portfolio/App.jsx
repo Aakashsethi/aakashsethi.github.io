@@ -22,12 +22,12 @@ function App() {
           <>
             <Hero onNav={onNav} />
             <StatStrip />
-            <Work onOpen={setOpenProj} />
+            <Work />
             <YouTubeFeed />
             <LinkedInFeed />
           </>
         )}
-        {page === 'work'        && <Work onOpen={setOpenProj} />}
+        {page === 'work'        && <Work />}
         {page === 'youtube'     && <YouTubeFeed />}
         {page === 'linkedin'    && <LinkedInFeed />}
         {page === 'education'   && <Education onOpen={setOpenProj} />}

@@ -1,71 +1,101 @@
-/* global React, PROJECTS */
+/* global React */
 
-function StatusPill({ status }) {
-  const map = {
-    shipping: { cls: 'pill pill-accent', label: 'In progress' },
-    shipped:  { cls: 'pill pill-live',   label: '● Shipped' },
-    archived: { cls: 'pill pill-neutral',label: 'Archived' },
-  };
-  const m = map[status] || map.shipped;
-  return <span className={m.cls}>{m.label}</span>;
-}
+const ROLES = [
+  {
+    co: 'Amazon', loc: 'Hicksville, NY', period: '2025 – Present',
+    role: 'L1 Associate',
+    stack: ['WMS', 'Fulfillment Ops', 'Automation'],
+    bullets: [
+      'Operate warehouse management and automation tools for high-volume order fulfillment.',
+      'Sustained productivity across 10–12 hour shifts; safety + quality compliance.',
+    ],
+  },
+  {
+    co: 'Burpez', loc: 'Newark, NJ', period: '2024 – 2025',
+    role: 'Software Engineer',
+    stack: ['React', 'Redux', 'Node.js', 'MongoDB', 'AWS Kinesis'],
+    bullets: [
+      'Built a cloud-kitchen ops platform on the MERN stack serving 5,000+ daily users.',
+      'React + Redux frontend; Node/Express + MongoDB; AWS Kinesis for realtime order and inventory streaming.',
+    ],
+  },
+  {
+    co: 'Babson Acquisition Partners', loc: 'New Jersey', period: '2024 – 2025',
+    role: 'Barista & Baker',
+    stack: ['Operations', 'Customer Experience'],
+    bullets: [
+      'Baked croissants daily; developed custom flavor offerings.',
+      'A year of precision, repeatability, and customer craft — the same disciplines I bring to engineering.',
+    ],
+  },
+  {
+    co: 'Vanguard', loc: 'Malvern, PA', period: '2023',
+    role: 'Software Engineer',
+    stack: ['AWS ECS', 'Lambda', 'CodeDeploy', 'Docker', 'CloudWatch', 'Mocha'],
+    bullets: [
+      'Automated ETF primary-market trading systems on AWS ECS, Lambda, CodeDeploy with blue/green deployments.',
+      'Containerized microservices via Docker; integrated CloudWatch + API Gateway.',
+      'Lifted test coverage from 45% → 85% in two quarters.',
+    ],
+  },
+  {
+    co: 'Mercedes-Benz Financial Services', loc: 'Farmington Hills, MI', period: '2021 – 2022',
+    role: 'Technology Analyst',
+    stack: ['Java', 'Spring Boot', 'REST', 'JUnit', 'ServiceNow'],
+    bullets: [
+      'Migrated SOAP APIs to RESTful microservices for Daimler Truck Financial Services — 30% latency reduction.',
+      'Automated CI/CD with JUnit; led ServiceNow setup and migration.',
+    ],
+  },
+  {
+    co: 'Industry Mojo', loc: 'Short Hills, NJ', period: '2020 – 2021',
+    role: 'CRM & Data Operations Intern',
+    stack: ['HTML', 'CSS', 'JavaScript', 'Dynamics 365'],
+    bullets: [
+      'Built and tested a client-facing web portal.',
+      'Automated price-list entries in Microsoft Dynamics 365; Scrum support on workflow customizations.',
+    ],
+  },
+];
 
-function ProjectCard({ p, onOpen }) {
-  return (
-    <a className="proj" href="#" onClick={(e)=>{e.preventDefault(); onOpen(p);}}>
-      <div className="proj-meta">
-        <span className="eyebrow">{p.eyebrow}</span>
-        <StatusPill status={p.status} />
-      </div>
-      <h3 className="proj-title">
-        {p.title}
-        <span className="proj-arrow">→</span>
-      </h3>
-      <p className="proj-desc">{p.desc}</p>
-      <div className="proj-tags">
-        {p.tags.map(t => <span key={t} className="tag">{t}</span>)}
-      </div>
-    </a>
-  );
-}
-
-function Work({ onOpen }) {
-  const [filter, setFilter] = React.useState('all');
-  const filters = [
-    { id: 'all', label: 'All', count: PROJECTS.length },
-    { id: 'shipping', label: 'In progress', count: PROJECTS.filter(p=>p.status==='shipping').length },
-    { id: 'shipped', label: 'Shipped', count: PROJECTS.filter(p=>p.status==='shipped').length },
-    { id: 'archived', label: 'Archived', count: PROJECTS.filter(p=>p.status==='archived').length },
-  ];
-  const visible = filter === 'all' ? PROJECTS : PROJECTS.filter(p => p.status === filter);
-
+function Work() {
   return (
     <section className="work" id="work">
       <header className="section-head">
-        <span className="eyebrow">SELECTED WORK · {PROJECTS.length} REPOS</span>
-        <h2 className="section-title">Real projects, shipped to real users.</h2>
+        <span className="eyebrow">EXPERIENCE · {ROLES.length} COMPANIES</span>
+        <h2 className="section-title">Where I've shipped real work.</h2>
         <p className="section-lede">
-          Production systems at Vanguard, Mercedes-Benz Financial Services, and Burpez —
-          plus open-source contributions, study repos, and the occasional weekend experiment.
+          Five years across fintech, cloud kitchens, enterprise software, and e-commerce —
+          from AWS-backed trading systems at Vanguard to MERN-stack ops at Burpez.
         </p>
       </header>
 
-      <div className="page-tabs">
-        {filters.map(f => (
-          <button key={f.id}
-                  className={`page-tab ${filter===f.id ? 'active' : ''}`}
-                  onClick={()=>setFilter(f.id)}>
-            {f.label} <span className="count">· {f.count}</span>
-          </button>
+      <div className="work-timeline">
+        {ROLES.map((r, i) => (
+          <div key={i} className="work-card">
+            <div className="work-card-left">
+              <div className="work-period">{r.period}</div>
+              <div className="work-loc">{r.loc}</div>
+            </div>
+            <div className="work-card-body">
+              <div className="work-card-header">
+                <div>
+                  <h3 className="work-co">{r.co}</h3>
+                  <div className="work-role">{r.role}</div>
+                </div>
+              </div>
+              <ul className="work-bullets">
+                {r.bullets.map((b, j) => <li key={j}>{b}</li>)}
+              </ul>
+              <div className="work-stack">
+                {r.stack.map(t => <span key={t} className="tag">{t}</span>)}
+              </div>
+            </div>
+          </div>
         ))}
-      </div>
-
-      <div className="proj-list">
-        {visible.map(p => <ProjectCard key={p.id} p={p} onOpen={onOpen} />)}
       </div>
     </section>
   );
 }
 
 window.Work = Work;
-window.StatusPill = StatusPill;
