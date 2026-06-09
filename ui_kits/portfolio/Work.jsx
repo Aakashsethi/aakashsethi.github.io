@@ -1,6 +1,6 @@
 /* global React */
 
-const ROLES = [
+const WORK_ROLES = [
   {
     co: 'Amazon', loc: 'Hicksville, NY', period: '2025 – Present',
     role: 'L1 Associate',
@@ -62,7 +62,7 @@ function Work() {
   return (
     <section className="work" id="work">
       <header className="section-head">
-        <span className="eyebrow">EXPERIENCE · {ROLES.length} COMPANIES</span>
+        <span className="eyebrow">EXPERIENCE · {WORK_ROLES.length} COMPANIES</span>
         <h2 className="section-title">Where I've shipped real work.</h2>
         <p className="section-lede">
           Five years across fintech, cloud kitchens, enterprise software, and e-commerce —
@@ -71,7 +71,7 @@ function Work() {
       </header>
 
       <div className="work-timeline">
-        {ROLES.map((r, i) => (
+        {WORK_ROLES.map((r, i) => (
           <div key={i} className="work-card">
             <div className="work-card-left">
               <div className="work-period">{r.period}</div>
