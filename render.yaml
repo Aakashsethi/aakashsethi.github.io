@@ -2,11 +2,18 @@ services:
   - type: web
     name: portfolio-contact
     runtime: ruby
+    plan: free
     buildCommand: bundle install
     startCommand: bundle exec ruby contact_server.rb
+    autoDeploy: true
     envVars:
+      # All secrets must be set via the Render dashboard, never in this file.
+      # The previous Mailtrap key was leaked in git history and must be
+      # rotated in Mailtrap before this service is healthy again.
       - key: MAILTRAP_API_KEY
-        value: 97fe49880467c1d31b2951d70c854d81
+        sync: false
+      - key: BUTTONDOWN_API_KEY
+        sync: false
       - key: TO_EMAIL
         value: aakash.sethi7@gmail.com
       - key: FROM_EMAIL
