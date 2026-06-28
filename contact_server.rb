@@ -5,11 +5,14 @@ require 'mailtrap'
 require 'net/http'
 require 'uri'
 
-MAILTRAP_API_KEY    = ENV['MAILTRAP_API_KEY']    or abort('MAILTRAP_API_KEY env var is required — rotate any previously committed key and set it via your hosting platform.')
-BUTTONDOWN_API_KEY  = ENV['BUTTONDOWN_API_KEY']  # optional at boot; /subscribe will 503 if missing
+MAILTRAP_API_KEY    = ENV['MAILTRAP_API_KEY']    # checked per request; /contact returns 503 if missing
+BUTTONDOWN_API_KEY  = ENV['BUTTONDOWN_API_KEY']  # checked per request; /subscribe returns 503 if missing
 TO_EMAIL            = ENV.fetch('TO_EMAIL',   'aakash.sethi7@gmail.com')
 FROM_EMAIL          = ENV.fetch('FROM_EMAIL', 'hello@tnufa.ai')
 FROM_NAME           = 'Portfolio Contact'
+
+warn '⚠ MAILTRAP_API_KEY is not set — /contact will return 503 until configured.' unless MAILTRAP_API_KEY
+warn '⚠ BUTTONDOWN_API_KEY is not set — /subscribe will return 503 until configured.' unless BUTTONDOWN_API_KEY
 
 use Rack::Cors do
   allow do
@@ -28,6 +31,10 @@ def f(v) = blank?(v) ? '(not provided)' : v
 
 post '/contact' do
   content_type :json
+
+  unless MAILTRAP_API_KEY && !MAILTRAP_API_KEY.strip.empty?
+    halt 503, { error: 'Contact endpoint not configured. Missing MAILTRAP_API_KEY.' }.to_json
+  end
 
   b = JSON.parse(request.body.read) rescue {}
 
