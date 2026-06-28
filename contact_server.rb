@@ -3,9 +3,9 @@ require 'json'
 require 'rack/cors'
 require 'mailtrap'
 
-MAILTRAP_API_KEY = ENV.fetch('MAILTRAP_API_KEY', '97fe49880467c1d31b2951d70c854d81')
-TO_EMAIL         = ENV.fetch('TO_EMAIL',          'aakash.sethi7@gmail.com')
-FROM_EMAIL       = ENV.fetch('FROM_EMAIL',         'hello@tnufa.ai')
+MAILTRAP_API_KEY = ENV['MAILTRAP_API_KEY'] or abort('MAILTRAP_API_KEY env var is required — rotate any previously committed key and set it via your hosting platform.')
+TO_EMAIL         = ENV.fetch('TO_EMAIL',   'aakash.sethi7@gmail.com')
+FROM_EMAIL       = ENV.fetch('FROM_EMAIL', 'hello@tnufa.ai')
 FROM_NAME        = 'Portfolio Contact'
 
 use Rack::Cors do
@@ -20,22 +20,19 @@ set :port, ENV.fetch('PORT', 4001).to_i
 set :bind, '0.0.0.0'
 
 def blank?(s) = s.nil? || s.to_s.strip.empty?
+def f(v) = blank?(v) ? '(not provided)' : v
 
 post '/contact' do
   content_type :json
 
   b = JSON.parse(request.body.read) rescue {}
 
+  track     = b['track'].to_s.strip.downcase
+  track     = 'coaching' if track.empty? # back-compat with old payloads
   name      = b['name'].to_s.strip
   email     = b['email'].to_s.strip
   linkedin  = b['linkedin'].to_s.strip
-  role      = b['role'].to_s.strip
-  decision  = b['decision'].to_s.strip
-  where     = b['where'].to_s.strip
-  direction = b['direction'].to_s.strip
-  support   = b['support'].to_s.strip
-  useful    = b['useful'].to_s.strip
-  timeline  = b['timeline'].to_s.strip
+  company   = b['company'].to_s.strip
   booking   = b['booking'].to_s.strip
   meet_link = b['meetLink'].to_s.strip
 
@@ -45,51 +42,103 @@ post '/contact' do
     ? "Booked:        YES — calendar slot selected" \
     : "Booked:        No calendar booking made"
 
-  text_body = <<~TEXT
-    ═══════════════════════════════════════
-    NEW MEETING REQUEST — AAKASH SETHI PORTFOLIO
-    ═══════════════════════════════════════
+  if track == 'consulting'
+    scope    = b['scope'].to_s.strip
+    problem  = b['problem'].to_s.strip
+    stage    = b['stage'].to_s.strip
+    timeline = b['timeline'].to_s.strip
+    budget   = b['budget'].to_s.strip
+    outcome  = b['outcome'].to_s.strip
 
-    CONTACT
-    ───────────────────────────────────────
-    Name:          #{name}
-    Email:         #{blank?(email) ? '(not provided)' : email}
-    LinkedIn:      #{blank?(linkedin) ? '(not provided)' : linkedin}
-    #{booked_line}
+    text_body = <<~TEXT
+      ═══════════════════════════════════════
+      NEW CONSULTING INQUIRY — AAKASH SETHI
+      ═══════════════════════════════════════
 
-    GOOGLE MEET LINK
-    ───────────────────────────────────────
-    #{meet_link}
+      CONTACT
+      ───────────────────────────────────────
+      Name:          #{name}
+      Email:         #{f(email)}
+      LinkedIn:      #{f(linkedin)}
+      Company:       #{f(company)}
+      #{booked_line}
 
-    THEIR SITUATION
-    ───────────────────────────────────────
-    Current role:  #{blank?(role) ? '(not provided)' : role}
+      GOOGLE MEET LINK
+      ───────────────────────────────────────
+      #{meet_link}
 
-    Decision facing:
-    #{blank?(decision) ? '(not provided)' : decision}
+      ENGAGEMENT
+      ───────────────────────────────────────
+      Scope:         #{f(scope)}
+      Stage:         #{f(stage)}
+      Timeline:      #{f(timeline)}
+      Budget:        #{f(budget)}
 
-    Where they are today:
-    #{blank?(where) ? '(not provided)' : where}
+      Problem to solve:
+      #{f(problem)}
 
-    DIRECTION & SUPPORT
-    ───────────────────────────────────────
-    Plausible next step:
-    #{blank?(direction) ? '(not provided)' : direction}
+      Definition of a win:
+      #{f(outcome)}
 
-    Support needed:
-    #{blank?(support) ? '(not provided)' : support}
+      ═══════════════════════════════════════
+    TEXT
+    subject = booking == 'yes' \
+      ? "Consulting meeting from #{name}" \
+      : "Consulting inquiry from #{name}"
+  else
+    role      = b['role'].to_s.strip
+    decision  = b['decision'].to_s.strip
+    where     = b['where'].to_s.strip
+    direction = b['direction'].to_s.strip
+    support   = b['support'].to_s.strip
+    useful    = b['useful'].to_s.strip
+    timeline  = b['timeline'].to_s.strip
 
-    What would make this call useful:
-    #{blank?(useful) ? '(not provided)' : useful}
+    text_body = <<~TEXT
+      ═══════════════════════════════════════
+      NEW COACHING REQUEST — AAKASH SETHI
+      ═══════════════════════════════════════
 
-    Timeline:      #{blank?(timeline) ? '(not provided)' : timeline}
+      CONTACT
+      ───────────────────────────────────────
+      Name:          #{name}
+      Email:         #{f(email)}
+      LinkedIn:      #{f(linkedin)}
+      #{booked_line}
 
-    ═══════════════════════════════════════
-  TEXT
+      GOOGLE MEET LINK
+      ───────────────────────────────────────
+      #{meet_link}
 
-  subject = booking == 'yes' \
-    ? "Meeting request from #{name}" \
-    : "Inquiry from #{name}"
+      THEIR SITUATION
+      ───────────────────────────────────────
+      Current role:  #{f(role)}
+
+      Decision facing:
+      #{f(decision)}
+
+      Where they are today:
+      #{f(where)}
+
+      DIRECTION & SUPPORT
+      ───────────────────────────────────────
+      Plausible next step:
+      #{f(direction)}
+
+      Support needed:
+      #{f(support)}
+
+      What would make this call useful:
+      #{f(useful)}
+
+      Timeline:      #{f(timeline)}
+
+      ═══════════════════════════════════════
+    TEXT
+    subject = booking == 'yes' \
+      ? "Coaching meeting from #{name}" \
+      : "Coaching inquiry from #{name}"
+  end
 
   mail = Mailtrap::Mail::Base.new(
     from:     { email: FROM_EMAIL, name: FROM_NAME },

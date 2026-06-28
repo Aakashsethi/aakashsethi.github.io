@@ -1,4 +1,4 @@
-/* global React, ReactDOM, Header, Footer, Hero, StatStrip, LiveStrip, Work, Education, Hobbies, About, Contact, ProjectModal, YouTubeFeed, LinkedInFeed */
+/* global React, ReactDOM, Header, Footer, Hero, StatStrip, LiveStrip, Work, Education, Hobbies, About, Contact, ProjectModal, YouTubeFeed, LinkedInFeed, Newsletter */
 const { useState, useEffect } = React;
 
 // Maps internal page id → URL hash fragment
@@ -59,6 +59,7 @@ function App() {
             <Work />
             <YouTubeFeed />
             <LinkedInFeed />
+            <Newsletter />
           </>
         )}
         {page === 'work'        && <Work />}

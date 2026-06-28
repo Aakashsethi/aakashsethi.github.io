@@ -1,0 +1,17 @@
+---
+layout: null
+permalink: /posts_data.json
+---
+[
+{% for p in site.posts %}
+  {
+    "url": {{ p.url | jsonify }},
+    "title": {{ p.title | jsonify }},
+    "excerpt": {{ p.excerpt | strip_html | strip_newlines | jsonify }},
+    "preview": {{ p.content | strip_html | strip_newlines | truncate: 520 | jsonify }},
+    "tags": {{ p.tags | jsonify }},
+    "date": {{ p.date | date_to_xmlschema | jsonify }},
+    "linkedin_url": {{ p.linkedin_url | default: "" | jsonify }}
+  }{% unless forloop.last %},{% endunless %}
+{% endfor %}
+]

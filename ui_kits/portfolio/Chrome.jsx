@@ -69,10 +69,12 @@ function Footer() {
         <span className="mono small muted">© 2026 · aakash sethi · made with care in new jersey</span>
       </div>
       <div className="ft-right">
+        <a href="#newsletter" className="ft-link"><i data-lucide="mail-plus"></i> newsletter</a>
         <a href="https://github.com/aakashsethi" className="ft-link"><i data-lucide="github"></i> github</a>
         <a href="mailto:aakash.sethi7@gmail.com" className="ft-link"><i data-lucide="mail"></i> aakash.sethi7@gmail.com</a>
         <a href="https://linkedin.com/in/aakash-sethi-007" className="ft-link"><i data-lucide="linkedin"></i> linkedin</a>
         <a href="https://tnufa.ai" className="ft-link"><i data-lucide="external-link"></i> tnufa.ai</a>
+        <a href="/privacy/" className="ft-link"><i data-lucide="shield"></i> privacy</a>
       </div>
     </footer>
   );
