@@ -1038,18 +1038,17 @@ body {
         <p class="comments-lede">Sign in with GitHub to react or leave a comment. Powered by GitHub Discussions.</p>
       </div>
       <script src="https://giscus.app/client.js"
-              data-repo="Aakashsethi/aakashsethi.github.io"
-              data-repo-id="GISCUS_REPO_ID_PLACEHOLDER"
+              data-repo="aakashsethi/aakashsethi.github.io"
+              data-repo-id="R_kgDOMIlO4A"
               data-category="Announcements"
-              data-category-id="GISCUS_CATEGORY_ID_PLACEHOLDER"
+              data-category-id="DIC_kwDOMIlO4M4DAGlm"
               data-mapping="pathname"
               data-strict="0"
               data-reactions-enabled="1"
               data-emit-metadata="0"
-              data-input-position="top"
-              data-theme="light"
+              data-input-position="bottom"
+              data-theme="preferred_color_scheme"
               data-lang="en"
-              data-loading="lazy"
               crossorigin="anonymous"
               async>
       </script>
@@ -1102,10 +1101,13 @@ body {
 </footer>
 
 <script>
-// Async newsletter signup — POSTs to Buttondown's embed endpoint via fetch,
-// no redirect, no popup. Buttondown handles double-opt-in / welcome email
-// based on your account settings (turn off double opt-in for instant subscribe).
+// Async newsletter signup — POSTs to our own /subscribe endpoint on Render,
+// which forwards to Buttondown with the API key (single opt-in, welcome email).
 (function() {
+  var SUBSCRIBE_ENDPOINT = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+    ? 'http://localhost:4001/subscribe'
+    : 'https://portfolio-contact-j70g.onrender.com/subscribe';
+
   var forms = document.querySelectorAll('[data-buttondown-form]');
   forms.forEach(function(form) {
     var statusEl = form.querySelector('.combo-newsletter-status');
@@ -1119,19 +1121,18 @@ body {
       btn.textContent = 'Subscribing…';
       if (statusEl) { statusEl.textContent = ''; statusEl.className = 'combo-newsletter-status'; }
 
-      var body = new URLSearchParams();
-      body.append('email', email);
-      body.append('embed', '1');
-      body.append('tag', 'blog');
-
-      fetch('https://buttondown.com/api/emails/embed-subscribe/sethi', {
+      fetch(SUBSCRIBE_ENDPOINT, {
         method: 'POST',
-        body: body,
-        mode: 'no-cors'
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, tag: 'blog' })
       })
-      .then(function() {
+      .then(function(res) { return res.json().then(function(data) { return { ok: res.ok, data: data }; }); })
+      .then(function(out) {
+        if (!out.ok) throw new Error((out.data && out.data.error) || 'Subscription failed.');
         if (statusEl) {
-          statusEl.textContent = '✓ Subscribed. A welcome note is on its way.';
+          statusEl.textContent = out.data.already
+            ? '✓ You\'re already on the list — thank you for the support.'
+            : '✓ Subscribed. A welcome note is on its way.';
           statusEl.className = 'combo-newsletter-status ok';
         }
         form.querySelector('input[type="email"]').value = '';
@@ -1139,9 +1140,9 @@ body {
           window.gtag('event', 'newsletter_subscribe', { source: 'blog_post' });
         }
       })
-      .catch(function() {
+      .catch(function(err) {
         if (statusEl) {
-          statusEl.textContent = 'Something went wrong. Try again or email me directly.';
+          statusEl.textContent = err.message || 'Something went wrong. Try again or email me directly.';
           statusEl.className = 'combo-newsletter-status err';
         }
       })

@@ -2,17 +2,21 @@ require 'sinatra'
 require 'json'
 require 'rack/cors'
 require 'mailtrap'
+require 'net/http'
+require 'uri'
 
-MAILTRAP_API_KEY = ENV['MAILTRAP_API_KEY'] or abort('MAILTRAP_API_KEY env var is required — rotate any previously committed key and set it via your hosting platform.')
-TO_EMAIL         = ENV.fetch('TO_EMAIL',   'aakash.sethi7@gmail.com')
-FROM_EMAIL       = ENV.fetch('FROM_EMAIL', 'hello@tnufa.ai')
-FROM_NAME        = 'Portfolio Contact'
+MAILTRAP_API_KEY    = ENV['MAILTRAP_API_KEY']    or abort('MAILTRAP_API_KEY env var is required — rotate any previously committed key and set it via your hosting platform.')
+BUTTONDOWN_API_KEY  = ENV['BUTTONDOWN_API_KEY']  # optional at boot; /subscribe will 503 if missing
+TO_EMAIL            = ENV.fetch('TO_EMAIL',   'aakash.sethi7@gmail.com')
+FROM_EMAIL          = ENV.fetch('FROM_EMAIL', 'hello@tnufa.ai')
+FROM_NAME           = 'Portfolio Contact'
 
 use Rack::Cors do
   allow do
     origins 'localhost:4000', '127.0.0.1:4000',
             'aakashsethi.github.io', 'https://aakashsethi.github.io'
-    resource '/contact', headers: :any, methods: [:post, :options]
+    resource '/contact',   headers: :any, methods: [:post, :options]
+    resource '/subscribe', headers: :any, methods: [:post, :options]
   end
 end
 
@@ -186,6 +190,63 @@ post '/contact' do
   { ok: true }.to_json
 rescue Mailtrap::Error => e
   halt 502, { error: "Mailtrap error: #{e.message}" }.to_json
+rescue => e
+  halt 500, { error: e.message }.to_json
+end
+
+# ── Newsletter subscribe (Buttondown via server-side API key) ─────────────
+# Browser POSTs { email, tag } here; we forward to Buttondown's API with our
+# secret key. Setting type: "regular" skips the double-opt-in confirmation
+# email and creates an active subscriber immediately. Buttondown's welcome
+# automation (if configured in their dashboard) fires on creation.
+post '/subscribe' do
+  content_type :json
+
+  unless BUTTONDOWN_API_KEY && !BUTTONDOWN_API_KEY.strip.empty?
+    halt 503, { error: 'Subscribe endpoint not configured. Missing BUTTONDOWN_API_KEY.' }.to_json
+  end
+
+  b = JSON.parse(request.body.read) rescue {}
+  email = b['email'].to_s.strip
+  tag   = b['tag'].to_s.strip
+
+  halt 400, { error: 'Email is required.' }.to_json if blank?(email)
+  unless email =~ /\A[^@\s]+@[^@\s]+\.[^@\s]+\z/
+    halt 400, { error: 'That email address does not look right.' }.to_json
+  end
+
+  uri = URI('https://api.buttondown.email/v1/subscribers')
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
+  http.open_timeout = 5
+  http.read_timeout = 10
+
+  payload = { email_address: email, type: 'regular' }
+  payload[:tags] = [tag] unless blank?(tag)
+
+  req = Net::HTTP::Post.new(uri)
+  req['Authorization'] = "Token #{BUTTONDOWN_API_KEY}"
+  req['Content-Type']  = 'application/json'
+  req.body = payload.to_json
+
+  res = http.request(req)
+  code = res.code.to_i
+
+  case code
+  when 200, 201
+    { ok: true }.to_json
+  when 400
+    # Buttondown returns 400 for "already subscribed" — treat as success so the
+    # user sees a friendly message either way.
+    body = JSON.parse(res.body) rescue { 'detail' => res.body }
+    if body['detail'].to_s.downcase.include?('already')
+      { ok: true, already: true }.to_json
+    else
+      halt 400, { error: body['detail'] || 'Subscription failed.' }.to_json
+    end
+  else
+    halt 502, { error: "Buttondown returned #{code}." }.to_json
+  end
 rescue => e
   halt 500, { error: e.message }.to_json
 end

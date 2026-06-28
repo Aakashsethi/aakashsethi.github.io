@@ -1,6 +1,10 @@
 /* global React */
 const { useState } = React;
 
+const SUBSCRIBE_ENDPOINT = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:4001/subscribe'
+  : 'https://portfolio-contact-j70g.onrender.com/subscribe';
+
 function Newsletter() {
   const [email, setEmail]     = useState('');
   const [status, setStatus]   = useState('idle'); // idle | sending | done | error
@@ -13,26 +17,25 @@ function Newsletter() {
     setStatus('sending');
     setMsg('');
 
-    const body = new URLSearchParams();
-    body.append('email', trimmed);
-    body.append('embed', '1');
-    body.append('tag', 'site');
-
     try {
-      await fetch('https://buttondown.com/api/emails/embed-subscribe/sethi', {
+      const res = await fetch(SUBSCRIBE_ENDPOINT, {
         method: 'POST',
-        body,
-        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: trimmed, tag: 'site' }),
       });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Subscription failed.');
       setStatus('done');
-      setMsg('✓ You\'re in. A welcome note is on its way.');
+      setMsg(data.already
+        ? '✓ You\'re already on the list — thank you for the support.'
+        : '✓ You\'re in. A welcome note is on its way.');
       setEmail('');
       if (typeof window.gtag === 'function') {
         window.gtag('event', 'newsletter_subscribe', { source: 'home' });
       }
-    } catch {
+    } catch (err) {
       setStatus('error');
-      setMsg('Something went wrong. Try again or email me directly.');
+      setMsg(err.message || 'Something went wrong. Try again or email me directly.');
     }
   };
 
