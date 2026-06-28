@@ -145,22 +145,29 @@ function LinkedInFeed() {
 
       {/* ── Featured (most recent) ───────────────────────── */}
       {!loading && featured && (
-        <a className="mylogs-featured" href={featured.blog_url || '#'}>
-          <div className="mylogs-featured-meta">
-            <span className="mylogs-theme-pill" style={{background: themeColor(featured.theme), color: '#000'}}>
-              {themeLabel(featured.theme)}
-            </span>
-            <span className="mylogs-date">{formatDate(featured.date)}</span>
-            <span className="mylogs-badge">Latest</span>
-          </div>
-          <h3 className="mylogs-featured-title">{featured.title || featured.topic}</h3>
-          {featured.excerpt && <p className="mylogs-featured-excerpt">{featured.excerpt}</p>}
-          {featured.tags && featured.tags.length > 0 && (
-            <div className="mylogs-card-tags">
-              {featured.tags.slice(0, 5).map((t, i) => <span key={i} className="mylogs-tag">#{t}</span>)}
+        <a className={`mylogs-featured${featured.image_url ? ' has-image' : ''}`} href={featured.blog_url || '#'}>
+          {featured.image_url && (
+            <div className="mylogs-featured-image">
+              <img src={featured.image_url} alt={featured.title || featured.topic} loading="lazy" />
             </div>
           )}
-          <span className="mylogs-read">Read full article →</span>
+          <div className="mylogs-featured-body">
+            <div className="mylogs-featured-meta">
+              <span className="mylogs-theme-pill" style={{background: themeColor(featured.theme), color: '#000'}}>
+                {themeLabel(featured.theme)}
+              </span>
+              <span className="mylogs-date">{formatDate(featured.date)}</span>
+              <span className="mylogs-badge">Latest</span>
+            </div>
+            <h3 className="mylogs-featured-title">{featured.title || featured.topic}</h3>
+            {featured.excerpt && <p className="mylogs-featured-excerpt">{featured.excerpt}</p>}
+            {featured.tags && featured.tags.length > 0 && (
+              <div className="mylogs-card-tags">
+                {featured.tags.slice(0, 5).map((t, i) => <span key={i} className="mylogs-tag">#{t}</span>)}
+              </div>
+            )}
+            <span className="mylogs-read">Read full article →</span>
+          </div>
         </a>
       )}
 
@@ -169,26 +176,33 @@ function LinkedInFeed() {
         <div className="mylogs-grid">
           {remaining.map((p, i) => (
             <a key={i} className="mylogs-card" href={p.blog_url || '#'}>
-              <div className="mylogs-card-meta">
-                <span className="mylogs-theme-pill" style={{background: themeColor(p.theme), color: '#000'}}>
-                  {themeLabel(p.theme)}
-                </span>
-                <span className="mylogs-date">{formatDate(p.date)}</span>
-              </div>
-              <h3 className="mylogs-card-title">{p.title || p.topic}</h3>
-              {p.excerpt && <p className="mylogs-card-excerpt">{p.excerpt}</p>}
-              {p.tags && p.tags.length > 0 && (
-                <div className="mylogs-card-tags">
-                  {p.tags.slice(0, 4).map((t, idx) => <span key={idx} className="mylogs-tag">#{t}</span>)}
+              {p.image_url && (
+                <div className="mylogs-card-image">
+                  <img src={p.image_url} alt={p.title || p.topic} loading="lazy" />
                 </div>
               )}
-              <div className="mylogs-card-footer">
-                <span className="mylogs-read-sm">Read →</span>
-                {p.post_url && isLinkedInUrl(p.post_url) && (
-                  <span className="mylogs-li-badge" onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open(p.post_url, '_blank'); }}>
-                    in
+              <div className="mylogs-card-body">
+                <div className="mylogs-card-meta">
+                  <span className="mylogs-theme-pill" style={{background: themeColor(p.theme), color: '#000'}}>
+                    {themeLabel(p.theme)}
                   </span>
+                  <span className="mylogs-date">{formatDate(p.date)}</span>
+                </div>
+                <h3 className="mylogs-card-title">{p.title || p.topic}</h3>
+                {p.excerpt && <p className="mylogs-card-excerpt">{p.excerpt}</p>}
+                {p.tags && p.tags.length > 0 && (
+                  <div className="mylogs-card-tags">
+                    {p.tags.slice(0, 4).map((t, idx) => <span key={idx} className="mylogs-tag">#{t}</span>)}
+                  </div>
                 )}
+                <div className="mylogs-card-footer">
+                  <span className="mylogs-read-sm">Read →</span>
+                  {p.post_url && isLinkedInUrl(p.post_url) && (
+                    <span className="mylogs-li-badge" onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open(p.post_url, '_blank'); }}>
+                      in
+                    </span>
+                  )}
+                </div>
               </div>
             </a>
           ))}
