@@ -663,7 +663,178 @@ body {
 .article-body   { animation: fadeUp 450ms cubic-bezier(.16,1,.3,1) 80ms both; }
 .article-footer { animation: fadeUp 450ms cubic-bezier(.16,1,.3,1) 140ms both; }
 
-/* ── Newsletter signup ── */
+/* ── Combined Newsletter + CTA card ── */
+.combo-cta {
+  position: relative;
+  background: linear-gradient(180deg, #0A0B0D 0%, #15171B 60%, #1A1D22 100%);
+  border-radius: 18px;
+  margin: 0 0 60px;
+  overflow: hidden;
+  color: #fff;
+}
+.combo-cta::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(245,165,36,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.combo-cta-row {
+  position: relative;
+  padding: 40px clamp(24px, 4vw, 48px);
+}
+.combo-cta-row.newsletter-row {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 32px;
+  align-items: center;
+  background: rgba(255,255,255,0.025);
+}
+.combo-cta-text { max-width: 580px; }
+.combo-cta-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 12px;
+}
+.combo-cta-eyebrow.signal { color: var(--signal-500); }
+.combo-cta-headline {
+  font-family: var(--font-sans);
+  font-size: clamp(22px, 3vw, 28px);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.combo-cta-sub {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.72);
+  margin-bottom: 0;
+}
+.combo-cta-sub strong { color: #fff; font-weight: 700; }
+.combo-cta-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  margin: 0 clamp(24px, 4vw, 48px);
+}
+.combo-newsletter-form {
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+  max-width: 360px;
+  justify-self: end;
+  width: 100%;
+}
+.combo-newsletter-form .row { display: flex; gap: 8px; }
+.combo-newsletter-form input[type="email"] {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  outline: none;
+  min-width: 0;
+}
+.combo-newsletter-form input[type="email"]::placeholder { color: rgba(255,255,255,0.4); }
+.combo-newsletter-form input[type="email"]:focus { border-color: var(--signal-500); background: rgba(255,255,255,0.09); }
+.combo-newsletter-form button {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-950);
+  background: var(--signal-500);
+  border: none;
+  border-radius: 10px;
+  padding: 12px 22px;
+  cursor: pointer;
+  transition: background 150ms, transform 100ms;
+  white-space: nowrap;
+}
+.combo-newsletter-form button:hover { background: var(--signal-300); transform: translateY(-1px); }
+.combo-newsletter-form button:disabled { opacity: 0.6; cursor: wait; }
+.combo-newsletter-status {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  min-height: 18px;
+  letter-spacing: 0.02em;
+}
+.combo-newsletter-status.ok { color: var(--signal-300); }
+.combo-newsletter-status.err { color: #ff8a8a; }
+.combo-cta-pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
+.combo-cta-pill {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--signal-300);
+  border: 1px solid rgba(245,165,36,0.3);
+  border-radius: 999px;
+  padding: 5px 14px;
+}
+.combo-cta-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.combo-cta-btn-primary {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-950);
+  background: var(--signal-500);
+  padding: 13px 28px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 150ms, transform 100ms;
+}
+.combo-cta-btn-primary:hover { background: var(--signal-300); transform: translateY(-2px); }
+.combo-cta-btn-ghost {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 120ms;
+}
+.combo-cta-btn-ghost:hover { color: var(--signal-300); }
+@media (max-width: 700px) {
+  .combo-cta-row.newsletter-row { grid-template-columns: 1fr; }
+  .combo-newsletter-form { justify-self: stretch; max-width: 100%; }
+}
+
+/* ── Comments section ── */
+.comments-section {
+  margin: 0 0 40px;
+  padding: 32px clamp(20px, 4vw, 40px);
+  background: #fff;
+  border: 1px solid var(--ink-100);
+  border-radius: 14px;
+}
+.comments-head { margin-bottom: 24px; }
+.comments-title {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink-950);
+  margin: 0 0 6px;
+}
+.comments-lede {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--ink-500);
+  line-height: 1.5;
+  margin: 0;
+}
+.giscus, .giscus-frame { width: 100%; }
+
+/* ── (legacy) Newsletter signup — kept for compat, unused ── */
 .newsletter {
   position: relative;
   background: linear-gradient(135deg, #0A0B0D 0%, #15171B 100%);
@@ -860,40 +1031,66 @@ body {
       </div>
     </div>
 
-    <!-- Newsletter signup -->
-    <section class="newsletter" style="margin: 0 0 40px;">
-      <div class="newsletter-eyebrow">NEWSLETTER</div>
-      <h2 class="newsletter-title">Get the next post in your inbox.</h2>
-      <p class="newsletter-lede">Long-form notes on AI engineering, RAG, and shipping production systems. One email per post. No filler.</p>
-      <form class="newsletter-form"
-            action="https://buttondown.com/api/emails/embed-subscribe/sethi"
-            method="post"
-            target="popupwindow"
-            onsubmit="window.open('https://buttondown.com/sethi', 'popupwindow')">
-        <input type="email" name="email" required placeholder="you@domain.com" aria-label="Email address" />
-        <input type="hidden" name="tag" value="blog" />
-        <button type="submit">Subscribe →</button>
-      </form>
-      <div class="newsletter-meta">Free · Unsubscribe anytime · Hosted on Buttondown</div>
+    <!-- Comments + reactions via Giscus (GitHub Discussions) -->
+    <section class="comments-section">
+      <div class="comments-head">
+        <h2 class="comments-title">Comments &amp; reactions</h2>
+        <p class="comments-lede">Sign in with GitHub to react or leave a comment. Powered by GitHub Discussions.</p>
+      </div>
+      <script src="https://giscus.app/client.js"
+              data-repo="Aakashsethi/aakashsethi.github.io"
+              data-repo-id="GISCUS_REPO_ID_PLACEHOLDER"
+              data-category="Announcements"
+              data-category-id="GISCUS_CATEGORY_ID_PLACEHOLDER"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="top"
+              data-theme="light"
+              data-lang="en"
+              data-loading="lazy"
+              crossorigin="anonymous"
+              async>
+      </script>
     </section>
 
-    <!-- Consulting CTA -->
-    <div class="consulting-cta">
-      <div class="cta-eyebrow">Work with me</div>
-      <h2 class="cta-headline">Building AI systems, cloud infra,<br>or need a senior technical mentor?</h2>
-      <p class="cta-subtext">I take on a small number of consulting engagements per quarter — AI architecture, AWS design, system design coaching, and 1-on-1 mentoring for engineers leveling up.</p>
-      <div class="cta-services">
-        <span class="cta-pill">AI Engineering</span>
-        <span class="cta-pill">AWS Architecture</span>
-        <span class="cta-pill">System Design</span>
-        <span class="cta-pill">LLM / RAG</span>
-        <span class="cta-pill">1-on-1 Mentoring</span>
+    <!-- Combined newsletter + consulting CTA — one card -->
+    <section class="combo-cta">
+      <div class="combo-cta-row newsletter-row">
+        <div class="combo-cta-text">
+          <div class="combo-cta-eyebrow">NEWSLETTER</div>
+          <h2 class="combo-cta-headline">Get the next post in your inbox.</h2>
+          <p class="combo-cta-sub">Long-form notes on AI engineering, RAG, and shipping production systems. One email per post. No filler. <strong>No double opt-in.</strong></p>
+        </div>
+        <form class="combo-newsletter-form" data-buttondown-form>
+          <input type="email" name="email" required placeholder="you@domain.com" aria-label="Email address" />
+          <button type="submit">Subscribe →</button>
+          <div class="combo-newsletter-status" aria-live="polite"></div>
+        </form>
       </div>
-      <div class="cta-actions">
-        <a class="cta-btn-primary" href="/#contact">Book a free intro call →</a>
-        <a class="cta-btn-ghost" href="/blog/">Read more posts</a>
+
+      <div class="combo-cta-divider"></div>
+
+      <div class="combo-cta-row">
+        <div class="combo-cta-text">
+          <div class="combo-cta-eyebrow signal">WORK WITH ME</div>
+          <h2 class="combo-cta-headline">Building AI systems, cloud infra,<br>or need a senior technical mentor?</h2>
+          <p class="combo-cta-sub">I take on a small number of consulting engagements per quarter — AI architecture, AWS design, system design coaching, and 1-on-1 mentoring for engineers leveling up.</p>
+          <div class="combo-cta-pills">
+            <span class="combo-cta-pill">AI Engineering</span>
+            <span class="combo-cta-pill">AWS Architecture</span>
+            <span class="combo-cta-pill">System Design</span>
+            <span class="combo-cta-pill">LLM / RAG</span>
+            <span class="combo-cta-pill">1-on-1 Mentoring</span>
+          </div>
+          <div class="combo-cta-actions">
+            <a class="combo-cta-btn-primary" href="/#contact">Book a free intro call →</a>
+            <a class="combo-cta-btn-ghost" href="/blog/">Read more posts</a>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
 
   </footer>
 </div>
@@ -905,6 +1102,57 @@ body {
 </footer>
 
 <script>
+// Async newsletter signup — POSTs to Buttondown's embed endpoint via fetch,
+// no redirect, no popup. Buttondown handles double-opt-in / welcome email
+// based on your account settings (turn off double opt-in for instant subscribe).
+(function() {
+  var forms = document.querySelectorAll('[data-buttondown-form]');
+  forms.forEach(function(form) {
+    var statusEl = form.querySelector('.combo-newsletter-status');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var email = form.querySelector('input[type="email"]').value.trim();
+      if (!email) return;
+      var btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      var originalText = btn.textContent;
+      btn.textContent = 'Subscribing…';
+      if (statusEl) { statusEl.textContent = ''; statusEl.className = 'combo-newsletter-status'; }
+
+      var body = new URLSearchParams();
+      body.append('email', email);
+      body.append('embed', '1');
+      body.append('tag', 'blog');
+
+      fetch('https://buttondown.com/api/emails/embed-subscribe/sethi', {
+        method: 'POST',
+        body: body,
+        mode: 'no-cors'
+      })
+      .then(function() {
+        if (statusEl) {
+          statusEl.textContent = '✓ Subscribed. A welcome note is on its way.';
+          statusEl.className = 'combo-newsletter-status ok';
+        }
+        form.querySelector('input[type="email"]').value = '';
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'newsletter_subscribe', { source: 'blog_post' });
+        }
+      })
+      .catch(function() {
+        if (statusEl) {
+          statusEl.textContent = 'Something went wrong. Try again or email me directly.';
+          statusEl.className = 'combo-newsletter-status err';
+        }
+      })
+      .finally(function() {
+        btn.disabled = false;
+        btn.textContent = originalText;
+      });
+    });
+  });
+})();
+
 // Reading progress bar
 (function() {
   var bar = document.getElementById('progress-bar');
