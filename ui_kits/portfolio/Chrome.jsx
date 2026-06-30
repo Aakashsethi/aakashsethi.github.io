@@ -9,6 +9,7 @@ function Header({ active, onNav }) {
     { id: 'culinary', label: 'Culinary' },
     { id: 'photography', label: 'Photography' },
     { id: 'about', label: 'About' },
+    { id: 'mylogs', label: 'My logs' },
   ];
   return (
     <header className="site-header">

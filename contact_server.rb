@@ -6,6 +6,7 @@ require 'securerandom'
 require_relative 'lib/linkedin_client'
 require_relative 'lib/post_generator'
 require_relative 'lib/image_generator'
+require_relative 'lib/blog_generator'
 require_relative 'lib/store'
 
 MAILTRAP_API_KEY = ENV.fetch('MAILTRAP_API_KEY')
@@ -21,6 +22,8 @@ use Rack::Cors do
             'aakashsethi.github.io', 'https://aakashsethi.github.io'
     resource '/contact', headers: :any, methods: [:post, :options]
     resource '/posts.json', headers: :any, methods: [:get, :options]
+    resource '/blog.json', headers: :any, methods: [:get, :options]
+    resource '/blog/*', headers: :any, methods: [:get, :options]
   end
 end
 
@@ -209,6 +212,7 @@ post '/internal/trigger' do
   case action
   when 'daily_post' then run_daily_post
   when 'token_check' then run_token_check
+  when 'generate_blog' then run_generate_blog
   else halt 400, { error: "unknown action #{action}" }.to_json
   end
 end
@@ -272,4 +276,34 @@ get '/posts.json' do
       posted_at: p['posted_at']
     }
   end.to_json
+end
+
+def run_generate_blog
+  recent = Store.recent_blog_source_urls(days: 60)
+  draft  = BlogGenerator.generate(recent_urls: recent)
+  Store.save_blog(
+    slug: draft[:slug], title: draft[:title], summary: draft[:summary],
+    body_md: draft[:body_md], category: draft[:category], sources: draft[:sources]
+  )
+  { ok: true, slug: draft[:slug], category: draft[:category], words: draft[:body_md].split(/\s+/).size }.to_json
+rescue => e
+  send_admin_mail('Blog generation FAILED', "Error: #{e.message}")
+  halt 500, { error: e.message }.to_json
+end
+
+# ── Public blog feed ─────────────────────────────────────────────────────────
+get '/blog.json' do
+  content_type :json
+  Store.recent_blog(limit: 50).map do |p|
+    { slug: p['slug'], title: p['title'], summary: p['summary'],
+      category: p['category'], created_at: p['created_at'] }
+  end.to_json
+end
+
+get '/blog/:slug.json' do
+  content_type :json
+  p = Store.blog_by_slug(params['slug']) or halt 404, { error: 'not_found' }.to_json
+  { slug: p['slug'], title: p['title'], summary: p['summary'], category: p['category'],
+    sources: JSON.parse(p['sources_json'] || '[]'), body_md: p['body_md'],
+    created_at: p['created_at'] }.to_json
 end

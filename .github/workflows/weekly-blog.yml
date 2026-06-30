@@ -1,0 +1,26 @@
+name: Weekly blog post
+
+on:
+  schedule:
+    - cron: '0 13 * * 0'   # 09:00 ET Sundays (13:00 UTC)
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger blog generation
+        env:
+          TRIGGER_URL: ${{ secrets.TRIGGER_URL }}
+          TRIGGER_SECRET: ${{ secrets.TRIGGER_SECRET }}
+        run: |
+          set -e
+          response=$(curl -sS -w "\n%{http_code}" -X POST "$TRIGGER_URL" \
+            -H "X-Trigger-Secret: $TRIGGER_SECRET" \
+            -H "Content-Type: application/json" \
+            -d '{"action":"generate_blog"}')
+          body=$(echo "$response" | head -n -1)
+          code=$(echo "$response" | tail -n 1)
+          echo "HTTP $code"
+          echo "$body"
+          test "$code" -ge 200 -a "$code" -lt 300

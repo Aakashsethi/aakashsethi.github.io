@@ -1,9 +1,22 @@
-/* global React, ReactDOM, Header, Footer, Hero, StatStrip, Work, Education, Culinary, Photography, About, Contact, Book, ProjectModal */
+/* global React, ReactDOM, Header, Footer, Hero, StatStrip, Work, Education, Culinary, Photography, About, Contact, Book, ProjectModal, MyLogs */
 const { useState, useEffect } = React;
 
+const PAGES = new Set(['home','work','education','culinary','photography','about','contact','mylogs']);
+
+function pageFromHash() {
+  const h = (window.location.hash || '').replace(/^#\/?/, '').toLowerCase();
+  return PAGES.has(h) ? h : 'home';
+}
+
 function App() {
-  const [page, setPage] = useState('home');
+  const [page, setPage] = useState(pageFromHash);
   const [openProj, setOpenProj] = useState(null);
+
+  useEffect(() => {
+    const handler = () => setPage(pageFromHash());
+    window.addEventListener('hashchange', handler);
+    return () => window.removeEventListener('hashchange', handler);
+  }, []);
 
   useEffect(() => {
     if (window.lucide) window.lucide.createIcons();
@@ -11,7 +24,14 @@ function App() {
 
   useEffect(() => { window.scrollTo({top:0, behavior:'instant'}); }, [page]);
 
-  const onNav = (id) => setPage(id);
+  const onNav = (id) => {
+    if (id === 'home') {
+      history.replaceState(null, '', window.location.pathname);
+    } else {
+      window.location.hash = id;
+    }
+    setPage(id);
+  };
 
   return (
     <div>
@@ -30,6 +50,7 @@ function App() {
         {page === 'photography' && <Photography />}
         {page === 'about' && <About />}
         {page === 'contact' && <Contact />}
+        {page === 'mylogs' && <MyLogs />}
       </main>
       <Footer />
       <ProjectModal p={openProj} onClose={()=>setOpenProj(null)} />

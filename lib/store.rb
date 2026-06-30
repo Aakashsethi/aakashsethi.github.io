@@ -37,6 +37,39 @@ module Store
         error TEXT
       )
     SQL
+    c.exec <<~SQL
+      CREATE TABLE IF NOT EXISTS blog_posts (
+        id SERIAL PRIMARY KEY,
+        slug TEXT NOT NULL UNIQUE,
+        title TEXT NOT NULL,
+        summary TEXT,
+        body_md TEXT NOT NULL,
+        category TEXT NOT NULL,
+        sources_json TEXT,
+        created_at BIGINT NOT NULL
+      )
+    SQL
+  end
+
+  def self.save_blog(slug:, title:, summary:, body_md:, category:, sources:)
+    conn.exec_params(
+      'INSERT INTO blog_posts (slug, title, summary, body_md, category, sources_json, created_at) VALUES ($1,$2,$3,$4,$5,$6,$7) ON CONFLICT (slug) DO NOTHING',
+      [slug, title, summary, body_md, category.to_s, sources.to_json, Time.now.to_i]
+    )
+  end
+
+  def self.recent_blog(limit: 20)
+    conn.exec_params('SELECT slug, title, summary, category, created_at FROM blog_posts ORDER BY created_at DESC LIMIT $1', [limit]).to_a
+  end
+
+  def self.blog_by_slug(slug)
+    conn.exec_params('SELECT * FROM blog_posts WHERE slug = $1', [slug]).first
+  end
+
+  def self.recent_blog_source_urls(days: 60)
+    cutoff = Time.now.to_i - days * 86_400
+    rows = conn.exec_params('SELECT sources_json FROM blog_posts WHERE created_at > $1', [cutoff])
+    rows.flat_map { |r| JSON.parse(r['sources_json'] || '[]').map { |s| s['url'] } }.compact
   end
 
   def self.save_token(access:, refresh:, access_expires_in:, refresh_expires_in:, person_urn:)
