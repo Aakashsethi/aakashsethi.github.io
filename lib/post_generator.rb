@@ -88,22 +88,21 @@ module PostGenerator
   end
 
   def self.call_claude(prompt)
-    api_key = ENV.fetch('ANTHROPIC_API_KEY')
+    api_key = ENV.fetch('GEMINI_API_KEY')
+    model = ENV.fetch('GEMINI_MODEL', 'gemini-2.0-flash')
     res = HTTParty.post(
-      'https://api.anthropic.com/v1/messages',
-      headers: {
-        'x-api-key' => api_key,
-        'anthropic-version' => '2023-06-01',
-        'content-type' => 'application/json'
-      },
+      "https://generativelanguage.googleapis.com/v1beta/models/#{model}:generateContent?key=#{api_key}",
+      headers: { 'Content-Type' => 'application/json' },
       body: {
-        model: 'claude-opus-4-7',
-        max_tokens: 1024,
-        messages: [{ role: 'user', content: prompt }]
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.7, maxOutputTokens: 1024 }
       }.to_json,
       timeout: 60
     )
-    raise "Claude API #{res.code}: #{res.body}" unless res.code == 200
-    JSON.parse(res.body).dig('content', 0, 'text').to_s.strip
+    raise "Gemini API #{res.code}: #{res.body}" unless res.code == 200
+    parsed = JSON.parse(res.body)
+    text = parsed.dig('candidates', 0, 'content', 'parts', 0, 'text')
+    raise "Gemini returned no text: #{res.body}" if text.nil? || text.strip.empty?
+    text.strip
   end
 end
