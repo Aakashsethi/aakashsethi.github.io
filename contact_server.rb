@@ -2,18 +2,42 @@ require 'sinatra'
 require 'json'
 require 'rack/cors'
 require 'mailtrap'
+require 'securerandom'
+require_relative 'lib/linkedin_client'
+require_relative 'lib/post_generator'
+require_relative 'lib/store'
 
-MAILTRAP_API_KEY = ENV.fetch('MAILTRAP_API_KEY', '97fe49880467c1d31b2951d70c854d81')
-TO_EMAIL         = ENV.fetch('TO_EMAIL',          'aakash.sethi7@gmail.com')
-FROM_EMAIL       = ENV.fetch('FROM_EMAIL',         'hello@tnufa.ai')
+MAILTRAP_API_KEY = ENV.fetch('MAILTRAP_API_KEY')
+TO_EMAIL         = ENV.fetch('TO_EMAIL',  'aakash.sethi7@gmail.com')
+FROM_EMAIL       = ENV.fetch('FROM_EMAIL', 'hello@tnufa.ai')
 FROM_NAME        = 'Portfolio Contact'
+OAUTH_STATE_SECRET = ENV.fetch('OAUTH_STATE_SECRET', SecureRandom.hex(16))
+TRIGGER_SECRET   = ENV.fetch('TRIGGER_SECRET', nil)
 
 use Rack::Cors do
   allow do
     origins 'localhost:4000', '127.0.0.1:4000',
             'aakashsethi.github.io', 'https://aakashsethi.github.io'
     resource '/contact', headers: :any, methods: [:post, :options]
+    resource '/posts.json', headers: :any, methods: [:get, :options]
   end
+end
+
+def mail_client
+  Mailtrap::Client.new(api_key: MAILTRAP_API_KEY)
+end
+
+def send_admin_mail(subject, text)
+  mail = Mailtrap::Mail::Base.new(
+    from: { email: FROM_EMAIL, name: FROM_NAME },
+    to:   [{ email: TO_EMAIL }],
+    subject: subject,
+    text: text,
+    category: 'Portfolio Automation'
+  )
+  mail_client.send(mail)
+rescue => e
+  warn "[mail] failed: #{e.message}"
 end
 
 set :port, ENV.fetch('PORT', 4001).to_i
@@ -99,7 +123,7 @@ post '/contact' do
     category: 'Portfolio Contact'
   )
 
-  client = Mailtrap::Client.new(api_key: MAILTRAP_API_KEY)
+  client = mail_client
   client.send(mail)
 
   # Confirmation email to the user with the Meet link
@@ -139,4 +163,101 @@ rescue Mailtrap::Error => e
   halt 502, { error: "Mailtrap error: #{e.message}" }.to_json
 rescue => e
   halt 500, { error: e.message }.to_json
+end
+
+# ── LinkedIn OAuth ───────────────────────────────────────────────────────────
+get '/auth/linkedin' do
+  state = SecureRandom.hex(16)
+  response.set_cookie('li_oauth_state',
+    value: state, httponly: true, secure: true, same_site: :lax, path: '/')
+  redirect LinkedInClient.authorize_url(state)
+end
+
+get '/auth/linkedin/callback' do
+  expected = request.cookies['li_oauth_state']
+  halt 400, 'Missing or mismatched state.' if expected.nil? || expected != params['state']
+
+  if params['error']
+    halt 400, "LinkedIn error: #{params['error']} — #{params['error_description']}"
+  end
+
+  tokens = LinkedInClient.exchange_code(params['code'])
+  user   = LinkedInClient.userinfo(tokens['access_token'])
+
+  Store.save_token(
+    access: tokens['access_token'],
+    refresh: tokens['refresh_token'],
+    access_expires_in: tokens['expires_in'].to_i,
+    refresh_expires_in: tokens['refresh_token_expires_in']&.to_i,
+    person_urn: user['sub']
+  )
+
+  response.delete_cookie('li_oauth_state', path: '/')
+  content_type :html
+  "<h1>LinkedIn connected →</h1><p>Account: #{user['name']}</p><p>You can close this tab.</p>"
+rescue => e
+  halt 500, "OAuth callback failed: #{e.message}"
+end
+
+# ── Internal trigger (called by Render cron jobs) ────────────────────────────
+post '/internal/trigger' do
+  content_type :json
+  halt 401, { error: 'auth' }.to_json if TRIGGER_SECRET.nil? || request.env['HTTP_X_TRIGGER_SECRET'] != TRIGGER_SECRET
+
+  action = params['action'] || (JSON.parse(request.body.read) rescue {})['action']
+  case action
+  when 'daily_post' then run_daily_post
+  when 'token_check' then run_token_check
+  else halt 400, { error: "unknown action #{action}" }.to_json
+  end
+end
+
+def run_daily_post
+  recent = Store.recent_source_urls(days: 30)
+  draft  = PostGenerator.generate(recent_urls: recent)
+  urn    = LinkedInClient.post_text(draft[:body])
+  Store.record_post(
+    category: draft[:category], source_url: draft[:source_url],
+    source_title: draft[:source_title], body: draft[:body], urn: urn
+  )
+  { ok: true, urn: urn, category: draft[:category] }.to_json
+rescue => e
+  Store.record_post(
+    category: (draft && draft[:category]) || 'unknown',
+    source_url: draft && draft[:source_url],
+    source_title: draft && draft[:source_title],
+    body: (draft && draft[:body]).to_s,
+    urn: nil, error: e.message
+  )
+  send_admin_mail('LinkedIn daily post FAILED', "Error: #{e.message}\n\nDraft:\n#{draft && draft[:body]}")
+  halt 500, { error: e.message }.to_json
+end
+
+def run_token_check
+  tok = Store.token
+  if tok.nil?
+    send_admin_mail('LinkedIn not connected', "Visit https://portfolio-contact.onrender.com/auth/linkedin to authorize.")
+    return { ok: true, status: 'not_connected' }.to_json
+  end
+  days_left = ((tok['refresh_expires_at'] || tok['access_expires_at']) - Time.now.to_i) / 86_400
+  if days_left < 14
+    send_admin_mail("LinkedIn re-auth needed in #{days_left}d",
+      "Refresh token expires in #{days_left} days.\nRe-authorize: https://portfolio-contact.onrender.com/auth/linkedin")
+  end
+  { ok: true, days_left: days_left }.to_json
+end
+
+# ── Public posts feed (for /posts page on Jekyll site) ───────────────────────
+get '/posts.json' do
+  content_type :json
+  Store.recent_posts(limit: 20).map do |p|
+    {
+      category: p['category'],
+      body: p['body'],
+      source_url: p['source_url'],
+      source_title: p['source_title'],
+      linkedin_urn: p['linkedin_urn'],
+      posted_at: p['posted_at']
+    }
+  end.to_json
 end

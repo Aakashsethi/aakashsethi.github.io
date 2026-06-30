@@ -6,8 +6,51 @@ services:
     startCommand: bundle exec ruby contact_server.rb
     envVars:
       - key: MAILTRAP_API_KEY
-        value: 97fe49880467c1d31b2951d70c854d81
+        sync: false
       - key: TO_EMAIL
         value: aakash.sethi7@gmail.com
       - key: FROM_EMAIL
         value: hello@tnufa.ai
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: LINKEDIN_CLIENT_ID
+        sync: false
+      - key: LINKEDIN_CLIENT_SECRET
+        sync: false
+      - key: LINKEDIN_REDIRECT_URI
+        value: https://portfolio-contact.onrender.com/auth/linkedin/callback
+      - key: OAUTH_STATE_SECRET
+        generateValue: true
+      - key: TRIGGER_SECRET
+        generateValue: true
+      - key: DB_PATH
+        value: /var/data/portfolio.sqlite3
+    disk:
+      name: data
+      mountPath: /var/data
+      sizeGB: 1
+
+  # Cron jobs can't share disks on Render, so they trigger the web service via HTTP.
+  - type: cron
+    name: portfolio-linkedin-daily
+    runtime: ruby
+    buildCommand: bundle install
+    schedule: "0 13 * * *"
+    startCommand: bundle exec ruby bin/trigger.rb daily_post
+    envVars:
+      - key: TRIGGER_URL
+        value: https://portfolio-contact.onrender.com/internal/trigger
+      - key: TRIGGER_SECRET
+        sync: false
+
+  - type: cron
+    name: portfolio-token-monitor
+    runtime: ruby
+    buildCommand: bundle install
+    schedule: "0 14 * * 1"
+    startCommand: bundle exec ruby bin/trigger.rb token_check
+    envVars:
+      - key: TRIGGER_URL
+        value: https://portfolio-contact.onrender.com/internal/trigger
+      - key: TRIGGER_SECRET
+        sync: false
