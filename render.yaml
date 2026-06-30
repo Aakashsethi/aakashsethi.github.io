@@ -23,12 +23,8 @@ services:
         generateValue: true
       - key: TRIGGER_SECRET
         generateValue: true
-      - key: DB_PATH
-        value: /var/data/portfolio.sqlite3
-    disk:
-      name: data
-      mountPath: /var/data
-      sizeGB: 1
+      - key: DATABASE_URL
+        sync: false
 
   # Cron jobs run as GitHub Actions (free) and POST to /internal/trigger.
   # See .github/workflows/linkedin-daily.yml and token-monitor.yml.

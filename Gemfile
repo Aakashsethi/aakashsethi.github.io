@@ -36,7 +36,7 @@ gem "rack-cors"
 gem "mailtrap"
 gem "httparty"
 gem "rss"
-gem "sqlite3"
+gem "pg"
 gem "nokogiri"
 
 gem "rackup", "~> 2.3"
