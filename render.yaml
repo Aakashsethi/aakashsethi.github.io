@@ -11,7 +11,7 @@ services:
         value: aakash.sethi7@gmail.com
       - key: FROM_EMAIL
         value: hello@tnufa.ai
-      - key: GEMINI_API_KEY
+      - key: GROQ_API_KEY
         sync: false
       - key: LINKEDIN_CLIENT_ID
         sync: false

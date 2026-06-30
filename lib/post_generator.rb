@@ -88,21 +88,25 @@ module PostGenerator
   end
 
   def self.call_claude(prompt)
-    api_key = ENV.fetch('GEMINI_API_KEY')
-    model = ENV.fetch('GEMINI_MODEL', 'gemini-2.0-flash')
+    api_key = ENV.fetch('GROQ_API_KEY')
+    model = ENV.fetch('GROQ_MODEL', 'llama-3.3-70b-versatile')
     res = HTTParty.post(
-      "https://generativelanguage.googleapis.com/v1beta/models/#{model}:generateContent?key=#{api_key}",
-      headers: { 'Content-Type' => 'application/json' },
+      'https://api.groq.com/openai/v1/chat/completions',
+      headers: {
+        'Authorization' => "Bearer #{api_key}",
+        'Content-Type' => 'application/json'
+      },
       body: {
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.7, maxOutputTokens: 1024 }
+        model: model,
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.7,
+        max_tokens: 1024
       }.to_json,
       timeout: 60
     )
-    raise "Gemini API #{res.code}: #{res.body}" unless res.code == 200
-    parsed = JSON.parse(res.body)
-    text = parsed.dig('candidates', 0, 'content', 'parts', 0, 'text')
-    raise "Gemini returned no text: #{res.body}" if text.nil? || text.strip.empty?
+    raise "Groq API #{res.code}: #{res.body}" unless res.code == 200
+    text = JSON.parse(res.body).dig('choices', 0, 'message', 'content')
+    raise "Groq returned no text: #{res.body}" if text.nil? || text.strip.empty?
     text.strip
   end
 end
