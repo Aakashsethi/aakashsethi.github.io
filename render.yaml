@@ -18,7 +18,7 @@ services:
       - key: LINKEDIN_CLIENT_SECRET
         sync: false
       - key: LINKEDIN_REDIRECT_URI
-        value: https://portfolio-contact.onrender.com/auth/linkedin/callback
+        value: https://portfolio-contact-j70g.onrender.com/auth/linkedin/callback
       - key: OAUTH_STATE_SECRET
         generateValue: true
       - key: TRIGGER_SECRET
@@ -39,7 +39,7 @@ services:
     startCommand: bundle exec ruby bin/trigger.rb daily_post
     envVars:
       - key: TRIGGER_URL
-        value: https://portfolio-contact.onrender.com/internal/trigger
+        value: https://portfolio-contact-j70g.onrender.com/internal/trigger
       - key: TRIGGER_SECRET
         sync: false
 
@@ -51,6 +51,6 @@ services:
     startCommand: bundle exec ruby bin/trigger.rb token_check
     envVars:
       - key: TRIGGER_URL
-        value: https://portfolio-contact.onrender.com/internal/trigger
+        value: https://portfolio-contact-j70g.onrender.com/internal/trigger
       - key: TRIGGER_SECRET
         sync: false
