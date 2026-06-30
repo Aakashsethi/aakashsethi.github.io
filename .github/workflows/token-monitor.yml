@@ -1,0 +1,26 @@
+name: LinkedIn token monitor
+
+on:
+  schedule:
+    - cron: '0 14 * * 1'   # 10:00 ET Mondays (14:00 UTC)
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger token check
+        env:
+          TRIGGER_URL: ${{ secrets.TRIGGER_URL }}
+          TRIGGER_SECRET: ${{ secrets.TRIGGER_SECRET }}
+        run: |
+          set -e
+          response=$(curl -sS -w "\n%{http_code}" -X POST "$TRIGGER_URL" \
+            -H "X-Trigger-Secret: $TRIGGER_SECRET" \
+            -H "Content-Type: application/json" \
+            -d '{"action":"token_check"}')
+          body=$(echo "$response" | head -n -1)
+          code=$(echo "$response" | tail -n 1)
+          echo "HTTP $code"
+          echo "$body"
+          test "$code" -ge 200 -a "$code" -lt 300

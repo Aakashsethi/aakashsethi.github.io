@@ -30,27 +30,5 @@ services:
       mountPath: /var/data
       sizeGB: 1
 
-  # Cron jobs can't share disks on Render, so they trigger the web service via HTTP.
-  - type: cron
-    name: portfolio-linkedin-daily
-    runtime: ruby
-    buildCommand: bundle install
-    schedule: "0 13 * * *"
-    startCommand: bundle exec ruby bin/trigger.rb daily_post
-    envVars:
-      - key: TRIGGER_URL
-        value: https://portfolio-contact-j70g.onrender.com/internal/trigger
-      - key: TRIGGER_SECRET
-        sync: false
-
-  - type: cron
-    name: portfolio-token-monitor
-    runtime: ruby
-    buildCommand: bundle install
-    schedule: "0 14 * * 1"
-    startCommand: bundle exec ruby bin/trigger.rb token_check
-    envVars:
-      - key: TRIGGER_URL
-        value: https://portfolio-contact-j70g.onrender.com/internal/trigger
-      - key: TRIGGER_SECRET
-        sync: false
+  # Cron jobs run as GitHub Actions (free) and POST to /internal/trigger.
+  # See .github/workflows/linkedin-daily.yml and token-monitor.yml.
