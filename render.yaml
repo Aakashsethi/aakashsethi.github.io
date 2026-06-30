@@ -13,6 +13,8 @@ services:
         value: hello@tnufa.ai
       - key: GROQ_API_KEY
         sync: false
+      - key: FAL_KEY
+        sync: false
       - key: LINKEDIN_CLIENT_ID
         sync: false
       - key: LINKEDIN_CLIENT_SECRET

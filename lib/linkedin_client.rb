@@ -8,6 +8,7 @@ module LinkedInClient
   TOKEN_URL = 'https://www.linkedin.com/oauth/v2/accessToken'
   USERINFO_URL = 'https://api.linkedin.com/v2/userinfo'
   UGC_URL   = 'https://api.linkedin.com/v2/ugcPosts'
+  ASSETS_URL = 'https://api.linkedin.com/v2/assets?action=registerUpload'
 
   SCOPES = 'openid profile w_member_social'
 
@@ -68,18 +69,36 @@ module LinkedInClient
     tok
   end
 
-  def self.post_text(body)
+  def self.post_text(body, image: nil)
     tok = ensure_fresh_token
     person_urn = tok['person_urn']
+    media = nil
+
+    if image
+      begin
+        media = upload_image(tok, person_urn, image)
+      rescue => e
+        warn "[linkedin] image upload failed, falling back to text-only: #{e.message}"
+      end
+    end
+
+    share_content = { shareCommentary: { text: body } }
+    if media
+      share_content[:shareMediaCategory] = 'IMAGE'
+      share_content[:media] = [{
+        status: 'READY',
+        description: { text: '' },
+        media: media,
+        title: { text: '' }
+      }]
+    else
+      share_content[:shareMediaCategory] = 'NONE'
+    end
+
     payload = {
       author: "urn:li:person:#{person_urn}",
       lifecycleState: 'PUBLISHED',
-      specificContent: {
-        'com.linkedin.ugc.ShareContent' => {
-          shareCommentary: { text: body },
-          shareMediaCategory: 'NONE'
-        }
-      },
+      specificContent: { 'com.linkedin.ugc.ShareContent' => share_content },
       visibility: { 'com.linkedin.ugc.MemberNetworkVisibility' => 'PUBLIC' }
     }
     res = HTTParty.post(UGC_URL,
@@ -93,5 +112,40 @@ module LinkedInClient
     )
     raise "UGC post failed #{res.code}: #{res.body}" unless [200, 201].include?(res.code)
     res.headers['x-restli-id'] || JSON.parse(res.body)['id']
+  end
+
+  def self.upload_image(tok, person_urn, image)
+    reg = HTTParty.post(ASSETS_URL,
+      headers: {
+        'Authorization' => "Bearer #{tok['access_token']}",
+        'Content-Type' => 'application/json',
+        'X-Restli-Protocol-Version' => '2.0.0'
+      },
+      body: {
+        registerUploadRequest: {
+          recipes: ['urn:li:digitalmediaRecipe:feedshare-image'],
+          owner: "urn:li:person:#{person_urn}",
+          serviceRelationships: [{ relationshipType: 'OWNER', identifier: 'urn:li:userGeneratedContent' }]
+        }
+      }.to_json,
+      timeout: 30
+    )
+    raise "register upload #{reg.code}: #{reg.body}" unless reg.code == 200
+    parsed = JSON.parse(reg.body)
+    upload_url = parsed.dig('value', 'uploadMechanism',
+      'com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest', 'uploadUrl')
+    asset_urn = parsed.dig('value', 'asset')
+    raise "register upload missing url/asset: #{reg.body}" unless upload_url && asset_urn
+
+    up = HTTParty.put(upload_url,
+      headers: {
+        'Authorization' => "Bearer #{tok['access_token']}",
+        'Content-Type' => image[:content_type]
+      },
+      body: image[:bytes],
+      timeout: 60
+    )
+    raise "image PUT #{up.code}: #{up.body}" unless up.code.between?(200, 299)
+    asset_urn
   end
 end

@@ -5,6 +5,7 @@ require 'mailtrap'
 require 'securerandom'
 require_relative 'lib/linkedin_client'
 require_relative 'lib/post_generator'
+require_relative 'lib/image_generator'
 require_relative 'lib/store'
 
 MAILTRAP_API_KEY = ENV.fetch('MAILTRAP_API_KEY')
@@ -215,12 +216,23 @@ end
 def run_daily_post
   recent = Store.recent_source_urls(days: 30)
   draft  = PostGenerator.generate(recent_urls: recent)
-  urn    = LinkedInClient.post_text(draft[:body])
+
+  image = nil
+  if ENV['FAL_KEY']
+    begin
+      img_prompt = ImageGenerator.prompt_from_post(draft[:body], draft[:category])
+      image = ImageGenerator.generate(img_prompt)
+    rescue => e
+      warn "[daily_post] image generation failed: #{e.message}"
+    end
+  end
+
+  urn = LinkedInClient.post_text(draft[:body], image: image)
   Store.record_post(
     category: draft[:category], source_url: draft[:source_url],
     source_title: draft[:source_title], body: draft[:body], urn: urn
   )
-  { ok: true, urn: urn, category: draft[:category] }.to_json
+  { ok: true, urn: urn, category: draft[:category], image: !image.nil? }.to_json
 rescue => e
   Store.record_post(
     category: (draft && draft[:category]) || 'unknown',
