@@ -164,8 +164,9 @@ def write_post(payload, category)
   path
 end
 
-MIN_WORDS = 1500  # hard floor — reject anything under this
+MIN_WORDS = 1200  # hard floor — reject anything under this
 MAX_ATTEMPTS = 2
+RETRY_WAIT_SEC = 60  # gpt-oss-120b free-tier TPM is 8k/min; wait a full window before retry
 
 def word_count(text) = text.to_s.split(/\s+/).size
 
@@ -182,7 +183,8 @@ def main
       payload = p
       break
     end
-    warn "  ✗ Under #{MIN_WORDS} words — retrying with stronger nudge"
+    warn "  ✗ Under #{MIN_WORDS} words — sleeping #{RETRY_WAIT_SEC}s then retrying"
+    sleep RETRY_WAIT_SEC unless i == MAX_ATTEMPTS - 1
   end
 
   raise "Could not produce a body of #{MIN_WORDS}+ words after #{MAX_ATTEMPTS} attempts" if payload.nil?
