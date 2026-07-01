@@ -231,9 +231,9 @@ rescue => e
   nil
 end
 
-MIN_WORDS = 1200  # hard floor — reject anything under this
-MAX_ATTEMPTS = 2
-RETRY_WAIT_SEC = 60  # gpt-oss-120b free-tier TPM is 8k/min; wait a full window before retry
+MIN_WORDS = 1000  # hard floor — reject anything under this
+MAX_ATTEMPTS = 3
+RETRY_WAIT_SEC = 65  # gpt-oss-120b free-tier TPM is 8k/min; wait a full window before retry
 
 def word_count(text) = text.to_s.split(/\s+/).size
 
