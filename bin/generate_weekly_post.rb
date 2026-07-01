@@ -14,7 +14,7 @@ require 'date'
 require 'fileutils'
 
 GROQ_API_KEY = ENV.fetch('GROQ_API_KEY')
-GROQ_MODEL   = ENV.fetch('GROQ_MODEL', 'llama-3.3-70b-versatile')
+GROQ_MODEL   = ENV.fetch('GROQ_MODEL', 'openai/gpt-oss-120b')
 POSTS_DIR    = ENV.fetch('POSTS_DIR', '_posts')
 
 CATEGORY_WEIGHTS = {
@@ -164,8 +164,8 @@ def write_post(payload, category)
   path
 end
 
-MIN_WORDS = 1800  # hard floor — reject anything under this
-MAX_ATTEMPTS = 3
+MIN_WORDS = 1500  # hard floor — reject anything under this
+MAX_ATTEMPTS = 2
 
 def word_count(text) = text.to_s.split(/\s+/).size
 
