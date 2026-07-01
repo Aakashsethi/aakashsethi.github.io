@@ -9,14 +9,20 @@ function Hero({ onNav }) {
           <span className="live-dot" /> Available · open to collab
         </div>
         <h1 className="hero-title">
-          i build systems<br />that ship<span className="accent-dot">.</span>
+          Aakash Sethi<span className="accent-dot">.</span><br />
+          <span style={{fontSize:'0.62em', display:'block', marginTop:'0.4em', fontWeight:500, letterSpacing:'-0.01em'}}>
+            AI Software Engineer / New Jersey, USA
+          </span>
         </h1>
         <p className="hero-lede">
-          I'm <b>Aakash Sethi</b> — an <b>Inventionist</b>, an <b>AI research enthusiast</b>,
-          and a Product Owner who can also sell the thing. Five years across AWS-backed
-          enterprise platforms, fintech systems, and AI-driven products: Vanguard ·
-          Mercedes-Benz Financial Services · Burpez. AWS Certified Solutions Architect —
-          Professional. NJDOE-licensed CS educator. Currently building <a href="https://tnufa.ai" style={{color:'var(--signal-300)'}}>Tnufa.ai →</a>
+          I build AI systems that ship — LLM apps, RAG pipelines, agentic architectures.
+          <b> AWS Certified Solutions Architect — Professional.</b> Five years across
+          Vanguard · Mercedes-Benz Financial Services · Burpez. NJDOE-licensed CS educator.
+          Founder of <a href="https://tnufa.ai" style={{color:'var(--signal-300)'}}>Tnufa.ai →</a>
+          <br /><br />
+          <span style={{fontSize:'0.9em', opacity:0.75}}>
+            (Not <a href="https://in.linkedin.com/in/aakashsethi" style={{color:'inherit'}} target="_blank" rel="noopener">the education-sector Aakash Sethi in India</a> — different person.)
+          </span>
         </p>
         <div className="hero-ctas">
           <a className="btn btn-primary" href="#" onClick={(e)=>{e.preventDefault(); onNav('work');}}>See the work →</a>
