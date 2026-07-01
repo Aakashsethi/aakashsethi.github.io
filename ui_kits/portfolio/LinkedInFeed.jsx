@@ -21,30 +21,58 @@ function LinkedInFeed() {
   const [filter, setFilter]   = useState('all');
 
   useEffect(() => {
+    // Map a Jekyll category → theme id used by LinkedInFeed's color/label maps.
+    const categoryToTheme = (cat) => {
+      const s = (cat || '').toLowerCase();
+      if (s.includes('society'))    return 'free_media';
+      if (s.includes('career'))     return 'career';
+      if (s.includes('cloud') || s.includes('aws')) return 'cloud_aws';
+      if (s.includes('fintech'))    return 'fintech';
+      if (s.includes('product'))    return 'product';
+      if (s.includes('story') || s.includes('personal')) return 'personal_story';
+      if (s.includes('soc') || s.includes('compl')) return 'soc2_ai';
+      if (s.includes('engage') || s.includes('note')) return 'engagement';
+      return 'ai_engineering';
+    };
+
     Promise.all([
       fetch('/data/linkedin_posts.json').then(r => r.json()).catch(() => []),
       fetch('/posts_data.json').then(r => r.json()).catch(() => []),
     ])
       .then(([liPosts, postsData]) => {
-        const byUrl = {};
-        (postsData || []).forEach(p => {
-          byUrl[p.url] = p;
-          try { byUrl[decodeURIComponent(p.url)] = p; } catch (e) {}
+        // Index LinkedIn metadata by blog_url
+        const liByUrl = {};
+        (liPosts || []).forEach(li => {
+          const key = li.blog_url || '';
+          if (key) {
+            liByUrl[key] = li;
+            try { liByUrl[decodeURIComponent(key)] = li; } catch (e) {}
+          }
         });
 
-        const merged = (liPosts || []).map(li => {
-          const key = li.blog_url || '';
-          const match = byUrl[key] || byUrl[decodeURIComponent(key)] || null;
+        // Every Jekyll post gets a card, whether or not it has LinkedIn metadata.
+        const fromJekyll = (postsData || []).map(p => {
+          const li = liByUrl[p.url] || liByUrl[decodeURIComponent(p.url || '')] || {};
+          const firstCategory = Array.isArray(p.categories) ? p.categories[0] : p.categories;
           return {
             ...li,
-            title:   match ? match.title   : li.topic,
-            excerpt: match ? match.excerpt : '',
-            preview: match ? match.preview : '',
-            tags:    match ? match.tags    : [],
+            title:    p.title || li.topic,
+            excerpt:  p.excerpt || li.hook || '',
+            preview:  p.preview || '',
+            tags:     p.tags || li.tags || [],
+            date:     li.date || p.date,
+            blog_url: p.url,
+            theme:    li.theme || categoryToTheme(firstCategory),
+            image_url: li.image_url || p.image_url,
+            post_url:  li.post_url,
           };
         });
 
-        // Newest first
+        // Any LinkedIn posts that don't have a Jekyll counterpart still appear.
+        const jekyllUrls = new Set((postsData || []).map(p => p.url));
+        const linkedOnly = (liPosts || []).filter(li => !jekyllUrls.has(li.blog_url || ''));
+
+        const merged = [...fromJekyll, ...linkedOnly];
         merged.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 
         setPosts(merged);
