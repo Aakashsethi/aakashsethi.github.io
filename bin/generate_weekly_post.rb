@@ -170,31 +170,22 @@ def write_post(payload, category, image_url: nil)
   path
 end
 
-def generate_image_prompt(body, category)
-  system = <<~SYS
-    You write image prompts for AI image generators. Output ONE concise prompt (under 40 words).
-    Style: clean, editorial, slightly desaturated, warm tones. Landscape composition.
-    No text or letters in the image. No people's faces. Schematic / abstract / object-focused.
-    Category: #{category}
-  SYS
-  uri = URI('https://api.groq.com/openai/v1/chat/completions')
-  http = Net::HTTP.new(uri.host, uri.port); http.use_ssl = true; http.read_timeout = 60
-  req = Net::HTTP::Post.new(uri)
-  req['Authorization'] = "Bearer #{GROQ_API_KEY}"
-  req['Content-Type']  = 'application/json'
-  req.body = {
-    model: GROQ_MODEL,
-    messages: [
-      { role: 'system', content: system },
-      { role: 'user',   content: "Post opening:\n#{body[0, 1200]}\n\nReturn only the prompt." }
-    ],
-    temperature: 0.6,
-    max_tokens: 120
-  }.to_json
-  res = http.request(req)
-  raise "Groq (image prompt) #{res.code}: #{res.body[0, 300]}" unless res.code.to_i.between?(200, 299)
-  text = JSON.parse(res.body).dig('choices', 0, 'message', 'content').to_s.strip
-  text.gsub(/^["']|["']$/, '')
+CATEGORY_STYLE = {
+  'AI Engineering'  => 'abstract neural network topology, glowing nodes, dark warm background, editorial illustration',
+  'Society & Tech'  => 'newspaper printing press abstracted, ink and paper textures, muted amber tones',
+  'Career'          => 'geometric ladder rungs against a warm sunset gradient, minimalist illustration',
+  'AWS & Cloud'     => 'stylized data center racks with soft glowing lights, isometric line art, warm palette',
+  'Fintech'         => 'abstract stock market ticker as flowing ribbons, muted gold and ink tones',
+  'Product'         => 'sketch of interlocking product design components, blueprint on kraft paper',
+  'Story'           => 'quiet desk with open notebook and cup, morning light, editorial photo tone'
+}.freeze
+
+def build_image_prompt(title, category)
+  style = CATEGORY_STYLE[category] || 'clean editorial illustration, warm desaturated tones, landscape 16:9'
+  subject = title.gsub(/[",]/, '').gsub(/\s+/, ' ').strip
+  # Strip common lead-ins that AI image models handle poorly
+  subject = subject.sub(/^(why|how|the)\s+/i, '')
+  "#{style}. Concept: #{subject}. No text, no letters, no faces. Cinematic composition."
 end
 
 def generate_image_bytes(prompt_text)
@@ -224,10 +215,10 @@ def generate_image_bytes(prompt_text)
   { bytes: img_res.body, ext: ext }
 end
 
-def save_image_for_slug(slug, category, body)
+def save_image_for_slug(slug, category, title)
   return nil unless FAL_KEY && !FAL_KEY.strip.empty?
-  prompt_text = generate_image_prompt(body, category)
-  warn "  ▶ image prompt: #{prompt_text[0, 100]}"
+  prompt_text = build_image_prompt(title, category)
+  warn "  ▶ image prompt: #{prompt_text[0, 120]}"
   img = generate_image_bytes(prompt_text)
   FileUtils.mkdir_p(IMAGES_DIR)
   today = Date.today
@@ -267,7 +258,7 @@ def main
   raise "Could not produce a body of #{MIN_WORDS}+ words after #{MAX_ATTEMPTS} attempts" if payload.nil?
 
   slug = slugify(payload.fetch('title'))
-  image_url = save_image_for_slug(slug, category, payload.fetch('body'))
+  image_url = save_image_for_slug(slug, category, payload.fetch('title'))
   path = write_post(payload, category, image_url: image_url)
   warn "✓ Wrote #{path} (#{word_count(payload['body'])} words, image: #{image_url ? 'yes' : 'no'})"
   puts path
