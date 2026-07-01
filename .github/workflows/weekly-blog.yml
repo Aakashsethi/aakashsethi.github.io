@@ -1,0 +1,43 @@
+name: Weekly blog post
+
+on:
+  schedule:
+    - cron: '0 13 * * 0'   # 09:00 ET Sundays
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+
+      - name: Generate post
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: ruby bin/generate_weekly_post.rb
+
+      - name: Commit + push if a post was created
+        run: |
+          set -e
+          git config user.name 'aakash-bot'
+          git config user.email 'aakash.sethi7+bot@gmail.com'
+          if git diff --quiet _posts/; then
+            echo "No new post generated — nothing to commit."
+            exit 0
+          fi
+          new_file=$(git status --porcelain _posts/ | awk '{print $2}' | head -n 1)
+          title=$(head -n 20 "$new_file" | grep '^title:' | sed -E 's/^title: *"?([^"]*)"?/\1/')
+          git add _posts/
+          git commit -m "Add weekly post: ${title:-untitled}"
+          git push
