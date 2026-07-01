@@ -104,7 +104,7 @@ def call_groq(prompt_text)
     model: GROQ_MODEL,
     messages: [{ role: 'user', content: prompt_text }],
     temperature: 0.55,
-    max_tokens: 8192,
+    max_tokens: 6000,
     response_format: { type: 'json_object' }
   }.to_json
 
