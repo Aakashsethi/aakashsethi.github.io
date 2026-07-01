@@ -25,6 +25,7 @@ jobs:
       - name: Generate post
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          FAL_KEY:      ${{ secrets.FAL_KEY }}
         run: ruby bin/generate_weekly_post.rb
 
       - name: Commit + push if a post was created
@@ -41,5 +42,11 @@ jobs:
           words=$(sed -n '/^---$/,/^---$/!p' "$new_file" | wc -w | tr -d ' ')
           echo "Committing $new_file ($words words)"
           git add "$new_file"
+          # Include any newly generated blog image
+          new_image=$(git ls-files --others --exclude-standard assets/blog/ | head -n 1 || true)
+          if [ -n "$new_image" ]; then
+            echo "Also committing image: $new_image"
+            git add "$new_image"
+          fi
           git commit -m "Add weekly post: ${title:-untitled}"
           git push

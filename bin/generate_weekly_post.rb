@@ -15,7 +15,10 @@ require 'fileutils'
 
 GROQ_API_KEY = ENV.fetch('GROQ_API_KEY')
 GROQ_MODEL   = ENV.fetch('GROQ_MODEL', 'openai/gpt-oss-120b')
+FAL_KEY      = ENV['FAL_KEY']  # optional — skip image gen if unset
+FAL_MODEL    = ENV.fetch('FAL_MODEL', 'fal-ai/flux/schnell')
 POSTS_DIR    = ENV.fetch('POSTS_DIR', '_posts')
+IMAGES_DIR   = ENV.fetch('IMAGES_DIR', 'assets/blog')
 
 CATEGORY_WEIGHTS = {
   'AI Engineering'   => 30,
@@ -125,8 +128,9 @@ def slugify(title)
        .gsub(/^-|-$/, '')[0, 70]
 end
 
-def format_frontmatter(title:, date:, category:, tags:, excerpt:)
+def format_frontmatter(title:, date:, category:, tags:, excerpt:, image_url: nil)
   yaml_tags = tags.map { |t| t.to_s.strip.gsub('"', "'") }.reject(&:empty?)
+  image_line = image_url ? "image_url: \"#{image_url}\"\n" : ''
   <<~YAML
     ---
     layout: single
@@ -134,6 +138,7 @@ def format_frontmatter(title:, date:, category:, tags:, excerpt:)
     date: #{date}
     categories: ["#{category}"]
     tags: [#{yaml_tags.join(', ')}]
+    #{image_line.chomp}
     author_profile: true
     read_time: true
     share: true
@@ -142,18 +147,19 @@ def format_frontmatter(title:, date:, category:, tags:, excerpt:)
   YAML
 end
 
-def write_post(payload, category)
+def write_post(payload, category, image_url: nil)
   today = Date.today
   slug  = slugify(payload.fetch('title'))
   filename = "#{today}-#{slug}.md"
   path = File.join(POSTS_DIR, filename)
 
   frontmatter = format_frontmatter(
-    title:    payload.fetch('title'),
-    date:     today.to_s,
-    category: category,
-    tags:     payload.fetch('tags', []),
-    excerpt:  payload.fetch('excerpt', '')
+    title:     payload.fetch('title'),
+    date:      today.to_s,
+    category:  category,
+    tags:      payload.fetch('tags', []),
+    excerpt:   payload.fetch('excerpt', ''),
+    image_url: image_url
   )
 
   body = payload.fetch('body').strip
@@ -162,6 +168,77 @@ def write_post(payload, category)
   FileUtils.mkdir_p(POSTS_DIR)
   File.write(path, content)
   path
+end
+
+def generate_image_prompt(body, category)
+  system = <<~SYS
+    You write image prompts for AI image generators. Output ONE concise prompt (under 40 words).
+    Style: clean, editorial, slightly desaturated, warm tones. Landscape composition.
+    No text or letters in the image. No people's faces. Schematic / abstract / object-focused.
+    Category: #{category}
+  SYS
+  uri = URI('https://api.groq.com/openai/v1/chat/completions')
+  http = Net::HTTP.new(uri.host, uri.port); http.use_ssl = true; http.read_timeout = 60
+  req = Net::HTTP::Post.new(uri)
+  req['Authorization'] = "Bearer #{GROQ_API_KEY}"
+  req['Content-Type']  = 'application/json'
+  req.body = {
+    model: GROQ_MODEL,
+    messages: [
+      { role: 'system', content: system },
+      { role: 'user',   content: "Post opening:\n#{body[0, 1200]}\n\nReturn only the prompt." }
+    ],
+    temperature: 0.6,
+    max_tokens: 120
+  }.to_json
+  res = http.request(req)
+  raise "Groq (image prompt) #{res.code}: #{res.body[0, 300]}" unless res.code.to_i.between?(200, 299)
+  text = JSON.parse(res.body).dig('choices', 0, 'message', 'content').to_s.strip
+  text.gsub(/^["']|["']$/, '')
+end
+
+def generate_image_bytes(prompt_text)
+  uri = URI("https://fal.run/#{FAL_MODEL}")
+  http = Net::HTTP.new(uri.host, uri.port); http.use_ssl = true; http.read_timeout = 90
+  req = Net::HTTP::Post.new(uri)
+  req['Authorization'] = "Key #{FAL_KEY}"
+  req['Content-Type']  = 'application/json'
+  req.body = {
+    prompt: prompt_text,
+    image_size: 'landscape_16_9',
+    num_inference_steps: 4,
+    num_images: 1,
+    enable_safety_checker: true
+  }.to_json
+  res = http.request(req)
+  raise "fal.ai #{res.code}: #{res.body[0, 300]}" unless res.code.to_i.between?(200, 299)
+  url = JSON.parse(res.body).dig('images', 0, 'url')
+  raise "fal.ai returned no image url" if url.nil? || url.empty?
+
+  img_uri = URI(url)
+  img_http = Net::HTTP.new(img_uri.host, img_uri.port); img_http.use_ssl = true; img_http.read_timeout = 60
+  img_res = img_http.request(Net::HTTP::Get.new(img_uri))
+  raise "image download #{img_res.code}" unless img_res.code.to_i.between?(200, 299)
+  content_type = img_res['content-type'] || 'image/jpeg'
+  ext = content_type.include?('png') ? 'png' : (content_type.include?('webp') ? 'webp' : 'jpg')
+  { bytes: img_res.body, ext: ext }
+end
+
+def save_image_for_slug(slug, category, body)
+  return nil unless FAL_KEY && !FAL_KEY.strip.empty?
+  prompt_text = generate_image_prompt(body, category)
+  warn "  ▶ image prompt: #{prompt_text[0, 100]}"
+  img = generate_image_bytes(prompt_text)
+  FileUtils.mkdir_p(IMAGES_DIR)
+  today = Date.today
+  filename = "#{today}-#{slug}.#{img[:ext]}"
+  path = File.join(IMAGES_DIR, filename)
+  File.binwrite(path, img[:bytes])
+  warn "  ✓ image saved: #{path} (#{img[:bytes].bytesize} bytes)"
+  "/#{path}"
+rescue => e
+  warn "  ✗ image generation failed (post will publish without image): #{e.message}"
+  nil
 end
 
 MIN_WORDS = 1200  # hard floor — reject anything under this
@@ -189,8 +266,10 @@ def main
 
   raise "Could not produce a body of #{MIN_WORDS}+ words after #{MAX_ATTEMPTS} attempts" if payload.nil?
 
-  path = write_post(payload, category)
-  warn "✓ Wrote #{path} (#{word_count(payload['body'])} words)"
+  slug = slugify(payload.fetch('title'))
+  image_url = save_image_for_slug(slug, category, payload.fetch('body'))
+  path = write_post(payload, category, image_url: image_url)
+  warn "✓ Wrote #{path} (#{word_count(payload['body'])} words, image: #{image_url ? 'yes' : 'no'})"
   puts path
 end
 

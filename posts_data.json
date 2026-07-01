@@ -10,6 +10,8 @@ permalink: /posts_data.json
     "excerpt": {{ p.excerpt | strip_html | strip_newlines | jsonify }},
     "preview": {{ p.content | strip_html | strip_newlines | truncate: 520 | jsonify }},
     "tags": {{ p.tags | jsonify }},
+    "categories": {{ p.categories | jsonify }},
+    "image_url": {{ p.image_url | default: "" | jsonify }},
     "date": {{ p.date | date_to_xmlschema | jsonify }},
     "linkedin_url": {{ p.linkedin_url | default: "" | jsonify }}
   }{% unless forloop.last %},{% endunless %}
