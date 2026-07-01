@@ -148,14 +148,14 @@ def format_frontmatter(title:, date:, category:, tags:, excerpt:, image_url: nil
 end
 
 def write_post(payload, category, image_url: nil)
-  today = Date.today
+  now = Time.now.utc
   slug  = slugify(payload.fetch('title'))
-  filename = "#{today}-#{slug}.md"
+  filename = "#{now.strftime('%Y-%m-%d')}-#{slug}.md"
   path = File.join(POSTS_DIR, filename)
 
   frontmatter = format_frontmatter(
     title:     payload.fetch('title'),
-    date:      today.to_s,
+    date:      now.strftime('%Y-%m-%d %H:%M:%S +0000'),
     category:  category,
     tags:      payload.fetch('tags', []),
     excerpt:   payload.fetch('excerpt', ''),
@@ -221,8 +221,7 @@ def save_image_for_slug(slug, category, title)
   warn "  ▶ image prompt: #{prompt_text[0, 120]}"
   img = generate_image_bytes(prompt_text)
   FileUtils.mkdir_p(IMAGES_DIR)
-  today = Date.today
-  filename = "#{today}-#{slug}.#{img[:ext]}"
+  filename = "#{Time.now.utc.strftime('%Y-%m-%d')}-#{slug}.#{img[:ext]}"
   path = File.join(IMAGES_DIR, filename)
   File.binwrite(path, img[:bytes])
   warn "  ✓ image saved: #{path} (#{img[:bytes].bytesize} bytes)"

@@ -73,7 +73,11 @@ function LinkedInFeed() {
         const linkedOnly = (liPosts || []).filter(li => !jekyllUrls.has(li.blog_url || ''));
 
         const merged = [...fromJekyll, ...linkedOnly];
-        merged.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+        merged.sort((a, b) => {
+          const ta = Date.parse(a.date || '') || 0;
+          const tb = Date.parse(b.date || '') || 0;
+          return tb - ta;
+        });
 
         setPosts(merged);
         setLoading(false);
