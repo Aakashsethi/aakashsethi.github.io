@@ -26,30 +26,54 @@
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <link rel="canonical" href="{{ page.url | absolute_url }}">
 
+{% assign og_image = page.image_url | default: '/assets/ai/about_portrait.png' | absolute_url %}
 <meta property="og:type" content="article">
 <meta property="og:title" content="{{ page.title }}">
 <meta property="og:description" content="{{ page.excerpt | strip_html | truncate: 155 }}">
 <meta property="og:url" content="{{ page.url | absolute_url }}">
 <meta property="og:site_name" content="Aakash Sethi">
+<meta property="og:image" content="{{ og_image }}">
 <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
 <meta property="article:author" content="Aakash Sethi">
-{% for tag in page.tags %}<meta property="article:tag" content="{{ tag }}">
+{% for cat in page.categories %}<meta property="article:section" content="{{ cat }}">
+{% endfor %}{% for tag in page.tags %}<meta property="article:tag" content="{{ tag }}">
 {% endfor %}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ page.title }}">
 <meta name="twitter:description" content="{{ page.excerpt | strip_html | truncate: 155 }}">
+<meta name="twitter:image" content="{{ og_image }}">
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ page.url | absolute_url }}"
+  },
   "headline": {{ page.title | jsonify }},
+  "description": {{ page.excerpt | strip_html | truncate: 200 | jsonify }},
+  "image": "{{ og_image }}",
   "datePublished": "{{ page.date | date_to_xmlschema }}",
   "dateModified": "{{ page.date | date_to_xmlschema }}",
-  "author": { "@type": "Person", "name": "Aakash Sethi", "url": "https://aakashsethi.github.io/" },
-  "publisher": { "@type": "Person", "name": "Aakash Sethi", "url": "https://aakashsethi.github.io/" },
-  "url": "{{ page.url | absolute_url }}",
-  "keywords": {{ page.tags | join: ', ' | jsonify }}
+  "articleSection": {{ page.categories | jsonify }},
+  "keywords": {{ page.tags | join: ', ' | jsonify }},
+  "author": {
+    "@type": "Person",
+    "name": "Aakash Sethi",
+    "url": "https://aakashsethi.github.io/",
+    "sameAs": [
+      "https://www.linkedin.com/in/aakash-sethi-007",
+      "https://github.com/Aakashsethi",
+      "https://tnufa.ai"
+    ]
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Aakash Sethi",
+    "url": "https://aakashsethi.github.io/"
+  },
+  "url": "{{ page.url | absolute_url }}"
 }
 </script>
 

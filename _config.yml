@@ -10,6 +10,20 @@ github_username: Aakashsethi
 # Build settings — no theme, pure static SPA
 plugins:
   - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# SEO tag config — used by jekyll-seo-tag on blog posts
+author:
+  name: Aakash Sethi
+  email: aakash.sethi7@gmail.com
+social:
+  name: Aakash Sethi
+  links:
+    - https://github.com/Aakashsethi
+    - https://www.linkedin.com/in/aakash-sethi-007
+    - https://tnufa.ai
+  type: Person
 
 # Exclude files that Jekyll shouldn't try to process
 exclude:

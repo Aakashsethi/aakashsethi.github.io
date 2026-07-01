@@ -1,8 +1,20 @@
-# Aakash Sethi — Personal Design System
+# Aakash Sethi — AI Engineer, Consultant & Mentor (New Jersey, US)
 
-> A small, opinionated brand system for **Aakash Sethi** — **Inventionist · AI research enthusiast · Product Owner · a great salesperson**. Currently building [**Tnufa.ai**](https://tnufa.ai), a platform for skill-based career mobility. Designed for a personal portfolio and any side projects, blog posts, decks, or one-off mocks that need a consistent voice.
+**AI Software Engineer · AWS Certified Solutions Architect Professional · Founder, [Tnufa.ai](https://tnufa.ai)**
 
-The brief: build a personal-portfolio identity that reads as *technical, precise, and approachable* — confident enough for an AI engineer's body of work, friendly enough to invite collaboration.
+I'm Aakash Sethi. I build production AI systems and help teams ship them. Five years across **Vanguard**, **Mercedes-Benz Financial Services**, and **Burpez**. NJDOE-licensed CS educator on the side.
+
+**Available for:**
+- AI engineering consulting (LLM apps, RAG pipelines, agentic systems)
+- AWS cloud architecture reviews
+- Tech career coaching (interview prep, system design, transitions)
+- Long-form technical mentorship
+
+**Links:** [aakashsethi.github.io](https://aakashsethi.github.io) · [LinkedIn](https://www.linkedin.com/in/aakash-sethi-007) · [Book a call →](https://aakashsethi.github.io/#contact) · [Read the blog →](https://aakashsethi.github.io/#mylogs)
+
+---
+
+This repository powers [**aakashsethi.github.io**](https://aakashsethi.github.io) — my personal portfolio, blog, and the automated pipeline that publishes long-form AI/engineering writing weekly. Everything below is the design system that produces it.
 
 ---
 
