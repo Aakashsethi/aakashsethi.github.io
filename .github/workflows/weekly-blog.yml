@@ -49,4 +49,9 @@ jobs:
             git add "$new_image"
           fi
           git commit -m "Add weekly post: ${title:-untitled}"
-          git push
+          # Rebase on top of any concurrent pushes to avoid race conditions
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin main && git push && break
+            echo "Push attempt $i failed, retrying in 3s…"
+            sleep 3
+          done
