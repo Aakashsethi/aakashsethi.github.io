@@ -32,12 +32,14 @@ jobs:
           set -e
           git config user.name 'aakash-bot'
           git config user.email 'aakash.sethi7+bot@gmail.com'
-          if git diff --quiet _posts/; then
+          new_file=$(git ls-files --others --exclude-standard _posts/ | head -n 1)
+          if [ -z "$new_file" ]; then
             echo "No new post generated — nothing to commit."
             exit 0
           fi
-          new_file=$(git status --porcelain _posts/ | awk '{print $2}' | head -n 1)
           title=$(head -n 20 "$new_file" | grep '^title:' | sed -E 's/^title: *"?([^"]*)"?/\1/')
-          git add _posts/
+          words=$(sed -n '/^---$/,/^---$/!p' "$new_file" | wc -w | tr -d ' ')
+          echo "Committing $new_file ($words words)"
+          git add "$new_file"
           git commit -m "Add weekly post: ${title:-untitled}"
           git push

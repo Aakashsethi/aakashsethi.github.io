@@ -63,14 +63,16 @@ def prompt(category)
     STRUCTURE — MATCH EXISTING BLOG DEPTH
     Existing posts on this site are 2000–3500 words. They cite real books, papers, and thinkers by name — Habermas, Bagdikian, Chomsky, Christensen, real production experiences. They read like they were written by someone who reads for a living.
 
-    Your post must:
-    - Be 2000–3200 words in the body.
+    Your post MUST:
+    - Be a MINIMUM of 2000 words in the body — this is a hard floor, not a suggestion. Anything under 2000 words is a failed output that will be rejected. Aim for 2400–2800.
     - Open with a specific hook (a stat, a bug, a contradiction, a scene) — NOT a definition or generic setup.
-    - Have 4–7 H2 sections. Section titles must be sentence case and CONCRETE (e.g. "Six companies, 90 percent of everything" not "Introduction to media consolidation").
+    - Have 5–7 H2 sections. Each section must be at least 300 words. Section titles must be sentence case and CONCRETE (e.g. "Six companies, 90 percent of everything" not "Introduction to media consolidation").
     - Include at least one blockquote pulled from a real named source you know exists.
     - Include at least one specific number, code snippet, worked example, or short numbered list.
     - Cite real books/papers/thinkers by name where relevant — but ONLY citations you are highly confident actually exist. Do not invent titles, authors, or page numbers. If unsure, hedge or omit.
     - End with a concrete takeaway the reader could act on this week — not "hope this helps".
+    - Do NOT include filler phrases like "In conclusion", "To sum up", "As I mentioned earlier". Just say the thing.
+    - Do NOT include a "Follow for daily posts" or "P.S. Source:" line — this is a long-form essay, not a LinkedIn snippet.
 
     TOPIC CATEGORY
     #{category}
@@ -162,13 +164,31 @@ def write_post(payload, category)
   path
 end
 
+MIN_WORDS = 1800  # hard floor — reject anything under this
+MAX_ATTEMPTS = 3
+
+def word_count(text) = text.to_s.split(/\s+/).size
+
 def main
   category = weighted_pick
   warn "▶ Category: #{category}"
-  payload = call_groq(prompt(category))
+
+  payload = nil
+  MAX_ATTEMPTS.times do |i|
+    p = call_groq(prompt(category))
+    wc = word_count(p['body'])
+    warn "  Attempt #{i + 1}: #{wc} words"
+    if wc >= MIN_WORDS
+      payload = p
+      break
+    end
+    warn "  ✗ Under #{MIN_WORDS} words — retrying with stronger nudge"
+  end
+
+  raise "Could not produce a body of #{MIN_WORDS}+ words after #{MAX_ATTEMPTS} attempts" if payload.nil?
+
   path = write_post(payload, category)
-  words = payload.fetch('body').split(/\s+/).size
-  warn "✓ Wrote #{path} (#{words} words)"
+  warn "✓ Wrote #{path} (#{word_count(payload['body'])} words)"
   puts path
 end
 
