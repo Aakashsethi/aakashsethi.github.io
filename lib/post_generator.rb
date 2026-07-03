@@ -6,6 +6,10 @@ module PostGenerator
   WEIGHTS = { coding: 33, ai: 33, industry: 13, stocks: 10, education: 11 }.freeze
 
   PORTFOLIO_URL = 'https://aakashsethi.github.io'
+  NEWSLETTER_URL = 'https://aakashsethi.github.io/#newsletter'
+  # Rotate a newsletter CTA into ~40% of eligible posts (all categories except stocks,
+  # which needs the disclaimer). Same soft-touch as portfolio CTAs — one line, no hype.
+  NEWSLETTER_CTA_RATE = 0.4
 
   BRAND_VOICE = <<~VOICE
     Voice rules (Aakash Sethi personal brand):
@@ -67,6 +71,19 @@ module PostGenerator
       Source summary: #{source[:summary]}
     S
 
+    # Newsletter promo: append a soft closer for a share of posts. Stocks skipped
+    # (they need the "not financial advice" line as the last beat).
+    newsletter_block = if category != :stocks && rand < NEWSLETTER_CTA_RATE
+      <<~N
+        Newsletter promo (required for this post):
+        - After the main content, add one short closing line (its own line, no bullet, no hashtag) inviting readers to subscribe to Aakash's newsletter for field notes on AI engineering, RAG, and shipping production AI.
+        - Vary the phrasing (e.g. "Field notes on this stuff → #{NEWSLETTER_URL}", "If you liked this, the long-form version goes to my newsletter: #{NEWSLETTER_URL}", "One post-per-drop, no filler: #{NEWSLETTER_URL}").
+        - The URL must appear literally as #{NEWSLETTER_URL}.
+      N
+    else
+      ''
+    end
+
     <<~PROMPT
       You are drafting a LinkedIn post for Aakash Sethi — AI software engineer, AWS Certified Solutions Architect Pro, building Tnufa.ai (skill-based career mobility). Five years across Vanguard, Mercedes-Benz Financial Services, Burpez.
 
@@ -76,9 +93,9 @@ module PostGenerator
       #{intent}
 
       #{src_block}
-
+      #{newsletter_block}
       Hard rules:
-      - 120–220 words.
+      - 120–220 words (excluding the source URL and any newsletter closer).
       - First word must NOT be "I" — open with a hook (a stat, a contradiction, a question, or a concrete observation).
       - No hashtags except up to two at the end, lowercase, specific (e.g. #consulting #agents).
       - No emoji.
