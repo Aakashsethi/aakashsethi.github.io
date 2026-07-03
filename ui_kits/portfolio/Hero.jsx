@@ -1,7 +1,16 @@
 /* global React */
 function Hero({ onNav }) {
   return (
-    <section className="hero" style={{backgroundImage:'url(/assets/ai/hero_bg.png)', backgroundSize:'cover', backgroundPosition:'center'}}>
+    <section className="hero">
+      <img
+        className="hero-bg"
+        src="/assets/ai/hero_bg.png"
+        alt="Aakash Sethi — AI Software Engineer, New Jersey. AWS Certified Solutions Architect Pro. Building Tnufa.ai."
+        width="1392"
+        height="688"
+        loading="eager"
+        fetchPriority="high"
+      />
       <div className="hero-grid" aria-hidden="true" />
       <div className="hero-img-overlay" aria-hidden="true" />
       <div className="hero-inner">

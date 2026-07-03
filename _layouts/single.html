@@ -26,7 +26,7 @@
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <link rel="canonical" href="{{ page.url | absolute_url }}">
 
-{% assign og_image = page.image_url | default: '/assets/ai/about_portrait.png' | absolute_url %}
+{% assign og_image = page.image_url | default: '/assets/ai/aakash-sethi-ai-engineer-nj.jpg' | absolute_url %}
 <meta property="og:type" content="article">
 <meta property="og:title" content="{{ page.title }}">
 <meta property="og:description" content="{{ page.excerpt | strip_html | truncate: 155 }}">
@@ -53,7 +53,28 @@
   },
   "headline": {{ page.title | jsonify }},
   "description": {{ page.excerpt | strip_html | truncate: 200 | jsonify }},
-  "image": "{{ og_image }}",
+  "image": {
+    "@type": "ImageObject",
+    "@id": "{{ og_image }}#image",
+    "url": "{{ og_image }}",
+    "contentUrl": "{{ og_image }}",
+    "caption": {{ page.title | jsonify }},
+    "description": {{ page.excerpt | strip_html | truncate: 200 | jsonify }},
+    "creditText": "Aakash Sethi",
+    "creator": {
+      "@type": "Person",
+      "name": "Aakash Sethi",
+      "url": "https://aakashsethi.github.io/#person"
+    },
+    "copyrightHolder": {
+      "@type": "Person",
+      "name": "Aakash Sethi",
+      "url": "https://aakashsethi.github.io/#person"
+    },
+    "copyrightNotice": "© Aakash Sethi. All rights reserved.",
+    "license": "https://aakashsethi.github.io/privacy.html",
+    "acquireLicensePage": "https://aakashsethi.github.io/#contact"
+  },
   "datePublished": "{{ page.date | date_to_xmlschema }}",
   "dateModified": "{{ page.date | date_to_xmlschema }}",
   "articleSection": {{ page.categories | jsonify }},
@@ -65,6 +86,8 @@
     "sameAs": [
       "https://www.linkedin.com/in/aakash-sethi-007",
       "https://github.com/Aakashsethi",
+      "https://x.com/aforaakash",
+      "https://www.youtube.com/@AakashSethi007",
       "https://tnufa.ai"
     ]
   },

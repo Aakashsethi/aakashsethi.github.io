@@ -1,0 +1,38 @@
+---
+layout: null
+sitemap: false
+permalink: /sitemap-images.xml
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Homepage: portrait + hero background -->
+  <url>
+    <loc>{{ site.url }}/</loc>
+    <image:image>
+      <image:loc>{{ site.url }}/assets/ai/aakash-sethi-ai-engineer-nj.jpg</image:loc>
+      <image:title>Aakash Sethi — AI Software Engineer, New Jersey</image:title>
+      <image:caption>Aakash Sethi, AI Software Engineer based in New Jersey. AWS Certified Solutions Architect Professional. Founder of Tnufa.ai.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>{{ site.url }}/assets/ai/hero_bg.png</image:loc>
+      <image:title>Aakash Sethi portfolio hero — AI engineering, LLMs, RAG, agentic AI</image:title>
+      <image:caption>Landing image for Aakash Sethi's AI engineering portfolio. New Jersey, USA.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- One entry per post that has (or defaults to) an image -->
+  {% for post in site.posts %}
+  {% assign img_path = post.image_url | default: '/assets/ai/aakash-sethi-ai-engineer-nj.jpg' %}
+  <url>
+    <loc>{{ site.url }}{{ post.url }}</loc>
+    <image:image>
+      <image:loc>{{ site.url }}{{ img_path }}</image:loc>
+      <image:title>{{ post.title | strip_html | xml_escape }}</image:title>
+      <image:caption>{{ post.excerpt | strip_html | truncate: 200 | xml_escape }}</image:caption>
+    </image:image>
+  </url>
+  {% endfor %}
+
+</urlset>
