@@ -10,6 +10,7 @@ require_relative 'lib/blog_generator'
 require_relative 'lib/store'
 
 MAILTRAP_API_KEY = ENV.fetch('MAILTRAP_API_KEY')
+BUTTONDOWN_API_KEY = ENV['BUTTONDOWN_API_KEY']  # lazy-checked per request; /subscribe returns 503 if missing
 TO_EMAIL         = ENV.fetch('TO_EMAIL',  'aakash.sethi7@gmail.com')
 FROM_EMAIL       = ENV.fetch('FROM_EMAIL', 'hello@tnufa.ai')
 FROM_NAME        = 'Portfolio Contact'
@@ -21,6 +22,7 @@ use Rack::Cors do
     origins 'localhost:4000', '127.0.0.1:4000',
             'aakashsethi.github.io', 'https://aakashsethi.github.io'
     resource '/contact', headers: :any, methods: [:post, :options]
+    resource '/subscribe', headers: :any, methods: [:post, :options]
     resource '/posts.json', headers: :any, methods: [:get, :options]
     resource '/blog.json', headers: :any, methods: [:get, :options]
     resource '/blog/*', headers: :any, methods: [:get, :options]
@@ -306,4 +308,53 @@ get '/blog/:slug.json' do
   { slug: p['slug'], title: p['title'], summary: p['summary'], category: p['category'],
     sources: JSON.parse(p['sources_json'] || '[]'), body_md: p['body_md'],
     created_at: p['created_at'] }.to_json
+end
+
+# ── Newsletter subscribe (Buttondown via server-side API key) ────────────────
+# type: "regular" skips double-opt-in; Buttondown's welcome automation still fires.
+post '/subscribe' do
+  content_type :json
+
+  if BUTTONDOWN_API_KEY.nil? || BUTTONDOWN_API_KEY.strip.empty?
+    halt 503, { error: 'Subscribe endpoint not configured. Missing BUTTONDOWN_API_KEY.' }.to_json
+  end
+
+  b = JSON.parse(request.body.read) rescue {}
+  email = b['email'].to_s.strip
+  tag   = b['tag'].to_s.strip
+
+  halt 400, { error: 'Email is required.' }.to_json if blank?(email)
+  unless email =~ /\A[^@\s]+@[^@\s]+\.[^@\s]+\z/
+    halt 400, { error: 'That email address does not look right.' }.to_json
+  end
+
+  payload = { email_address: email, type: 'regular' }
+  payload[:tags] = [tag] unless blank?(tag)
+
+  res = HTTParty.post(
+    'https://api.buttondown.email/v1/subscribers',
+    headers: {
+      'Authorization' => "Token #{BUTTONDOWN_API_KEY}",
+      'Content-Type'  => 'application/json'
+    },
+    body: payload.to_json,
+    timeout: 10
+  )
+
+  case res.code
+  when 200, 201
+    { ok: true }.to_json
+  when 400
+    # Buttondown returns 400 for "already subscribed" — treat as success.
+    body = JSON.parse(res.body) rescue { 'detail' => res.body }
+    if body['detail'].to_s.downcase.include?('already')
+      { ok: true, already: true }.to_json
+    else
+      halt 400, { error: body['detail'] || 'Subscription failed.' }.to_json
+    end
+  else
+    halt 502, { error: "Buttondown returned #{res.code}." }.to_json
+  end
+rescue => e
+  halt 500, { error: e.message }.to_json
 end
