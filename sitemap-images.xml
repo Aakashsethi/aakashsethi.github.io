@@ -26,9 +26,9 @@ permalink: /sitemap-images.xml
   {% for post in site.posts %}
   {% assign img_path = post.image_url | default: '/assets/ai/aakash-sethi-ai-engineer-nj.jpg' %}
   <url>
-    <loc>{{ site.url }}{{ post.url }}</loc>
+    <loc>{{ site.url }}{{ post.url | xml_escape }}</loc>
     <image:image>
-      <image:loc>{{ site.url }}{{ img_path }}</image:loc>
+      <image:loc>{{ site.url }}{{ img_path | xml_escape }}</image:loc>
       <image:title>{{ post.title | strip_html | xml_escape }}</image:title>
       <image:caption>{{ post.excerpt | strip_html | truncate: 200 | xml_escape }}</image:caption>
     </image:image>
