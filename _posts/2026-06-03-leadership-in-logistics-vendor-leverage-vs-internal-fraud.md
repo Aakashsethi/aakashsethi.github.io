@@ -8,6 +8,10 @@ author_profile: true
 read_time: true
 share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7468039442675523584"
+cover_image: /assets/posts/2026-06-03-leadership-in-logistics-vendor-leverage-vs-internal-fraud.png
+cover_image_alt: 'Leadership in Logistics — Vendor Leverage vs Internal Fraud — cover art'
+cover_image_width: 1200
+cover_image_height: 624
 ---
 
 Two types of logistics leaders exist. One builds a company that gets more profitable every quarter by engineering vendor relationships most teams leave on the table. The other quietly enriches themselves at the company's expense — and stays invisible until an auditor or a federal indictment arrives.

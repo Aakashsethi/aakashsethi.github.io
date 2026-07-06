@@ -8,6 +8,10 @@ author_profile: true
 read_time: true
 share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7474189428308160512"
+cover_image: /assets/posts/2026-06-20-i-made-claude-code-think-before-it-codes-then-i-gave-it-a-te.png
+cover_image_alt: 'I Made Claude Code Think Before It Codes. Then I Gave It a Team. — cover art'
+cover_image_width: 1200
+cover_image_height: 624
 ---
 
 Conducting an AI team beats writing code alone.

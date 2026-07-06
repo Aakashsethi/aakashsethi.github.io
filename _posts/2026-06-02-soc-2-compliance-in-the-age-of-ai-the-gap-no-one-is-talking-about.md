@@ -8,6 +8,10 @@ author_profile: true
 read_time: true
 share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7466927032795471872"
+cover_image: /assets/posts/2026-06-02-soc-2-compliance-in-the-age-of-ai-the-gap-no-one-is-talking-about.png
+cover_image_alt: 'SOC 2 Compliance in the Age of AI — The Gap No One Is Talking About — cover art'
+cover_image_width: 1200
+cover_image_height: 624
 ---
 
 Your AI systems may be brilliant. The question I keep asking enterprise architects is whether they're auditable. Most aren't — and the gap is widening fast. SOC 2 was designed for a world where data moved predictably between defined systems with documented controls. Generative AI broke that model, and most enterprise security teams haven't caught up. I've spent the last few years building production systems on AWS at Vanguard, then designing AI-first architectures for clients, and the same pattern keeps surfacing: brilliant models, broken audit trails. Here's what's actually going on, and what enterprise-grade AI architecture has to look like in 2025.

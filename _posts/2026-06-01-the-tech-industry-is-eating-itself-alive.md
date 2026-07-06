@@ -8,6 +8,10 @@ author_profile: true
 read_time: true
 share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7467234914644447232"
+cover_image: /assets/posts/2026-06-01-the-tech-industry-is-eating-itself-alive.png
+cover_image_alt: 'The Tech Industry Is Eating Itself Alive — cover art'
+cover_image_width: 1200
+cover_image_height: 624
 ---
 
 The tech industry is eating itself alive, and the numbers are no longer subtle. 52% of the internet is now AI-generated content according to Graphite's 2025 web analysis. "Slop" — the term for AI-generated junk — was Merriam-Webster's Word of the Year. 78% of AI startups are API wrappers (CB Insights, 2024). We built the most powerful creative tools in human history and immediately used them to flood the world with garbage, then sued each other over who owned the garbage in the first place. I've been shipping production systems for a decade — ETF trading infrastructure at Vanguard, microservices at Mercedes-Benz Financial, a MERN app serving 5K daily users — and I've never seen an industry move this fast in a direction this obviously broken. Let's break down what's actually happening.

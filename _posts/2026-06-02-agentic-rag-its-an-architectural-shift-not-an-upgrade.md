@@ -8,6 +8,10 @@ author_profile: true
 read_time: true
 share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7467620205540802561"
+cover_image: /assets/posts/2026-06-02-agentic-rag-its-an-architectural-shift-not-an-upgrade.png
+cover_image_alt: 'Agentic RAG — It’s an Architectural Shift, Not an Upgrade — cover art'
+cover_image_width: 1200
+cover_image_height: 624
 ---
 
 Your RAG pipeline is already obsolete. I don't mean that as clickbait — I mean it architecturally. The retrieve-then-generate pattern that defined 2023 has quietly been replaced by something fundamentally different, and most engineers I talk to are still shipping the old design into production. They're hitting the same walls I hit building Tnufa.ai, and reaching for the same fixes that don't work: better prompts, bigger embedding models, more chunks. None of that addresses the real problem, which is that a fixed pipeline cannot answer a question that requires reasoning about what to retrieve.

@@ -8,6 +8,10 @@ author_profile: true
 read_time: true
 share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7476123408678715393"
+cover_image: /assets/posts/2026-06-26-openai-will-delay-gpt-56-after-trump-administration-request.png
+cover_image_alt: 'OpenAI will delay GPT-5.6 after Trump administration request — cover art'
+cover_image_width: 1200
+cover_image_height: 624
 ---
 
 GPT-5.6 just got delayed because the White House asked nicely.

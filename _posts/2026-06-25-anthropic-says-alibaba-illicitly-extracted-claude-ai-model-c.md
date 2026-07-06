@@ -8,6 +8,10 @@ author_profile: true
 read_time: true
 share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7475759784307376128"
+cover_image: /assets/posts/2026-06-25-anthropic-says-alibaba-illicitly-extracted-claude-ai-model-c.png
+cover_image_alt: 'Anthropic says Alibaba illicitly extracted Claude AI model capabilities — cover art'
+cover_image_width: 1200
+cover_image_height: 624
 ---
 
 Model distillation just became a geopolitical incident.

@@ -8,6 +8,10 @@ author_profile: true
 read_time: true
 share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7475729580096589824"
+cover_image: /assets/posts/2026-06-24-openai-reveals-its-first-ai-processor-jalapeño.png
+cover_image_alt: 'OpenAI reveals its first AI processor: Jalapeño — cover art'
+cover_image_width: 1200
+cover_image_height: 624
 ---
 
 OpenAI just stopped being Nvidia's customer.

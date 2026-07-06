@@ -8,6 +8,10 @@ author_profile: true
 read_time: true
 share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7476061761482358784"
+cover_image: /assets/posts/2026-06-25-the-white-house-is-asking-openai-to-slow-roll-the-release-of.png
+cover_image_alt: 'The White House is asking OpenAI to slow roll the release of its new model over safety concerns — cover art'
+cover_image_width: 1200
+cover_image_height: 624
 ---
 
 The White House just told OpenAI to put GPT-5.6 on a leash.

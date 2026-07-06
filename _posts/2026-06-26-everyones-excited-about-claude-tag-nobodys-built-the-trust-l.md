@@ -8,6 +8,10 @@ author_profile: true
 read_time: true
 share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7476277606548684801"
+cover_image: /assets/posts/2026-06-26-everyones-excited-about-claude-tag-nobodys-built-the-trust-l.png
+cover_image_alt: "Everyone's Excited About Claude Tag. Nobody's Built the Trust Layer. — cover art"
+cover_image_width: 1200
+cover_image_height: 624
 ---
 
 Karpathy just called Claude Tag the third major shift in computing. The dev community is sprinting to build agents on top of it. Almost nobody is building the trust layer underneath.

@@ -8,6 +8,10 @@ author_profile: true
 read_time: true
 share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7466924770756980736"
+cover_image: /assets/posts/2026-06-01-what-the-first-amendment-actually-protects-and-what-it-doesnt.png
+cover_image_alt: "What the First Amendment Actually Protects (And What It Doesn't) — cover art"
+cover_image_width: 1200
+cover_image_height: 624
 ---
 
 The First Amendment doesn't protect your right to be heard. It protects the government's inability to silence you. That's a very different thing, and the distinction matters more every year as the infrastructure of public discourse migrates entirely onto privately-owned platforms governed by terms of service rather than constitutional law.
