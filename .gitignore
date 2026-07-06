@@ -8,3 +8,4 @@ vendor
 *.env
 .env.*
 generate_site_images.py
+assets/og/_*.png
