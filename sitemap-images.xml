@@ -37,6 +37,16 @@ permalink: /sitemap-images.xml
     </image:image>
   </url>
 
+  <!-- Consulting / advisory tiers -->
+  <url>
+    <loc>{{ '/consulting/' | absolute_url }}</loc>
+    <image:image>
+      <image:loc>{{ site.default_og_image | absolute_url }}</image:loc>
+      <image:title>AI Advisory & Consulting — Aakash Sethi</image:title>
+      <image:caption>Intro consult $299. Quarterly AI advisory retainers from $2,500. Book with Aakash Sethi, Founder of Tnufa AI.</image:caption>
+    </image:image>
+  </url>
+
   <!-- One entry per post with a cover_image (falls back to default share card) -->
   {% for post in site.posts %}
   {% assign img_path = post.cover_image | default: site.default_og_image %}

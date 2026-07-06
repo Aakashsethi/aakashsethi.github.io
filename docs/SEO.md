@@ -19,6 +19,7 @@ identity, product schema hangs off the person.
 | `_layouts/single.html` | Post template. Per-post OG image with fallback, BlogPosting + BreadcrumbList JSON-LD, in-page cover `<figure>` for Google Images, lazy Giscus, `site.time` footer year. |
 | `index.html` | Homepage. Person + ProfessionalService + FAQPage + WebSite schema. `PriceSpecification` for the $299 initial consultation. React scripts `defer`. `<noscript>` fallback. |
 | `blog/index.html` | Blog hub. OG + Blog + BreadcrumbList schema. Posts server-rendered as static `<a class="post-row">` so bots see titles in initial HTML. JS enhances search/filter. |
+| `consulting.html` | Pricing page (`/consulting/`). 4 tiers visible: intro $299, Starter $2.5–3.5k/qtr, Growth $5–7.5k/qtr, Enterprise $10–15k/qtr. Full `Service` + multi-`Offer` JSON-LD with `PriceSpecification` per tier (uses `minPrice`/`maxPrice` for ranges). Post topbar & CTA card link here. Testimonials TODO block. |
 | `privacy.html` | Minimal OG (og:type=website), favicons, RSS discovery. |
 | `sitemap.xml` | **Do not commit a hand-written one.** `jekyll-sitemap` generates it at build time. |
 | `sitemap-images.xml` | Iterates posts with `cover_image` and emits `<image:image>` entries (Google Image sitemap 1.1 spec). Home + `/blog/` are hard-coded. |
@@ -219,12 +220,31 @@ commits doesn't break earlier ones.
 
 ---
 
-## 8 · Open items (deliberate TODOs)
+## 8 · Pricing (public tiers)
+
+Visible on `/consulting/` and echoed in JSON-LD `ProfessionalService.hasOfferCatalog`
+on `/` and `Service.offers` on `/consulting/`.
+
+| Tier | Price | Cadence | Slug |
+| --- | --- | --- | --- |
+| Initial Consultation | $299 | one-time · 60 min | `#intro` |
+| Starter AI Advisory | $2,500 – $3,500 | per quarter | `#starter` |
+| Growth AI Retainer | $5,000 – $7,500 | per quarter | `#growth` |
+| Enterprise AI Optimization | $10,000 – $15,000 | per quarter | `#enterprise` |
+
+Ranges use `PriceSpecification.minPrice` + `maxPrice` + `unitText: "quarter"`
+so Google surfaces the range cleanly in rich results. When rates change,
+update BOTH `consulting.html` (visible + JSON-LD) AND `index.html`
+(ProfessionalService OfferCatalog) — schema must mirror visible content.
+
+## 9 · Open items (deliberate TODOs)
 
 - **Testimonials / `AggregateRating`** — skipped until real quotes exist.
-  Add a JSON-LD block on `index.html` under `ProfessionalService.aggregateRating`.
-- **Real portrait** — `assets/ai/about_portrait.jpg` is a fal-generated
-  silhouette. Drop a real headshot in at the same path and re-run
+  Add a JSON-LD block on `index.html` under `ProfessionalService.aggregateRating`
+  AND on `consulting.html` under `Service.aggregateRating`. The dashed
+  placeholder box in `consulting.html` is where the visible quotes go.
+- **Real portrait** — `assets/ai/aakash-sethi-ai-engineer-nj.jpg` may still be
+  a fal-generated silhouette. Drop a real headshot at that path and re-run
   `python3 generate_site_images.py --og-card --force` to refresh the share card.
 - **Homepage hero copy rewrite** — React components still say "portfolio".
   For the founder→product positioning to land above the fold, edit

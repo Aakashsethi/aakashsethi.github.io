@@ -200,10 +200,12 @@
   "areaServed": { "@type": "Country", "name": "United States" },
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
-    "name": "Consulting Services",
+    "name": "AI Advisory & Consulting Services",
+    "url": "https://aakashsethi.github.io/consulting/",
     "itemListElement": [
       {
         "@type": "Offer",
+        "name": "Initial Consultation",
         "priceSpecification": {
           "@type": "PriceSpecification",
           "price": "299.00",
@@ -211,46 +213,73 @@
           "valueAddedTaxIncluded": false
         },
         "availability": "https://schema.org/InStock",
-        "url": "https://aakashsethi.github.io/#contact",
+        "url": "https://aakashsethi.github.io/consulting/#intro",
         "itemOffered": {
           "@type": "Service",
           "name": "Initial Consultation & AI Engineering Strategy",
           "description": "60-minute 1-on-1 initial consultation covering LLM application development, agentic systems design, RAG architecture, production AI deployment, and AI product strategy. $299 flat.",
           "serviceType": "AI Engineering Consultation",
-          "provider": { "@id": "https://aakashsethi.github.io/#person" },
-          "areaServed": [
-            { "@type": "Country", "name": "United States" },
-            { "@type": "State", "name": "New Jersey" }
-          ],
-          "availableChannel": {
-            "@type": "ServiceChannel",
-            "serviceUrl": "https://aakashsethi.github.io/#contact",
-            "availableLanguage": "English"
-          }
+          "provider": { "@id": "https://aakashsethi.github.io/#person" }
         }
       },
       {
         "@type": "Offer",
+        "name": "Starter AI Advisory",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "minPrice": "2500.00",
+          "maxPrice": "3500.00",
+          "priceCurrency": "USD",
+          "unitText": "quarter",
+          "valueAddedTaxIncluded": false
+        },
+        "availability": "https://schema.org/InStock",
+        "url": "https://aakashsethi.github.io/consulting/#starter",
         "itemOffered": {
           "@type": "Service",
-          "name": "Tech Career Coaching & Mentoring",
-          "description": "Resume review, FAANG interview prep, system design coaching, career strategy, salary negotiation, job search for software engineers"
+          "name": "Starter AI Advisory (Quarterly)",
+          "description": "Weekly office hours, architecture review, and a co-designed roadmap for teams shipping their first LLM/AI product.",
+          "provider": { "@id": "https://aakashsethi.github.io/#person" }
         }
       },
       {
         "@type": "Offer",
+        "name": "Growth AI Retainer",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "minPrice": "5000.00",
+          "maxPrice": "7500.00",
+          "priceCurrency": "USD",
+          "unitText": "quarter",
+          "valueAddedTaxIncluded": false
+        },
+        "availability": "https://schema.org/InStock",
+        "url": "https://aakashsethi.github.io/consulting/#growth",
         "itemOffered": {
           "@type": "Service",
-          "name": "AWS Architecture Consulting",
-          "description": "Cloud architecture design, AWS SAP-C02 certification coaching, infrastructure review, serverless and ECS patterns"
+          "name": "Growth AI Retainer (Quarterly)",
+          "description": "Bi-weekly deep dives, RAG/agent pipeline review, AWS cost audit, and AI hiring advisory for teams scaling AI into production.",
+          "provider": { "@id": "https://aakashsethi.github.io/#person" }
         }
       },
       {
         "@type": "Offer",
+        "name": "Enterprise AI Optimization Package",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "minPrice": "10000.00",
+          "maxPrice": "15000.00",
+          "priceCurrency": "USD",
+          "unitText": "quarter",
+          "valueAddedTaxIncluded": false
+        },
+        "availability": "https://schema.org/InStock",
+        "url": "https://aakashsethi.github.io/consulting/#enterprise",
         "itemOffered": {
           "@type": "Service",
-          "name": "Computer Science Tutoring",
-          "description": "CS fundamentals, data structures, algorithms, Java, Python, web development tutoring for students and career changers"
+          "name": "Enterprise AI Optimization (Quarterly)",
+          "description": "Full-quarter enterprise engagement: AI architecture audit, AWS cost optimization, RAG/agent evaluation harnesses, and org-level AI strategy.",
+          "provider": { "@id": "https://aakashsethi.github.io/#person" }
         }
       }
     ]
