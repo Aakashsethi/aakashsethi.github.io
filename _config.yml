@@ -1,12 +1,38 @@
-title: Aakash Sethi (AI Engineer) — New Jersey · AWS SAP · LLMs & Agentic AI
+title: Aakash Sethi — Founder of Tnufa AI · AI Engineer, New Jersey
 email: aakash.sethi7@gmail.com
 description: >-
-  Aakash Sethi is an AI Software Engineer based in New Jersey, USA — not the Quest
-  Alliance CEO. AWS Certified Solutions Architect Professional. Founder of Tnufa.ai.
-  Five years across Vanguard, Mercedes-Benz Financial Services, and Burpez.
+  Aakash Sethi — Founder of Tnufa AI. AI Software Engineer based in New Jersey,
+  USA (distinct from the Quest Alliance CEO in India). AWS Certified Solutions
+  Architect Professional. Mentor for engineers building AI products and
+  leveling up their careers.
 baseurl: ""
 url: "https://aakashsethi.github.io"
 github_username: Aakashsethi
+
+# Brand identity — used by templates, jekyll-seo-tag, and schema.org
+author:
+  name: Aakash Sethi
+  email: aakash.sethi7@gmail.com
+  url: "https://aakashsethi.github.io"
+  twitter: ""
+  linkedin: "aakash-sethi-007"
+
+# jekyll-seo-tag social block (Person type on posts)
+social:
+  name: Aakash Sethi
+  type: Person
+  links:
+    - https://github.com/Aakashsethi
+    - https://www.linkedin.com/in/aakash-sethi-007
+    - https://x.com/aforaakash
+    - https://www.youtube.com/@AakashSethi007
+    - https://tnufa.ai
+
+# Default share card — 1200x630 for LinkedIn/X/Facebook/Slack previews
+default_og_image: /assets/og/home-og.jpg
+default_og_image_width: 1200
+default_og_image_height: 630
+og_site_name: "Aakash Sethi | Tnufa AI"
 
 # Build settings — no theme, pure static SPA
 plugins:
@@ -14,17 +40,15 @@ plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
 
-# SEO tag config — used by jekyll-seo-tag on blog posts
-author:
-  name: Aakash Sethi
-  email: aakash.sethi7@gmail.com
-social:
-  name: Aakash Sethi
-  links:
-    - https://github.com/Aakashsethi
-    - https://www.linkedin.com/in/aakash-sethi-007
-    - https://tnufa.ai
-  type: Person
+# Front-matter defaults so every post inherits a cover image if missing
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author: "Aakash Sethi"
+      image: /assets/og/home-og.jpg
 
 # Exclude files that Jekyll shouldn't try to process
 exclude:
@@ -32,5 +56,11 @@ exclude:
   - Gemfile.lock
   - README.md
   - SKILL.md
+  - contact_server.rb
+  - generate_site_images.py
+  - render.yaml
+  - Procfile
   - node_modules/
   - vendor/
+  - LinkedInMarketing/
+  - .venv/

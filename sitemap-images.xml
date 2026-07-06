@@ -7,32 +7,46 @@ permalink: /sitemap-images.xml
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
-  <!-- Homepage: portrait + hero background -->
+  <!-- Homepage: share card + hero background + portrait -->
   <url>
-    <loc>{{ site.url }}/</loc>
+    <loc>{{ '/' | absolute_url }}</loc>
     <image:image>
-      <image:loc>{{ site.url }}/assets/ai/aakash-sethi-ai-engineer-nj.jpg</image:loc>
-      <image:title>Aakash Sethi — AI Software Engineer, New Jersey</image:title>
-      <image:caption>Aakash Sethi, AI Software Engineer based in New Jersey. AWS Certified Solutions Architect Professional. Founder of Tnufa.ai.</image:caption>
+      <image:loc>{{ site.default_og_image | absolute_url }}</image:loc>
+      <image:title>Aakash Sethi — Founder of Tnufa AI, AI Engineer, New Jersey</image:title>
+      <image:caption>AI Software Engineer and Founder of Tnufa AI based in New Jersey. AWS Certified Solutions Architect Professional. Mentor for engineers building AI products.</image:caption>
     </image:image>
     <image:image>
-      <image:loc>{{ site.url }}/assets/ai/hero_bg.png</image:loc>
+      <image:loc>{{ '/assets/ai/hero_bg.png' | absolute_url }}</image:loc>
       <image:title>Aakash Sethi portfolio hero — AI engineering, LLMs, RAG, agentic AI</image:title>
       <image:caption>Landing image for Aakash Sethi's AI engineering portfolio. New Jersey, USA.</image:caption>
     </image:image>
+    <image:image>
+      <image:loc>{{ '/assets/ai/about_portrait.jpg' | absolute_url }}</image:loc>
+      <image:title>Aakash Sethi</image:title>
+      <image:caption>Portrait — Aakash Sethi, Founder of Tnufa AI.</image:caption>
+    </image:image>
   </url>
 
-  <!-- One entry per post that has (or defaults to) an image -->
-  {% for post in site.posts %}
-  {% assign img_path = post.image_url | default: '/assets/ai/aakash-sethi-ai-engineer-nj.jpg' %}
+  <!-- Blog hub -->
   <url>
-    <loc>{{ site.url }}{{ post.url | xml_escape }}</loc>
+    <loc>{{ '/blog/' | absolute_url }}</loc>
     <image:image>
-      <image:loc>{{ site.url }}{{ img_path | xml_escape }}</image:loc>
+      <image:loc>{{ site.default_og_image | absolute_url }}</image:loc>
+      <image:title>Writing — Aakash Sethi</image:title>
+      <image:caption>Technical writing on AI engineering, AWS, and consulting.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- One entry per post with a cover_image (falls back to default share card) -->
+  {% for post in site.posts %}
+  {% assign img_path = post.cover_image | default: site.default_og_image %}
+  <url>
+    <loc>{{ post.url | absolute_url }}</loc>
+    <image:image>
+      <image:loc>{{ img_path | absolute_url }}</image:loc>
       <image:title>{{ post.title | strip_html | xml_escape }}</image:title>
       <image:caption>{{ post.excerpt | strip_html | truncate: 200 | xml_escape }}</image:caption>
     </image:image>
   </url>
   {% endfor %}
-
 </urlset>

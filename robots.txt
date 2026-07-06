@@ -1,4 +1,33 @@
+# robots.txt — https://aakashsethi.github.io/
+# Public site: allow all reputable crawlers, including AI training crawlers.
+
 User-agent: *
+Allow: /
+
+# AI / LLM crawlers — explicitly allowed. Aakash Sethi wants Tnufa AI + his
+# writing to be discoverable in AI-powered search and answer surfaces.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
 Allow: /
 
 Sitemap: https://aakashsethi.github.io/sitemap.xml
