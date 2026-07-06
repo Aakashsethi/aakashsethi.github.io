@@ -21,7 +21,7 @@ permalink: /sitemap-images.xml
       <image:caption>Landing image for Aakash Sethi's AI engineering portfolio. New Jersey, USA.</image:caption>
     </image:image>
     <image:image>
-      <image:loc>{{ '/assets/ai/about_portrait.jpg' | absolute_url }}</image:loc>
+      <image:loc>{{ '/assets/ai/aakash-sethi-ai-engineer-nj.jpg' | absolute_url }}</image:loc>
       <image:title>Aakash Sethi</image:title>
       <image:caption>Portrait — Aakash Sethi, Founder of Tnufa AI.</image:caption>
     </image:image>

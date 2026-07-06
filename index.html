@@ -31,17 +31,28 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+<!-- Favicons & PWA manifest -->
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+
+<!-- RSS feed discovery -->
+<link rel="alternate" type="application/rss+xml" title="Aakash Sethi — Writing" href="/feed.xml">
+
 <!-- Open Graph -->
 <meta property="og:type" content="profile">
-<meta property="og:title" content="Aakash Sethi (AI Engineer) — New Jersey · AWS · LLMs · Tnufa.ai">
-<meta property="og:description" content="AI Software Engineer in New Jersey, USA. AWS Certified SA Pro. Founder of Tnufa.ai. Book a call for AI engineering, AWS architecture, or technical mentorship.">
-<meta property="og:image" content="https://aakashsethi.github.io/assets/ai/aakash-sethi-ai-engineer-nj.jpg">
+<meta property="og:title" content="Aakash Sethi — Founder of Tnufa AI · AI Engineer, New Jersey">
+<meta property="og:description" content="AI Software Engineer and Founder of Tnufa AI, based in New Jersey, USA (distinct from the Quest Alliance CEO in India). AWS Certified SA Pro. Book a 1-on-1 for AI engineering, AWS architecture, or technical mentorship.">
+<meta property="og:image" content="https://aakashsethi.github.io/assets/og/home-og.jpg">
+<meta property="og:image:secure_url" content="https://aakashsethi.github.io/assets/og/home-og.jpg">
 <meta property="og:image:type" content="image/jpeg">
-<meta property="og:image:width" content="800">
-<meta property="og:image:height" content="800">
-<meta property="og:image:alt" content="Aakash Sethi — AI Engineer and Consultant, New Jersey">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Aakash Sethi — Founder of Tnufa AI. AI Engineer, Consultant, Mentor.">
 <meta property="og:url" content="https://aakashsethi.github.io/">
-<meta property="og:site_name" content="Aakash Sethi">
+<meta property="og:site_name" content="Aakash Sethi | Tnufa AI">
 <meta property="og:locale" content="en_US">
 <meta property="profile:first_name" content="Aakash">
 <meta property="profile:last_name" content="Sethi">
@@ -49,9 +60,9 @@
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Aakash Sethi (AI Engineer) — New Jersey · AWS · LLMs">
-<meta name="twitter:description" content="AI Software Engineer in New Jersey, USA. AWS Certified SA Pro. Founder of Tnufa.ai.">
-<meta name="twitter:image" content="https://aakashsethi.github.io/assets/ai/aakash-sethi-ai-engineer-nj.jpg">
+<meta name="twitter:title" content="Aakash Sethi — Founder of Tnufa AI · AI Engineer, NJ">
+<meta name="twitter:description" content="AI Software Engineer and Founder of Tnufa AI in New Jersey, USA. AWS Certified SA Pro. Book a 1-on-1 for AI engineering, AWS architecture, or mentorship.">
+<meta name="twitter:image" content="https://aakashsethi.github.io/assets/og/home-og.jpg">
 <meta name="twitter:image:alt" content="Aakash Sethi — AI Engineer">
 
 <!-- ── Person schema ─────────────────────────────────────────── -->
@@ -67,9 +78,9 @@
   "nationality": { "@type": "Country", "name": "United States" },
   "url": "https://aakashsethi.github.io/",
   "image": "https://aakashsethi.github.io/assets/ai/aakash-sethi-ai-engineer-nj.jpg",
-  "jobTitle": "AI Software Engineer",
-  "description": "AI Software Engineer based in New Jersey, USA. AWS Certified Solutions Architect Professional. NJDOE-licensed Computer Science educator. Founder of Tnufa.ai. Previously Vanguard, Mercedes-Benz Financial Services, Burpez.",
-  "disambiguatingDescription": "Aakash Sethi in this profile is an AI Software Engineer based in New Jersey, USA. This is a distinct individual from Aakash Sethi the CEO of Quest Alliance in India — different person, different field, different country.",
+  "jobTitle": "Founder & AI Software Engineer",
+  "description": "Founder of Tnufa AI. AI Software Engineer, consultant, and mentor based in New Jersey, USA. AWS Certified Solutions Architect Professional. NJDOE-licensed Computer Science educator. Previously Vanguard, Mercedes-Benz Financial Services, Burpez.",
+  "disambiguatingDescription": "Aakash Sethi in this profile is an AI Software Engineer and Founder of Tnufa AI based in New Jersey, USA. This is a distinct individual from Aakash Sethi the CEO of Quest Alliance in India — different person, different field, different country.",
   "email": "aakash.sethi7@gmail.com",
   "telephone": "+15616447279",
   "address": {
@@ -92,9 +103,14 @@
   ],
   "worksFor": {
     "@type": "Organization",
-    "name": "Tnufa.ai",
+    "@id": "https://tnufa.ai/#org",
+    "name": "Tnufa AI",
     "url": "https://tnufa.ai",
     "description": "Workforce mobility platform powered by skill embeddings"
+  },
+  "founder": {
+    "@type": "Organization",
+    "@id": "https://tnufa.ai/#org"
   },
   "hasOccupation": {
     "@type": "Occupation",
@@ -178,7 +194,7 @@
   "name": "Aakash Sethi — AI & Career Consulting",
   "@id": "https://aakashsethi.github.io/#service",
   "url": "https://aakashsethi.github.io/",
-  "image": "https://aakashsethi.github.io/assets/ai/aakash-sethi-ai-engineer-nj.jpg",
+  "image": "https://aakashsethi.github.io/assets/og/home-og.jpg",
   "description": "AI engineering consulting, career coaching, tech mentoring, system design coaching, and AWS consulting with Aakash Sethi — AWS Certified Solutions Architect Pro and NJDOE-licensed CS educator.",
   "founder": { "@type": "Person", "name": "Aakash Sethi" },
   "areaServed": { "@type": "Country", "name": "United States" },
@@ -188,10 +204,29 @@
     "itemListElement": [
       {
         "@type": "Offer",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": "299.00",
+          "priceCurrency": "USD",
+          "valueAddedTaxIncluded": false
+        },
+        "availability": "https://schema.org/InStock",
+        "url": "https://aakashsethi.github.io/#contact",
         "itemOffered": {
           "@type": "Service",
-          "name": "AI Engineering Consulting",
-          "description": "LLM application development, agentic systems design, RAG architecture, production AI deployment, AI product strategy"
+          "name": "Initial Consultation & AI Engineering Strategy",
+          "description": "60-minute 1-on-1 initial consultation covering LLM application development, agentic systems design, RAG architecture, production AI deployment, and AI product strategy. $299 flat.",
+          "serviceType": "AI Engineering Consultation",
+          "provider": { "@id": "https://aakashsethi.github.io/#person" },
+          "areaServed": [
+            { "@type": "Country", "name": "United States" },
+            { "@type": "State", "name": "New Jersey" }
+          ],
+          "availableChannel": {
+            "@type": "ServiceChannel",
+            "serviceUrl": "https://aakashsethi.github.io/#contact",
+            "availableLanguage": "English"
+          }
         }
       },
       {
@@ -287,10 +322,10 @@
 </script>
 <link rel="stylesheet" href="colors_and_type.css">
 <link rel="stylesheet" href="ui_kits/portfolio/styles.css">
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/lucide@0.395.0/dist/umd/lucide.min.js"></script>
+<script defer src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/lucide@0.395.0/dist/umd/lucide.min.js"></script>
 <!-- Site config (no secrets — channel IDs and public URLs only) -->
 <script>
   window.SITE_CONFIG = {
@@ -301,6 +336,21 @@
 </script>
 </head>
 <body>
+<noscript>
+  <div style="max-width:720px;margin:60px auto;padding:0 24px;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#0A0B0D;">
+    <h1 style="font-size:34px;font-weight:800;letter-spacing:-0.02em;margin:0 0 12px;">Aakash Sethi</h1>
+    <p style="font-family:ui-monospace,'JetBrains Mono',monospace;font-size:13px;color:#F5A524;letter-spacing:0.06em;text-transform:uppercase;margin:0 0 20px;">Founder of Tnufa AI · AI Engineer · Consultant · Mentor</p>
+    <p style="font-size:17px;line-height:1.6;color:#444;margin:0 0 20px;">I help engineers build AI products, level up their careers, and ship real systems. AWS Certified Solutions Architect Professional. NJDOE-licensed Computer Science educator. Based in New Jersey.</p>
+    <p style="font-size:15px;line-height:1.6;color:#444;">Book a 60-minute initial consultation ($299): <a href="mailto:aakash.sethi7@gmail.com" style="color:#0A0B0D;">aakash.sethi7@gmail.com</a></p>
+    <ul style="font-size:15px;line-height:1.9;padding-left:20px;color:#444;">
+      <li><a href="/blog/" style="color:#0A0B0D;">Read the blog</a></li>
+      <li><a href="https://linkedin.com/in/aakash-sethi-007" style="color:#0A0B0D;">LinkedIn</a></li>
+      <li><a href="https://github.com/Aakashsethi" style="color:#0A0B0D;">GitHub</a></li>
+      <li><a href="https://tnufa.ai" style="color:#0A0B0D;">Tnufa AI</a></li>
+    </ul>
+    <p style="font-size:13px;color:#888;margin-top:32px;">This page needs JavaScript enabled for the full experience.</p>
+  </div>
+</noscript>
 <div id="root"></div>
 <script type="text/babel" src="ui_kits/portfolio/data.jsx"></script>
 <script type="text/babel" src="ui_kits/portfolio/Chrome.jsx"></script>
