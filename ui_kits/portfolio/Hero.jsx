@@ -51,7 +51,7 @@ function StatStrip() {
     <section className="stat-strip">
       <div className="stat">
         <span className="eyebrow">Currently</span>
-        <span className="stat-val">Building Tnufa · L1 @ Amazon</span>
+        <span className="stat-val">Building Tnufa · L7 PM @ Amazon</span>
       </div>
       <div className="stat">
         <span className="eyebrow">Certifications</span>

@@ -1,10 +1,10 @@
 /* global React */
 
 const ROLES = [
-  { co: 'Amazon', loc: 'Hicksville, NY', role: 'L1 Associate', period: '2025 – Present',
+  { co: 'Amazon', loc: 'Hicksville, NY', role: 'L7 Product Manager', period: '2025 – Present',
     bullets: [
-      'Operate WMS and automation tools for high-volume order fulfillment.',
-      'Sustained productivity across 10–12 hour shifts; safety + quality compliance.',
+      'Own product strategy and roadmap for AI/ML initiatives; partner cross-functionally with engineering, science, design, and business teams.',
+      'Drive prioritization and execution across multi-team scope; align stakeholders on outcomes, metrics, and go-to-market.',
     ] },
   { co: 'Burpez', loc: 'Newark, NJ', role: 'Software Engineer', period: '2024 – 2025',
     bullets: [
@@ -92,7 +92,7 @@ function About() {
           <h4>Currently</h4>
           <ul className="dot-list">
             <li><span className="li-dot live" />Building Tnufa (tnufa.ai)</li>
-            <li><span className="li-dot" />L1 Associate · Amazon</li>
+            <li><span className="li-dot" />L7 Product Manager · Amazon</li>
             <li><span className="li-dot" />Open to senior eng roles</li>
           </ul>
           <h4 style={{marginTop:'var(--sp-8)'}}>Certifications</h4>

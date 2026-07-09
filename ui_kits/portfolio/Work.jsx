@@ -3,11 +3,11 @@
 const WORK_ROLES = [
   {
     co: 'Amazon', loc: 'Hicksville, NY', period: '2025 – Present',
-    role: 'L1 Associate',
-    stack: ['WMS', 'Fulfillment Ops', 'Automation'],
+    role: 'L7 Product Manager',
+    stack: ['Product Strategy', 'AI/ML', 'Roadmap'],
     bullets: [
-      'Operate warehouse management and automation tools for high-volume order fulfillment.',
-      'Sustained productivity across 10–12 hour shifts; safety + quality compliance.',
+      'Own product strategy and roadmap for AI/ML initiatives; partner cross-functionally with engineering, science, design, and business teams.',
+      'Drive prioritization and execution across multi-team scope; align stakeholders on outcomes, metrics, and go-to-market.',
     ],
   },
   {
