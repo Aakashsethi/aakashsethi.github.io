@@ -1671,3 +1671,112 @@ html, body { overflow-x: hidden; }
   .track-btn { flex: 1; padding: 9px 10px; font-size: 12px; }
 }
 
+
+/* ============================================================
+   Consulting-firm sections: trust bar, problems, testimonials
+   ============================================================ */
+
+/* Trust bar — a quiet line of companies to answer "who has he actually shipped for?" */
+.trust-bar {
+  border-top: 1px solid var(--ink-100);
+  border-bottom: 1px solid var(--ink-100);
+  padding: 22px clamp(16px, 4vw, 40px);
+  margin: 40px 0;
+  background: var(--bg-sunken);
+}
+.trust-bar-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap; justify-content: center;
+}
+.trust-bar-label {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-400);
+}
+.trust-bar-cos {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center;
+}
+.trust-bar-co {
+  font-size: 14px; font-weight: 600; color: var(--ink-700); letter-spacing: -0.01em;
+}
+.trust-bar-sep {
+  color: var(--ink-300); font-size: 12px;
+}
+
+/* Problems: three cards. Concrete pain points, no fluff. */
+.problems {
+  max-width: 1100px; margin: 80px auto; padding: 0 clamp(16px, 4vw, 40px);
+}
+.problems-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 36px;
+}
+@media (max-width: 900px) { .problems-grid { grid-template-columns: 1fr; } }
+.problem-card {
+  background: var(--paper);
+  border: 1px solid var(--ink-100);
+  border-radius: 14px;
+  padding: 28px 26px;
+  display: flex; flex-direction: column; gap: 12px;
+  transition: border-color 160ms, transform 160ms, box-shadow 160ms;
+}
+.problem-card:hover {
+  border-color: var(--signal-500);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(10,11,13,0.06);
+}
+.problem-eyebrow {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--signal-600); font-weight: 700;
+}
+.problem-title {
+  font-size: 20px; font-weight: 800; letter-spacing: -0.02em;
+  color: var(--ink-950); line-height: 1.25; margin: 0;
+}
+.problem-body {
+  font-size: 14px; line-height: 1.6; color: var(--ink-500); flex: 1; margin: 0;
+}
+.problem-cta {
+  font-family: var(--font-sans, 'Inter Tight', system-ui, sans-serif);
+  font-size: 13px; font-weight: 700; color: var(--ink-950);
+  text-decoration: none; letter-spacing: -0.01em; margin-top: 6px;
+  border-bottom: 2px solid var(--signal-500); align-self: flex-start;
+  padding-bottom: 2px; transition: color 140ms, border-color 140ms;
+}
+.problem-cta:hover { color: var(--signal-600); border-color: var(--signal-600); }
+
+/* Testimonials: three columns, restrained styling — social proof, not marketing shout. */
+.testimonials {
+  max-width: 1100px; margin: 80px auto; padding: 0 clamp(16px, 4vw, 40px);
+}
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 36px;
+}
+@media (max-width: 900px) { .testimonials-grid { grid-template-columns: 1fr; } }
+.testimonial-card {
+  background: var(--paper);
+  border: 1px solid var(--ink-100);
+  border-radius: 14px;
+  padding: 28px 26px;
+  margin: 0;
+  display: flex; flex-direction: column; gap: 20px;
+}
+.testimonial-quote {
+  font-family: 'Bookerly', Georgia, serif;
+  font-size: 16px; line-height: 1.6; color: var(--ink-800);
+  margin: 0; font-style: italic;
+  border-left: 3px solid var(--signal-500);
+  padding-left: 16px;
+}
+.testimonial-attribution {
+  display: flex; flex-direction: column; gap: 2px;
+  font-size: 13px; color: var(--ink-500);
+}
+.testimonial-attribution strong { color: var(--ink-900); font-weight: 700; font-size: 14px; }
+.testimonial-role { color: var(--ink-400); font-size: 12px; }

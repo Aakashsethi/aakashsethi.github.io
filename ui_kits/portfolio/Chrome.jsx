@@ -7,14 +7,18 @@ function Header({ active, onNav }) {
   const tabs = [
     { id: 'home',        label: 'Home' },
     { id: 'work',        label: 'Work' },
-    { id: 'youtube',     label: '▶ YouTube' },
-    { id: 'linkedin',    label: 'MyLogs' },
-    { id: 'education',   label: 'Education' },
-    { id: 'hobbies',     label: 'Curriculars' },
+    { id: 'consulting',  label: 'Consulting', href: '/consulting/' },
+    { id: 'blog',        label: 'Writing',    href: '/blog/' },
     { id: 'about',       label: 'About' },
   ];
 
   const handleNav = (id) => { setMenuOpen(false); onNav(id); };
+
+  const renderTab = (t, className) => t.href
+    ? <a key={t.id} href={t.href} className={className}>{t.label}</a>
+    : <a key={t.id} href="#" className={className}
+         onClick={(e)=>{e.preventDefault(); handleNav(t.id);}}
+         style={active===t.id ? {color:'var(--signal-700)'} : {}}>{t.label}</a>;
 
   return (
     <>
@@ -23,14 +27,7 @@ function Header({ active, onNav }) {
           aakash<span className="wm-dot" />sethi
         </a>
         <nav className="site-nav">
-          {tabs.map(t => (
-            <a key={t.id}
-               href="#"
-               onClick={(e)=>{e.preventDefault(); handleNav(t.id);}}
-               style={active===t.id ? {color:'var(--signal-700)'} : {}}>
-              {t.label}
-            </a>
-          ))}
+          {tabs.map(t => renderTab(t))}
           <a href="#" onClick={(e)=>{e.preventDefault(); handleNav('contact');}} className="nav-cta">
             Collaborate <span className="arr">→</span>
           </a>
@@ -45,13 +42,7 @@ function Header({ active, onNav }) {
           <div className="mobile-nav" onClick={e => e.stopPropagation()}>
             <button className="mobile-nav-close" onClick={() => setMenuOpen(false)}>✕</button>
             <div className="mobile-nav-wordmark">aakash<span className="wm-dot" />sethi</div>
-            {tabs.map(t => (
-              <a key={t.id} href="#"
-                 className={active === t.id ? 'mobile-nav-active' : ''}
-                 onClick={(e)=>{e.preventDefault(); handleNav(t.id);}}>
-                {t.label}
-              </a>
-            ))}
+            {tabs.map(t => renderTab(t, active === t.id ? 'mobile-nav-active' : ''))}
             <a href="#" className="nav-cta" onClick={(e)=>{e.preventDefault(); handleNav('contact');}}>
               Collaborate →
             </a>

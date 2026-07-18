@@ -15,7 +15,7 @@ function Hero({ onNav }) {
       <div className="hero-img-overlay" aria-hidden="true" />
       <div className="hero-inner">
         <div className="eyebrow hero-eyebrow">
-          <span className="live-dot" /> Booking Q3 · Intro consult $299
+          <span className="live-dot" /> Free courses · advisory available
         </div>
         <h1 className="hero-title">
           Aakash Sethi<span className="accent-dot">.</span><br />
@@ -37,7 +37,7 @@ function Hero({ onNav }) {
           </span>
         </p>
         <div className="hero-ctas">
-          <a className="btn btn-primary" href="/consulting/">See advisory tiers →</a>
+          <a className="btn btn-primary" href="#newsletter">Subscribe →</a>
           <a className="btn btn-ghost-dark" href="#" onClick={(e)=>{e.preventDefault(); onNav('work');}}>See the work</a>
           <a className="btn btn-ghost-dark" href="#" onClick={(e)=>{e.preventDefault(); onNav('contact');}}>Get in touch</a>
         </div>

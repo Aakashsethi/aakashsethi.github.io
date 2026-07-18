@@ -25,13 +25,6 @@ const STAGE_OPTIONS = [
   'Review — production system, want an outside read',
 ];
 
-const BUDGET_OPTIONS = [
-  'Under $5k (advisory / single engagement)',
-  '$5k – $20k (multi-week design or build)',
-  '$20k+ (multi-month engagement)',
-  'Not sure yet — open to discussion',
-];
-
 /* ── Track B: Career Coaching ──────────────────────────────── */
 const WHERE_OPTIONS = [
   "I'm actively job searching",
@@ -75,7 +68,7 @@ function Contact() {
 
   // Consulting fields
   const [consulting, setConsulting] = useState({
-    scope: '', problem: '', stage: '', timeline: '', budget: '', outcome: '',
+    scope: '', problem: '', stage: '', timeline: '', outcome: '',
   });
 
   // Coaching fields
@@ -230,14 +223,9 @@ function Contact() {
                     </div>
 
                     <div className="field">
-                      <label>Budget range</label>
-                      <RadioGroup name="budget" options={BUDGET_OPTIONS} value={consulting.budget} onChange={setConsultingField('budget')} />
-                    </div>
-
-                    <div className="field">
                       <label>What outcome would make this engagement a clear win? <span className="req">*</span></label>
                       <textarea required rows={2} value={consulting.outcome} onChange={setConsultingField('outcome')}
-                                placeholder="One concrete result that would justify the spend." />
+                                placeholder="One concrete result that would make this worth the time." />
                     </div>
                   </>
                 ) : (

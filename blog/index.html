@@ -416,9 +416,7 @@ permalink: /blog/
       <div class="post-row-title">{{ post.title }}</div>
       <div class="post-row-excerpt">{{ post.excerpt | strip_html | truncate: 200 }}</div>
       <div class="post-row-bottom">
-        {% for tag in post.tags %}<span class="post-row-tag">{{ tag }}</span>{% endfor %}
-        {% if post.tags.size > 0 and post.categories[0] %}<span class="post-row-sep">·</span>{% endif %}
-        {% if post.categories[0] %}<span class="post-row-cat">{{ post.categories[0] }}</span>{% endif %}
+        {% if post.categories[0] %}<span class="post-row-tag">{{ post.categories[0] }}</span>{% endif %}
       </div>
     </div>
   </a>
@@ -429,11 +427,11 @@ permalink: /blog/
 <div class="blog-cta">
   <div class="blog-cta-inner">
     <div class="blog-cta-left">
-      <div class="blog-cta-eyebrow">Work with me</div>
-      <div class="blog-cta-headline">Building AI systems or need a senior technical mentor?</div>
-      <div class="blog-cta-sub">AI architecture · AWS design · LLM / RAG · 1-on-1 mentoring</div>
+      <div class="blog-cta-eyebrow">Subscribe</div>
+      <div class="blog-cta-headline">Get new posts by email.</div>
+      <div class="blog-cta-sub">Field notes on AI engineering, RAG, and shipping production AI. One email when I publish.</div>
     </div>
-    <a class="blog-cta-btn" href="/consulting/">See advisory tiers →</a>
+    <a class="blog-cta-btn" href="/#newsletter">Subscribe →</a>
   </div>
 </div>
 
@@ -459,13 +457,16 @@ const POSTS = [
   {% endfor %}
 ];
 
-const ALL_TAGS = [...new Set(POSTS.flatMap(p => p.tags))].sort();
+// Top-level filter is CATEGORY (main topic), not tag — tags are too granular and flood the UI.
+const ALL_CATEGORIES = [...new Set(POSTS.flatMap(p => p.categories || []))].sort();
 
-let activeTag = '';
+let activeCategory = '';
 let searchQuery = '';
 
 const urlParams = new URLSearchParams(window.location.search);
-const initTag = urlParams.get('tag') || '';
+// Support legacy ?tag=X links by treating them as category if they match one, else search.
+const initCategory = urlParams.get('category') || '';
+const legacyTag = urlParams.get('tag') || '';
 
 document.getElementById('heroPostCount').textContent = POSTS.length + ' post' + (POSTS.length !== 1 ? 's' : '');
 
@@ -473,24 +474,24 @@ function readTime(words) {
   return Math.max(1, Math.round(words / 200)) + ' min';
 }
 
-function buildTagFilters() {
+function buildCategoryFilters() {
   const wrap = document.getElementById('tagFilters');
-  wrap.innerHTML = ALL_TAGS.map(tag =>
-    `<button class="tag-btn${tag === activeTag ? ' active' : ''}" onclick="filterByTag('${tag.replace(/'/g,"\\'")}')">
-      ${tag}
+  wrap.innerHTML = ALL_CATEGORIES.map(cat =>
+    `<button class="tag-btn${cat === activeCategory ? ' active' : ''}" onclick="filterByCategory('${cat.replace(/'/g,"\\'")}')">
+      ${cat}
     </button>`
   ).join('');
 }
 
-function filterByTag(tag) {
-  activeTag = activeTag === tag ? '' : tag;
-  const url = activeTag ? '/blog/?tag=' + encodeURIComponent(activeTag) : '/blog/';
+function filterByCategory(cat) {
+  activeCategory = activeCategory === cat ? '' : cat;
+  const url = activeCategory ? '/blog/?category=' + encodeURIComponent(activeCategory) : '/blog/';
   history.pushState({}, '', url);
   render();
 }
 
 function clearFilters() {
-  activeTag = '';
+  activeCategory = '';
   searchQuery = '';
   document.getElementById('searchInput').value = '';
   history.pushState({}, '', '/blog/');
@@ -499,13 +500,13 @@ function clearFilters() {
 
 function render() {
   const filtered = POSTS.filter(p => {
-    const matchTag = !activeTag || p.tags.some(t => t.toLowerCase() === activeTag.toLowerCase());
+    const matchCat = !activeCategory || (p.categories || []).some(c => c.toLowerCase() === activeCategory.toLowerCase());
     const q = searchQuery.toLowerCase();
     const matchSearch = !q ||
       p.title.toLowerCase().includes(q) ||
       p.excerpt.toLowerCase().includes(q) ||
       p.tags.some(t => t.toLowerCase().includes(q));
-    return matchTag && matchSearch;
+    return matchCat && matchSearch;
   });
 
   const list = document.getElementById('postList');
@@ -513,14 +514,14 @@ function render() {
   const clearBtn = document.getElementById('clearBtn');
 
   count.textContent = filtered.length + ' post' + (filtered.length !== 1 ? 's' : '');
-  clearBtn.classList.toggle('visible', !!(activeTag || searchQuery));
+  clearBtn.classList.toggle('visible', !!(activeCategory || searchQuery));
 
-  buildTagFilters();
+  buildCategoryFilters();
 
   if (filtered.length === 0) {
     list.innerHTML = `<div class="empty-state">
       <h3>No posts found</h3>
-      <p>Try a different tag or search term.</p>
+      <p>Try a different category or search term.</p>
     </div>`;
     return;
   }
@@ -532,11 +533,9 @@ function render() {
         <div class="post-row-title">${p.title}</div>
         <div class="post-row-excerpt">${p.excerpt}</div>
         <div class="post-row-bottom">
-          ${p.tags.map(t => `<span class="post-row-tag${t.toLowerCase() === activeTag.toLowerCase() && activeTag ? ' match' : ''}"
-            onclick="event.preventDefault(); filterByTag('${t.replace(/'/g,"\\'")}')">${t}</span>`).join('')}
-          ${p.tags.length && (p.categories[0] || p.words) ? '<span class="post-row-sep">·</span>' : ''}
-          ${p.categories[0] ? `<span class="post-row-cat">${p.categories[0].replace(/%20/g,' ')}</span>` : ''}
-          ${(p.categories[0] && p.words) ? '<span class="post-row-sep">·</span>' : ''}
+          ${p.categories[0] ? `<span class="post-row-tag${p.categories[0].toLowerCase() === activeCategory.toLowerCase() && activeCategory ? ' match' : ''}"
+            onclick="event.preventDefault(); filterByCategory('${p.categories[0].replace(/'/g,"\\'")}')">${p.categories[0].replace(/%20/g,' ')}</span>` : ''}
+          ${p.categories[0] ? '<span class="post-row-sep">·</span>' : ''}
           <span class="post-row-readtime">${readTime(p.words)} read</span>
         </div>
       </div>
@@ -551,13 +550,18 @@ document.getElementById('searchInput').addEventListener('input', function() {
 
 window.addEventListener('popstate', function() {
   const p = new URLSearchParams(window.location.search);
-  activeTag = p.get('tag') || '';
+  activeCategory = p.get('category') || '';
   document.getElementById('searchInput').value = '';
   searchQuery = '';
   render();
 });
 
-activeTag = initTag;
+activeCategory = initCategory;
+// If someone follows an old ?tag=X link, seed the search box with it so results still make sense.
+if (!activeCategory && legacyTag) {
+  searchQuery = legacyTag;
+  document.getElementById('searchInput').value = legacyTag;
+}
 render();
 </script>
 </body>
