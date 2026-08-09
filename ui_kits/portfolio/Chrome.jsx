@@ -5,12 +5,9 @@ function Header({ active, onNav }) {
   const tabs = [
     { id: 'home', label: 'Home' },
     { id: 'work', label: 'Work' },
-    { id: 'education', label: 'Education' },
-    { id: 'culinary', label: 'Culinary' },
-    { id: 'photography', label: 'Photography' },
+    { id: 'consulting', label: 'Consulting' },
+    { id: 'writing', label: 'Writing' },
     { id: 'about', label: 'About' },
-    { id: 'mylogs', label: 'My logs' },
-    { id: 'writings', label: 'Writings' },
   ];
   return (
     <header className="site-header">
@@ -26,9 +23,6 @@ function Header({ active, onNav }) {
             {t.label}
           </a>
         ))}
-        <a href="#" onClick={(e)=>{e.preventDefault(); onNav('contact');}} className="nav-cta">
-          Collaborate <span className="arr">→</span>
-        </a>
       </nav>
     </header>
   );
