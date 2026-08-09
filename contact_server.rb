@@ -8,6 +8,7 @@ require_relative 'lib/post_generator'
 require_relative 'lib/image_generator'
 require_relative 'lib/blog_generator'
 require_relative 'lib/store'
+require_relative 'lib/writings'
 
 MAILTRAP_API_KEY = ENV.fetch('MAILTRAP_API_KEY')
 BUTTONDOWN_API_KEY = ENV['BUTTONDOWN_API_KEY']  # lazy-checked per request; /subscribe returns 503 if missing
@@ -26,6 +27,8 @@ use Rack::Cors do
     resource '/posts.json', headers: :any, methods: [:get, :options]
     resource '/blog.json', headers: :any, methods: [:get, :options]
     resource '/blog/*', headers: :any, methods: [:get, :options]
+    resource '/writings.json', headers: :any, methods: [:get, :options]
+    resource '/writings/*', headers: :any, methods: [:get, :options]
   end
 end
 
@@ -308,6 +311,22 @@ get '/blog/:slug.json' do
   { slug: p['slug'], title: p['title'], summary: p['summary'], category: p['category'],
     sources: JSON.parse(p['sources_json'] || '[]'), body_md: p['body_md'],
     created_at: p['created_at'] }.to_json
+end
+
+# ── Hand-written writings (markdown files under content/posts/) ──────────────
+get '/writings.json' do
+  content_type :json
+  Writings.all.map do |w|
+    { slug: w[:slug], title: w[:title], summary: w[:summary],
+      category: w[:category], tags: w[:tags], date: w[:date] }
+  end.to_json
+end
+
+get '/writings/:slug.json' do
+  content_type :json
+  w = Writings.by_slug(params['slug']) or halt 404, { error: 'not_found' }.to_json
+  { slug: w[:slug], title: w[:title], summary: w[:summary], category: w[:category],
+    tags: w[:tags], date: w[:date], body_md: w[:body_md] }.to_json
 end
 
 # ── Newsletter subscribe (Buttondown via server-side API key) ────────────────

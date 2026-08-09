@@ -10,6 +10,7 @@ function Header({ active, onNav }) {
     { id: 'photography', label: 'Photography' },
     { id: 'about', label: 'About' },
     { id: 'mylogs', label: 'My logs' },
+    { id: 'writings', label: 'Writings' },
   ];
   return (
     <header className="site-header">
