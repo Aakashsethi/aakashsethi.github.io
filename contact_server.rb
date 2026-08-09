@@ -9,6 +9,10 @@ require_relative 'lib/image_generator'
 require_relative 'lib/blog_generator'
 require_relative 'lib/store'
 require_relative 'lib/writings'
+require_relative 'lib/auth'
+require_relative 'lib/limiter'
+require_relative 'lib/tailor'
+require_relative 'lib/schedules'
 
 MAILTRAP_API_KEY = ENV.fetch('MAILTRAP_API_KEY')
 BUTTONDOWN_API_KEY = ENV['BUTTONDOWN_API_KEY']  # lazy-checked per request; /subscribe returns 503 if missing
@@ -20,15 +24,35 @@ TRIGGER_SECRET   = ENV.fetch('TRIGGER_SECRET', nil)
 
 use Rack::Cors do
   allow do
-    origins 'localhost:4000', '127.0.0.1:4000',
-            'aakashsethi.github.io', 'https://aakashsethi.github.io'
-    resource '/contact', headers: :any, methods: [:post, :options]
-    resource '/subscribe', headers: :any, methods: [:post, :options]
-    resource '/posts.json', headers: :any, methods: [:get, :options]
-    resource '/blog.json', headers: :any, methods: [:get, :options]
-    resource '/blog/*', headers: :any, methods: [:get, :options]
-    resource '/writings.json', headers: :any, methods: [:get, :options]
-    resource '/writings/*', headers: :any, methods: [:get, :options]
+    origins 'http://localhost:4000', 'http://127.0.0.1:4000',
+            'https://aakashsethi.github.io'
+    resource '/contact',       headers: :any, methods: [:post, :options], credentials: true
+    resource '/subscribe',     headers: :any, methods: [:post, :options], credentials: true
+    resource '/posts.json',    headers: :any, methods: [:get, :options],  credentials: true
+    resource '/blog.json',     headers: :any, methods: [:get, :options],  credentials: true
+    resource '/blog/*',        headers: :any, methods: [:get, :options],  credentials: true
+    resource '/writings.json', headers: :any, methods: [:get, :options],  credentials: true
+    resource '/writings/*',    headers: :any, methods: [:get, :options],  credentials: true
+    resource '/auth/*',        headers: :any, methods: [:get, :post, :delete, :options], credentials: true
+    resource '/tailor*',       headers: :any, methods: [:get, :post, :options], credentials: true
+    resource '/schedules*',    headers: :any, methods: [:get, :post, :options], credentials: true
+  end
+end
+
+helpers do
+  def client_ip
+    request.env['HTTP_X_FORWARDED_FOR']&.split(',')&.first&.strip || request.ip
+  end
+  def client_ua
+    request.env['HTTP_USER_AGENT'].to_s
+  end
+  def current_user
+    Auth.current_user(request.cookies[Auth::COOKIE_NAME])
+  end
+  def require_user!
+    u = current_user
+    halt 401, { error: 'auth_required' }.to_json unless u
+    u
   end
 end
 
@@ -327,6 +351,129 @@ get '/writings/:slug.json' do
   w = Writings.by_slug(params['slug']) or halt 404, { error: 'not_found' }.to_json
   { slug: w[:slug], title: w[:title], summary: w[:summary], category: w[:category],
     tags: w[:tags], date: w[:date], body_md: w[:body_md] }.to_json
+end
+
+# ── Auth: magic link + sessions ──────────────────────────────────────────────
+post '/auth/request' do
+  content_type :json
+  b = JSON.parse(request.body.read) rescue {}
+  res = Auth.request_magic_link(email: b['email'], ip: client_ip, ua: client_ua)
+  halt 400, { error: res[:error] }.to_json unless res[:ok]
+  { ok: true, message: 'Check your email for a sign-in link.' }.to_json
+end
+
+get '/auth/consume' do
+  token = params['token']
+  res = Auth.consume(token: token, ip: client_ip, ua: client_ua)
+  unless res[:ok]
+    content_type :html
+    return "<h1>Sign-in link problem</h1><p>#{res[:error].to_s.tr('_', ' ')}. Request a new link and try again.</p>"
+  end
+  response.set_cookie(Auth::COOKIE_NAME, { value: res[:session_id], **Auth.cookie_opts(max_age: Auth::SESSION_TTL) })
+  redirect "#{Auth.frontend_url}/#tailor?signed_in=1"
+end
+
+get '/auth/me' do
+  content_type :json
+  u = current_user
+  halt 200, { authenticated: false }.to_json unless u
+  { authenticated: true, email: u[:email] }.to_json
+end
+
+post '/auth/signout' do
+  content_type :json
+  Auth.revoke(request.cookies[Auth::COOKIE_NAME])
+  response.delete_cookie(Auth::COOKIE_NAME, path: '/')
+  { ok: true }.to_json
+end
+
+delete '/auth/me' do
+  content_type :json
+  u = require_user!
+  Auth.delete_user(u[:id])
+  response.delete_cookie(Auth::COOKIE_NAME, path: '/')
+  { ok: true, deleted: true }.to_json
+end
+
+# ── Job Tailor ───────────────────────────────────────────────────────────────
+post '/tailor' do
+  content_type :json
+  b = JSON.parse(request.body.read) rescue {}
+  jd     = b['jd'].to_s.strip
+  resume = b['resume'].to_s.strip
+  halt 400, { error: 'Both job description and resume are required.' }.to_json if jd.empty? || resume.empty?
+  halt 413, { error: 'Input too long. Keep each under 20 000 characters.' }.to_json if jd.length > 20_000 || resume.length > 20_000
+
+  user = current_user
+  if user
+    limit = Tailor::AUTHED_DAILY_MAX
+    subject_kind = 'user'
+    subject_key  = user[:id].to_s
+  else
+    limit = Tailor::ANON_DAILY_MAX
+    subject_kind = 'ip'
+    subject_key  = Limiter.hash(client_ip)
+  end
+
+  unless Limiter.groq_global_ok?
+    halt 503, { error: 'The tailor is paused for the day — a global usage cap hit. Try again after midnight UTC.', paused: true }.to_json
+  end
+
+  quota = Limiter.check_and_increment(subject_kind: subject_kind, subject_key: subject_key, feature: 'tailor', per_day_max: limit)
+  unless quota[:ok]
+    code = user ? 429 : 402
+    halt code, {
+      error: user ? 'Daily limit reached.' : 'Sign in to continue.',
+      signin_required: !user, remaining: 0
+    }.to_json
+  end
+
+  result = Tailor.run(jd: jd, resume: resume)
+  Tailor.save_history(user_id: user[:id], jd: jd, resume: resume, tailored: result[:tailored], rationale: result[:rationale], model: result[:model]) if user
+
+  { ok: true, tailored: result[:tailored], rationale: result[:rationale], remaining: quota[:remaining] }.to_json
+rescue Tailor::Error => e
+  halt 502, { error: "Upstream model error: #{e.message}" }.to_json
+end
+
+get '/tailor/quota.json' do
+  content_type :json
+  user = current_user
+  if user
+    remaining = Limiter.remaining(subject_kind: 'user', subject_key: user[:id].to_s, feature: 'tailor', per_day_max: Tailor::AUTHED_DAILY_MAX)
+    { authenticated: true, remaining: remaining, limit: Tailor::AUTHED_DAILY_MAX }.to_json
+  else
+    remaining = Limiter.remaining(subject_kind: 'ip', subject_key: Limiter.hash(client_ip), feature: 'tailor', per_day_max: Tailor::ANON_DAILY_MAX)
+    { authenticated: false, remaining: remaining, limit: Tailor::ANON_DAILY_MAX }.to_json
+  end
+end
+
+get '/tailor/history.json' do
+  content_type :json
+  u = require_user!
+  Tailor.history(user_id: u[:id]).to_json
+end
+
+# ── Scheduler ────────────────────────────────────────────────────────────────
+post '/schedules' do
+  content_type :json
+  u = require_user!
+  b = JSON.parse(request.body.read) rescue {}
+  res = Schedules.upsert(user_id: u[:id], week_of: b['week_of'], cells: b['cells'], rules: b['rules'])
+  halt 400, { error: res[:error] }.to_json unless res[:ok]
+  res.to_json
+end
+
+get '/schedules/mine.json' do
+  content_type :json
+  u = require_user!
+  Schedules.mine(user_id: u[:id]).to_json
+end
+
+get '/schedules/:public_id.json' do
+  content_type :json
+  s = Schedules.by_public_id(params['public_id']) or halt 404, { error: 'not_found' }.to_json
+  s.to_json
 end
 
 # ── Newsletter subscribe (Buttondown via server-side API key) ────────────────

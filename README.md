@@ -238,3 +238,77 @@ A monogram **`a/s`** (mono, 600wt, 24px) is used as a favicon and in tight UI co
 2. Add `data-theme="dark"` to `<html>` for dark mode.
 3. Pull components from `ui_kits/portfolio/` for screens / mocks. Each component is a small JSX file you can read and copy.
 4. For new pages: start from the eyebrow + display + body type stack, lean on whitespace, restrict yourself to one accent moment per viewport.
+
+---
+
+## Live demos (auth-gated) & backend
+
+Two interactive SaaS demos ship with the portfolio: **JobBoating** (resume tailoring via Groq) and the **Tnufa scheduler** (40-hour weekly grid with company flexibility rules).
+
+Access model:
+- Anonymous: 1 tailor per IP per day; scheduler view/build only (no save/share).
+- Signed in (magic link, no password): 10 tailors per day, save & share schedules, history.
+- Global soft cap on Groq calls per day (`GROQ_GLOBAL_DAILY_MAX`, default 200) — feature pauses gracefully when hit.
+
+Auth model:
+- Passwordless magic link via email (Mailtrap).
+- HttpOnly session cookie (30-day, SameSite=Lax in dev / None+Secure in prod).
+- IP + UA hashed (SHA-256, never stored raw).
+- Every magic link and session logged for audit; account delete cascades.
+
+### Backend env vars
+
+| Var | Required for | Notes |
+|---|---|---|
+| `DATABASE_URL` | Auth, Tailor, Scheduler, MyLogs | Neon Postgres connection string |
+| `MAILTRAP_API_KEY` | Contact form, magic link email | |
+| `GROQ_API_KEY` | Tailor, MyLogs, LinkedIn post gen | |
+| `GROQ_MODEL` | Tailor (optional) | Defaults to `llama-3.3-70b-versatile` |
+| `GROQ_GLOBAL_DAILY_MAX` | Soft cap (optional) | Defaults to `200` |
+| `FRONTEND_URL` | Magic link redirect target | Dev: `http://localhost:4000` / Prod: `https://aakashsethi.github.io` |
+| `API_URL` | Magic link URL in emails | Dev: `http://localhost:4001` / Prod: `https://portfolio-contact-j70g.onrender.com` |
+| `FROM_EMAIL` | Email sender address | Defaults to `hello@tnufa.ai` |
+| `BUTTONDOWN_API_KEY` | `/subscribe` newsletter | Optional |
+| `TRIGGER_SECRET` | Cron-triggered internal endpoints | Required in prod |
+
+### Run locally
+
+```
+bundle install
+DATABASE_URL=postgres://... \
+MAILTRAP_API_KEY=... \
+GROQ_API_KEY=gsk_... \
+FRONTEND_URL=http://localhost:4000 \
+API_URL=http://localhost:4001 \
+bundle exec ruby contact_server.rb
+
+# in another shell, serve the static site:
+python3 -m http.server 4000
+# open http://localhost:4000/
+```
+
+Without `DATABASE_URL` the site still boots — `/writings.json` and static pages work — but the demos, auth, and `/blog` endpoints will 500 on first DB hit.
+
+### Backend layout
+
+| File | Responsibility |
+|---|---|
+| `contact_server.rb` | Sinatra app — routes, CORS, helpers |
+| `lib/store.rb` | Postgres schema (idempotent) + basic CRUD |
+| `lib/auth.rb` | Magic link, sessions, cookie helpers |
+| `lib/limiter.rb` | Per-subject and global rate counters |
+| `lib/tailor.rb` | Groq call + prompt template |
+| `lib/schedules.rb` | Schedule upsert / lookup |
+| `lib/writings.rb` | Reads `content/posts/*.md` from disk |
+| `lib/blog_generator.rb`, `lib/post_generator.rb`, `lib/image_generator.rb`, `lib/linkedin_client.rb`, `lib/news_sources.rb` | Existing LinkedIn/blog automation (unchanged) |
+
+### SOC 2-relevant posture
+
+Documented in the Consulting page's Trust strip. What's actually enforced by the code:
+- No passwords stored (magic link only).
+- Session tokens: 256-bit random via `SecureRandom.hex(32)`.
+- IP + UA never persisted in the clear — SHA-256 truncated to 32 chars.
+- Magic-link request rate-limited (1 per email per 60s).
+- Session cookies: `HttpOnly`, `Secure` (prod), `SameSite=None` (prod) / `Lax` (dev).
+- Account delete cascades to sessions, magic_links, tailor_history, schedules.
+- Groq calls capped daily with graceful 503 + user-facing "back tomorrow" message.

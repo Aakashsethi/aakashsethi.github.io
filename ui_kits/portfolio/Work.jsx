@@ -11,11 +11,16 @@ function StatusPill({ status }) {
 }
 
 function ProjectCard({ p, onOpen }) {
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (p.href) { window.location.hash = p.href.replace(/^#/, ''); }
+    else { onOpen(p); }
+  };
   return (
-    <a className="proj" href="#" onClick={(e)=>{e.preventDefault(); onOpen(p);}}>
+    <a className={`proj${p.href ? ' proj-live' : ''}`} href={p.href || '#'} onClick={handleClick}>
       <div className="proj-meta">
         <span className="eyebrow">{p.eyebrow}</span>
-        <StatusPill status={p.status} />
+        {p.href ? <span className="pill pill-live">● Live</span> : <StatusPill status={p.status} />}
       </div>
       <h3 className="proj-title">
         {p.title}

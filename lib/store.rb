@@ -49,6 +49,75 @@ module Store
         created_at BIGINT NOT NULL
       )
     SQL
+    c.exec <<~SQL
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        email TEXT NOT NULL UNIQUE,
+        created_at BIGINT NOT NULL,
+        last_login_at BIGINT
+      )
+    SQL
+    c.exec <<~SQL
+      CREATE TABLE IF NOT EXISTS magic_links (
+        token TEXT PRIMARY KEY,
+        email TEXT NOT NULL,
+        expires_at BIGINT NOT NULL,
+        used_at BIGINT,
+        ip_hash TEXT,
+        ua_hash TEXT,
+        created_at BIGINT NOT NULL
+      )
+    SQL
+    c.exec 'CREATE INDEX IF NOT EXISTS magic_links_email_created ON magic_links (email, created_at)'
+    c.exec <<~SQL
+      CREATE TABLE IF NOT EXISTS sessions (
+        id TEXT PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        created_at BIGINT NOT NULL,
+        last_seen_at BIGINT NOT NULL,
+        expires_at BIGINT NOT NULL,
+        ip_hash TEXT,
+        ua_hash TEXT,
+        revoked_at BIGINT
+      )
+    SQL
+    c.exec 'CREATE INDEX IF NOT EXISTS sessions_user ON sessions (user_id)'
+    c.exec <<~SQL
+      CREATE TABLE IF NOT EXISTS tailor_history (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        jd TEXT NOT NULL,
+        resume TEXT NOT NULL,
+        tailored TEXT NOT NULL,
+        rationale TEXT,
+        model TEXT NOT NULL,
+        created_at BIGINT NOT NULL
+      )
+    SQL
+    c.exec 'CREATE INDEX IF NOT EXISTS tailor_history_user_created ON tailor_history (user_id, created_at DESC)'
+    c.exec <<~SQL
+      CREATE TABLE IF NOT EXISTS usage_counters (
+        subject_kind TEXT NOT NULL,
+        subject_key  TEXT NOT NULL,
+        feature      TEXT NOT NULL,
+        day          DATE NOT NULL,
+        count        INTEGER NOT NULL DEFAULT 0,
+        PRIMARY KEY (subject_kind, subject_key, feature, day)
+      )
+    SQL
+    c.exec <<~SQL
+      CREATE TABLE IF NOT EXISTS schedules (
+        id SERIAL PRIMARY KEY,
+        public_id TEXT NOT NULL UNIQUE,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        week_of DATE NOT NULL,
+        cells_json JSONB NOT NULL,
+        rules_json JSONB NOT NULL,
+        created_at BIGINT NOT NULL,
+        updated_at BIGINT NOT NULL,
+        UNIQUE (user_id, week_of)
+      )
+    SQL
   end
 
   def self.save_blog(slug:, title:, summary:, body_md:, category:, sources:)

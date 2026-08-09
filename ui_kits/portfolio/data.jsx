@@ -1,5 +1,13 @@
 /* global React */
 const PROJECTS = [
+  { id:'jobtailor', eyebrow:'LIVE DEMO · 2026', status:'shipping', href:'#tailor',
+    title:'JobBoating — resume tailored to a job description',
+    desc:'Paste a JD + your resume; get a rewritten resume that surfaces relevant experience — Groq (llama-3.3-70b) with a no-fabrication guardrail. Try it live.',
+    tags:['llm','groq','ruby','react','live-demo'] },
+  { id:'scheduler', eyebrow:'LIVE DEMO · 2026', status:'shipping', href:'#scheduler',
+    title:'Tnufa scheduler — 40-hour week under company flexibility',
+    desc:'Interactive weekly grid: allocate 40 hours across deep work, meetings, admin, and focus while satisfying core hours and per-day minimums. From the Tnufa infrastructure.',
+    tags:['scheduling','react','sinatra','live-demo'] },
   { id:'tnufa', repo:'Tnufa', eyebrow:'PROJECT · 2025', status:'shipping',
     title:'Tnufa — workforce mobility, reimagined',
     desc:'A platform for skill-based career mobility. Maps people to roles using embeddings over real career trajectories — not job-board keywords. Live at tnufa.ai.',

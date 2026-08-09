@@ -1,7 +1,7 @@
-/* global React, ReactDOM, Header, Footer, Hero, StatStrip, Work, About, Contact, ProjectModal, Writings, Consulting */
+/* global React, ReactDOM, Header, Footer, Hero, StatStrip, Work, About, Contact, ProjectModal, Writings, Consulting, JobTailor, Scheduler */
 const { useState, useEffect } = React;
 
-const PAGES = new Set(['home','work','consulting','writing','about','contact']);
+const PAGES = new Set(['home','work','consulting','writing','about','contact','tailor','scheduler']);
 
 function pageFromHash() {
   const h = (window.location.hash || '').replace(/^#\/?/, '').toLowerCase();
@@ -47,6 +47,8 @@ function App() {
         {page === 'work' && <Work onOpen={setOpenProj} />}
         {page === 'consulting' && <Consulting />}
         {page === 'writing' && <Writings />}
+        {page === 'tailor' && <JobTailor />}
+        {page === 'scheduler' && <Scheduler />}
         {page === 'about' && <About />}
         {page === 'contact' && <Contact />}
       </main>
