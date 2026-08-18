@@ -13,9 +13,10 @@ function Hero({ onNav }) {
         <p className="hero-lede">
           I'm <b>Aakash Sethi</b> — an <b>Inventionist</b>, an <b>AI research enthusiast</b>,
           and a Product Owner who can also sell the thing. Five years across AWS-backed
-          enterprise platforms, fintech systems, and AI-driven products: Vanguard ·
-          Mercedes-Benz Financial Services · Burpez. AWS Certified Solutions Architect —
-          Professional. NJDOE-licensed CS educator. Currently building <a href="https://tnufa.ai" style={{color:'var(--signal-300)'}}>Tnufa.ai →</a>
+          enterprise platforms, fintech systems, and AI-driven products: Amazon · Vanguard ·
+          Mercedes-Benz Financial Services · Daimler Truck Financial Services · Great American
+          Insurance Group · Burpez. AWS Certified Solutions Architect — Professional.
+          NJDOE-licensed CS educator. Currently building <a href="https://tnufa.ai" style={{color:'var(--signal-300)'}}>Tnufa.ai →</a>
         </p>
         <div className="hero-ctas">
           <a className="btn btn-primary" href="#" onClick={(e)=>{e.preventDefault(); onNav('work');}}>See the work →</a>

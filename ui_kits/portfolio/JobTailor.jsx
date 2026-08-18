@@ -12,11 +12,13 @@ function JobTailor() {
   const [signInOpen, setSignInOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  const [backendDown, setBackendDown] = useState(false);
   const loadQuota = async () => {
     try {
       const r = await apiFetch('/tailor/quota.json');
-      if (r.ok) setQuota(await r.json());
-    } catch (_) { /* ignore */ }
+      if (r.ok) { setQuota(await r.json()); setBackendDown(false); }
+      else if (r.status >= 500) { setBackendDown(true); }
+    } catch (_) { setBackendDown(true); }
   };
   useEffect(() => { if (!session.loading) loadQuota(); }, [session.loading, session.authenticated]);
 
@@ -64,7 +66,13 @@ function JobTailor() {
         <p className="lead">Paste both. Groq (llama-3.3-70b) rewrites your resume to emphasize what matches — never inventing new claims.</p>
       </header>
 
-      <QuotaBar quota={quota} session={session} onSignIn={() => setSignInOpen(true)} />
+      {backendDown && (
+        <div className="empty-state">
+          <p className="mono small muted" style={{textTransform:'uppercase', letterSpacing:'0.12em'}}>backend unreachable</p>
+          <p>The tailor backend isn't responding. If you're running locally, make sure Sinatra is up on port 4001 with <code>DATABASE_URL</code> set. In production this typically means the free-tier dyno is warming up — try again in ~30s.</p>
+        </div>
+      )}
+      {!backendDown && <QuotaBar quota={quota} session={session} onSignIn={() => setSignInOpen(true)} />}
 
       <div className="tailor-inputs">
         <div className="tailor-pane">

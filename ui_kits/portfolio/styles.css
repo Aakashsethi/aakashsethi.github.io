@@ -1104,3 +1104,76 @@ section { padding: 0 0 var(--sp-24); }
   .scheduler-shell { grid-template-columns: 1fr; }
   .scheduler-grid { grid-template-columns: 60px repeat(5, minmax(0, 1fr)); }
 }
+
+/* ── Logo strip (home page — companies) ────────────────────────────────── */
+.logo-strip {
+  padding: var(--sp-8) 0 var(--sp-6);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  margin: var(--sp-8) 0;
+}
+.logo-strip-heading { margin-bottom: var(--sp-5); text-align: center; }
+.logo-strip-list {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: var(--sp-8) var(--sp-10);
+}
+.logo-strip-item {
+  position: relative;
+  color: var(--fg-muted);
+  filter: grayscale(1);
+  opacity: 0.72;
+  transition: opacity 180ms, filter 180ms, transform 180ms;
+  cursor: default;
+  min-height: 40px;
+  display: flex; align-items: center;
+}
+.logo-strip-item:hover { opacity: 1; filter: grayscale(0); transform: translateY(-1px); }
+.logo-strip-tip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  padding: 6px 10px;
+  background: var(--ink-950);
+  color: var(--paper);
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms, transform 160ms;
+  z-index: 5;
+}
+.logo-strip-tip::after {
+  content: '';
+  position: absolute;
+  top: 100%; left: 50%; transform: translateX(-50%);
+  border: 5px solid transparent; border-top-color: var(--ink-950);
+}
+.logo-strip-item:hover .logo-strip-tip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Logo images — height-normalized, true colors from source SVG */
+.logo-strip-img {
+  height: 36px;
+  width: auto;
+  max-width: 180px;
+  object-fit: contain;
+  display: block;
+}
+.logo-strip-fallback {
+  font: 500 13px/1 var(--font-mono);
+  color: var(--fg-muted);
+  letter-spacing: 0.02em;
+  padding: 8px 12px;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .logo-strip-list { gap: var(--sp-5) var(--sp-6); }
+  .logo-strip-img  { height: 26px; max-width: 140px; }
+}

@@ -1,7 +1,7 @@
 /* global React */
 const { useState, useEffect, useMemo, useRef } = React;
 
-const WRITINGS_API = 'https://portfolio-contact-j70g.onrender.com';
+const WRITINGS_API = window.API_BASE || 'https://portfolio-contact-j70g.onrender.com';
 
 function fmtDate(iso) {
   const d = new Date(iso);

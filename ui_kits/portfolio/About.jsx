@@ -23,11 +23,15 @@ const ROLES = [
       'Containerized microservices via Docker; integrated CloudWatch + API Gateway.',
       'Lifted test coverage from 45% → 85% in two quarters with Mocha + Postman.',
     ] },
-  { co: 'Mercedes-Benz Financial Services', loc: 'Farmington Hills, MI', role: 'Technology Analyst', period: 'May 2021 – Mar 2022',
+  { co: 'Mercedes-Benz Financial Services · Daimler Truck Financial Services', loc: 'Farmington Hills, MI', role: 'Technology Analyst', period: 'May 2021 – Mar 2022',
     bullets: [
       'Migrated SOAP APIs to RESTful microservices for Daimler Truck Financial Services on Java/Spring Boot — 30% latency reduction.',
       'Automated CI/CD with JUnit; supported ServiceNow setup and migration.',
       'Partnered with finance and account teams on customer-lifecycle ops.',
+    ] },
+  { co: 'Great American Insurance Group', loc: 'Cincinnati, OH', role: 'Enterprise engagement', period: 'Add dates',
+    bullets: [
+      'Enterprise engagement — please replace this stub with the actual role, scope, and outcomes.',
     ] },
   { co: 'Industry Mojo', loc: 'Short Hills, NJ', role: 'CRM & Data Operations Intern', period: 'Jan 2020 – Jan 2021',
     bullets: [

@@ -1,4 +1,4 @@
-/* global React, ReactDOM, Header, Footer, Hero, StatStrip, Work, About, Contact, ProjectModal, Writings, Consulting, JobTailor, Scheduler */
+/* global React, ReactDOM, Header, Footer, Hero, StatStrip, LogoStrip, Work, About, Contact, ProjectModal, Writings, Consulting, JobTailor, Scheduler */
 const { useState, useEffect } = React;
 
 const PAGES = new Set(['home','work','consulting','writing','about','contact','tailor','scheduler']);
@@ -40,6 +40,7 @@ function App() {
         {page === 'home' && (
           <>
             <Hero onNav={onNav} />
+            <LogoStrip />
             <StatStrip />
             <Work onOpen={setOpenProj} />
           </>

@@ -1,10 +1,13 @@
 /* global React */
 const { useState, useEffect, useCallback } = React;
 
-const API_BASE =
-  (typeof window !== 'undefined' && window.location.hostname === 'localhost')
-    ? 'http://localhost:4001'
-    : 'https://portfolio-contact-j70g.onrender.com';
+function pickApiBase() {
+  if (typeof window === 'undefined') return 'https://portfolio-contact-j70g.onrender.com';
+  const h = window.location.hostname;
+  if (h === 'localhost' || h === '127.0.0.1' || h === '0.0.0.0') return `http://${h}:4001`;
+  return 'https://portfolio-contact-j70g.onrender.com';
+}
+const API_BASE = pickApiBase();
 
 function apiFetch(path, opts = {}) {
   return fetch(`${API_BASE}${path}`, {
