@@ -1,0 +1,36 @@
+name: Keep contact server warm
+
+# Ping the Sinatra /health endpoint on a schedule so Render's free-tier
+# dyno doesn't sleep (which introduces a 30–60s cold start on the next
+# real request — subscribe form, contact form, etc.).
+#
+# Every 10 min covers Render's 15-min idle timeout with headroom. GitHub
+# Actions cron is best-effort and can drift 5–20 min, but the ping only
+# needs to fire once inside each 15-min window.
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: keep-alive
+  cancel-in-progress: true
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Ping /health
+        run: |
+          set -e
+          URL="https://portfolio-contact-j70g.onrender.com/health"
+          status=$(curl -sS -o /tmp/body -w "%{http_code}" --max-time 90 "$URL" || echo "000")
+          echo "HTTP $status"
+          cat /tmp/body || true
+          # 200 = warm, 502/503 during cold-start counts as "we woke it up"
+          case "$status" in
+            200|502|503) exit 0 ;;
+            *) exit 1 ;;
+          esac
