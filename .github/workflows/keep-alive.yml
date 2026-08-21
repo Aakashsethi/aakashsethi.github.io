@@ -29,8 +29,6 @@ jobs:
           status=$(curl -sS -o /tmp/body -w "%{http_code}" --max-time 90 "$URL" || echo "000")
           echo "HTTP $status"
           cat /tmp/body || true
-          # 200 = warm, 502/503 during cold-start counts as "we woke it up"
-          case "$status" in
-            200|502|503) exit 0 ;;
-            *) exit 1 ;;
-          esac
+          # Any HTTP response means the dyno woke up — that's the whole
+          # point. Only fail on network errors (curl couldn't reach it).
+          [ "$status" != "000" ]
