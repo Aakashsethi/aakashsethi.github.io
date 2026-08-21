@@ -19,10 +19,12 @@ function Newsletter() {
     setMsg('');
 
     try {
+      // NB: not sending `tag` — Buttondown's free plan rejects tagged
+      // subscribers with 403.
       const res = await fetch(SUBSCRIBE_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: trimmed, tag: 'site' }),
+        body: JSON.stringify({ email: trimmed }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Subscription failed.');
