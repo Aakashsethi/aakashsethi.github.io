@@ -33,11 +33,91 @@ const fmtDate = (d) => d.toLocaleDateString('en-US', {
       </p>
       <h1 class="post-h1">{post.data.title}</h1>
       {post.data.excerpt && <p class="post-lede">{post.data.excerpt}</p>}
+
+      <div class="post-listen" data-listen>
+        <button type="button" class="listen-btn" data-listen-toggle aria-live="polite">
+          <span class="listen-icon" aria-hidden="true">▶</span>
+          <span class="listen-label">Listen</span>
+        </button>
+        <span class="listen-status" data-listen-status></span>
+      </div>
     </header>
 
-    <div class="post-prose prose">
+    <div class="post-prose prose" data-listen-body>
       <Content />
     </div>
+
+    <script is:inline>
+      (() => {
+        const root = document.querySelector('[data-listen]');
+        const body = document.querySelector('[data-listen-body]');
+        const btn = root && root.querySelector('[data-listen-toggle]');
+        const icon = btn && btn.querySelector('.listen-icon');
+        const label = btn && btn.querySelector('.listen-label');
+        const status = root && root.querySelector('[data-listen-status]');
+        if (!root || !body || !btn || !('speechSynthesis' in window)) {
+          if (root) root.style.display = 'none';
+          return;
+        }
+
+        // Extract the article text, sentence by sentence, skipping code blocks
+        // (they don't read well as speech).
+        const clone = body.cloneNode(true);
+        clone.querySelectorAll('pre, code').forEach((n) => n.remove());
+        const raw = (clone.textContent || '').replace(/\s+/g, ' ').trim();
+        // Chunk on sentence boundaries; Chrome cuts off single utterances
+        // around ~200 chars, so we queue small pieces.
+        const chunks = raw.match(/[^.!?]+[.!?]+["')\]]*|\S+$/g) || [];
+        const totalChars = raw.length;
+
+        let state = 'idle'; // idle | playing | paused
+        let idx = 0;
+        let spokenChars = 0;
+
+        const setUi = (s) => {
+          state = s;
+          if (s === 'playing') { icon.textContent = '⏸'; label.textContent = 'Pause'; }
+          else if (s === 'paused') { icon.textContent = '▶'; label.textContent = 'Resume'; }
+          else { icon.textContent = '▶'; label.textContent = 'Listen'; }
+        };
+
+        const setStatus = () => {
+          if (state === 'idle') { status.textContent = ''; return; }
+          const pct = Math.min(100, Math.round(((spokenChars + (chunks[idx]?.length || 0) * 0.5) / totalChars) * 100));
+          const mins = Math.max(1, Math.round((totalChars - spokenChars) / 900)); // ~900 chars/min speech
+          status.textContent = `${pct}%  ·  ~${mins} min left`;
+        };
+
+        const speakNext = () => {
+          if (idx >= chunks.length) { setUi('idle'); status.textContent = 'Done.'; return; }
+          const u = new SpeechSynthesisUtterance(chunks[idx]);
+          u.rate = 1.05;
+          u.pitch = 1;
+          u.onend = () => { spokenChars += chunks[idx].length; idx += 1; setStatus(); speakNext(); };
+          u.onerror = () => { setUi('idle'); status.textContent = 'Playback stopped.'; };
+          window.speechSynthesis.speak(u);
+          setStatus();
+        };
+
+        btn.addEventListener('click', () => {
+          const ss = window.speechSynthesis;
+          if (state === 'idle') {
+            ss.cancel(); idx = 0; spokenChars = 0;
+            setUi('playing');
+            speakNext();
+          } else if (state === 'playing') {
+            ss.pause();
+            setUi('paused');
+          } else if (state === 'paused') {
+            ss.resume();
+            setUi('playing');
+          }
+        });
+
+        // Stop reading if the reader navigates away.
+        window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
+      })();
+    </script>
 
     <footer class="post-footer">
       <a href="/blog/" class="post-backlink">← All writing</a>
@@ -67,6 +147,29 @@ const fmtDate = (d) => d.toLocaleDateString('en-US', {
     font-family: var(--font-editorial); font-optical-sizing: auto; font-style: italic;
     font-size: 22px; line-height: 1.45; color: var(--ink-700); margin: 0;
     font-weight: 400;
+  }
+
+  .post-listen {
+    display: flex; align-items: center; gap: 14px;
+    margin-top: 28px;
+  }
+  .listen-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    background: transparent;
+    color: var(--ink-950);
+    border: 1px solid var(--ink-200);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    cursor: pointer;
+    transition: background 150ms, border-color 150ms, color 150ms;
+  }
+  .listen-btn:hover { border-color: var(--signal-700); color: var(--signal-700); }
+  .listen-btn .listen-icon { font-size: 10px; line-height: 1; }
+  .listen-status {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--ink-400); letter-spacing: 0.06em;
   }
   .post-prose {
     font-family: var(--font-sans);
