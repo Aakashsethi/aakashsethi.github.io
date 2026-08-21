@@ -1,0 +1,51 @@
+---
+const path = Astro.url.pathname;
+const isHome = path === '/' || path === '';
+const isBlog = path.startsWith('/blog');
+const isConsulting = path.startsWith('/consulting');
+
+// Nav items. Home-app hash targets (`/#work`, `/#about`) route into the React
+// app on the home page; a hashchange listener there picks them up.
+const tabs = [
+  { id: 'work', label: 'Work', href: '/#work', active: isHome && Astro.url.hash === '#work' },
+  { id: 'blog', label: 'Writing', href: '/blog/', active: isBlog },
+  { id: 'consulting', label: 'Consulting', href: '/consulting/', active: isConsulting },
+  { id: 'about', label: 'About', href: '/#about', active: isHome && Astro.url.hash === '#about' },
+];
+---
+<header class="site-header">
+  <a class="wordmark" href="/">AAKASH SETHI</a>
+  <nav class="site-nav">
+    {tabs.map((t) => (
+      <a href={t.href} class={t.active ? 'is-active' : ''}>{t.label}</a>
+    ))}
+  </nav>
+  <button class="hamburger" data-nav-open aria-label="Open menu">
+    <span /><span /><span />
+  </button>
+</header>
+
+<div class="mobile-nav-overlay" data-nav-overlay hidden>
+  <div class="mobile-nav">
+    <button class="mobile-nav-close" data-nav-close aria-label="Close menu">✕</button>
+    <div class="mobile-nav-wordmark">AAKASH SETHI</div>
+    {tabs.map((t) => (
+      <a href={t.href} class={t.active ? 'mobile-nav-active' : ''}>{t.label}</a>
+    ))}
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const overlay = document.querySelector('[data-nav-overlay]');
+    const open = document.querySelector('[data-nav-open]');
+    const close = document.querySelector('[data-nav-close]');
+    if (!overlay || !open || !close) return;
+    const show = () => { overlay.hidden = false; document.body.style.overflow = 'hidden'; };
+    const hide = () => { overlay.hidden = true; document.body.style.overflow = ''; };
+    open.addEventListener('click', show);
+    close.addEventListener('click', hide);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) hide(); });
+    window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !overlay.hidden) hide(); });
+  })();
+</script>

@@ -1,0 +1,25 @@
+---
+const start = new Date('2019-01-01T00:00:00Z').getTime();
+const years = ((Date.now() - start) / (365.25 * 24 * 3600 * 1000)).toFixed(2);
+// Subscribe on non-home pages routes to /#newsletter (home hash anchor); on
+// home the same href just scrolls to the section.
+---
+<footer class="site-footer">
+  <div class="ft-left">
+    <a href="/#newsletter" class="ft-subscribe">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <path d="m22 7-10 5L2 7"/>
+      </svg>
+      <span>Subscribe by email</span>
+    </a>
+    <span class="mono small muted">Handcrafted by Aakash in New Jersey · since 2019 · {years} years and counting</span>
+  </div>
+  <div class="ft-right">
+    <a href="https://github.com/aakashsethi" class="ft-link">github</a>
+    <a href="mailto:aakash.sethi7@gmail.com" class="ft-link">email</a>
+    <a href="https://linkedin.com/in/aakash-sethi-007" class="ft-link">linkedin</a>
+    <a href="https://tnufa.ai" class="ft-link">tnufa.ai</a>
+    <a href="/privacy/" class="ft-link">privacy</a>
+  </div>
+</footer>

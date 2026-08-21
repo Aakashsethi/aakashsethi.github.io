@@ -1,7 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { About } from './About.jsx';
-import { Footer, Header } from './Chrome.jsx';
 import { Contact } from './Contact.jsx';
 import { Education } from './Education.jsx';
 import { Hero, StatStrip } from './Hero.jsx';
@@ -52,11 +51,15 @@ function App() {
 
   useEffect(() => { window.scrollTo({top:0, behavior:'instant'}); }, [page]);
 
-  // Sync back/forward browser buttons
+  // Sync back/forward + header-anchor hash clicks (e.g. /#work, /#about).
   useEffect(() => {
     const onPop = () => setPage(pageFromHash());
     window.addEventListener('popstate', onPop);
-    return () => window.removeEventListener('popstate', onPop);
+    window.addEventListener('hashchange', onPop);
+    return () => {
+      window.removeEventListener('popstate', onPop);
+      window.removeEventListener('hashchange', onPop);
+    };
   }, []);
 
   const onNav = (id) => {
@@ -69,7 +72,6 @@ function App() {
   return (
     <div>
       <CursorGrid />
-      <Header active={page} onNav={onNav} />
       <main className="container">
         {page === 'home' && (
           <>
@@ -88,7 +90,6 @@ function App() {
         {page === 'scheduler'   && <Scheduler />}
         {page === 'journey'     && <Journey />}
       </main>
-      <Footer />
       <ProjectModal p={openProj} onClose={()=>setOpenProj(null)} />
     </div>
   );

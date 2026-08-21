@@ -11,6 +11,8 @@ const {
 } = Astro.props;
 import '../colors_and_type.css';
 import '../styles.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 ---
 <!doctype html>
 <html lang="en">
@@ -46,6 +48,8 @@ import '../styles.css';
 </script>
 </head>
 <body class={bodyClass}>
+<SiteHeader />
 <slot />
+<SiteFooter />
 </body>
 </html>
