@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { postUrl } from '../../lib/postUrl';
+import SubscribeInline from '../../components/SubscribeInline.astro';
 
 const rawPosts = await getCollection('blog');
 const posts = rawPosts.sort(
@@ -29,6 +30,13 @@ const years = [...byYear.keys()].sort((a, b) => b - a);
       <p class="blog-lede">AI engineering, agentic systems, AWS architecture, fintech, and building a consulting practice. Updated as I ship.</p>
       <p class="blog-meta">{posts.length} pieces</p>
     </header>
+
+    <SubscribeInline
+      eyebrow="The newsletter"
+      title="One email when I publish. That's it."
+      lede="Long-form posts on AI engineering, RAG, and AWS. No promos, no digests, no forwarded threads. Unsubscribe anytime."
+      tag="blog-index"
+    />
 
     {years.map(year => (
       <section class="blog-year">

@@ -1,0 +1,135 @@
+---
+export interface Props {
+  eyebrow?: string;
+  title?: string;
+  lede?: string;
+  tag?: string;
+}
+const {
+  eyebrow = 'The newsletter',
+  title = 'Get new posts by email.',
+  lede = 'Long-form notes on AI engineering, RAG, and shipping AWS systems. One email when I publish. Unsubscribe anytime.',
+  tag = 'blog',
+} = Astro.props;
+---
+<aside class="sub-inline" data-sub>
+  <p class="sub-eyebrow">{eyebrow}</p>
+  <h3 class="sub-title">{title}</h3>
+  <p class="sub-lede">{lede}</p>
+  <form class="sub-form" data-sub-form data-tag={tag}>
+    <input
+      type="email"
+      name="email"
+      required
+      autocomplete="email"
+      placeholder="you@company.com"
+      class="sub-input"
+      data-sub-input
+    />
+    <button type="submit" class="sub-btn" data-sub-btn>Subscribe →</button>
+  </form>
+  <p class="sub-status" data-sub-status aria-live="polite"></p>
+</aside>
+
+<script is:inline>
+  (() => {
+    const PROD = 'https://portfolio-contact-j70g.onrender.com';
+    const base = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+      ? `http://${location.hostname}:4001` : PROD;
+
+    for (const form of document.querySelectorAll('[data-sub-form]')) {
+      const root = form.closest('[data-sub]');
+      const input = root.querySelector('[data-sub-input]');
+      const btn = root.querySelector('[data-sub-btn]');
+      const status = root.querySelector('[data-sub-status]');
+      const tag = form.getAttribute('data-tag') || 'site';
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = (input.value || '').trim();
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+        status.textContent = '';
+        status.className = 'sub-status';
+        try {
+          const res = await fetch(`${base}/subscribe`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, tag }),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+          status.textContent = data.already
+            ? "✓ You're already on the list — thanks for the support."
+            : "✓ You're in. A welcome note is on its way.";
+          status.classList.add('ok');
+          input.value = '';
+        } catch (err) {
+          status.textContent = err.message || 'Something went wrong. Try again shortly.';
+          status.classList.add('err');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Subscribe →';
+        }
+      });
+    }
+  })();
+</script>
+
+<style is:global>
+  .sub-inline {
+    border: 1px solid var(--ink-100);
+    background: var(--ink-50);
+    border-radius: 12px;
+    padding: 28px clamp(20px, 4vw, 32px);
+    margin: 48px 0;
+  }
+  .sub-eyebrow {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink-500); margin: 0 0 10px;
+  }
+  .sub-title {
+    font-family: var(--font-editorial); font-optical-sizing: auto;
+    font-weight: 500; font-size: 24px; letter-spacing: -0.02em; line-height: 1.2;
+    color: var(--ink-950); margin: 0 0 8px;
+  }
+  .sub-lede {
+    font-family: var(--font-reading), var(--font-editorial), Georgia, serif;
+    font-size: 15px; line-height: 1.55; color: var(--ink-700); margin: 0 0 16px;
+    max-width: 58ch;
+  }
+  .sub-form {
+    display: flex; gap: 8px; align-items: stretch; flex-wrap: wrap;
+  }
+  .sub-input {
+    flex: 1 1 260px; min-width: 0;
+    padding: 10px 14px;
+    font-family: var(--font-sans); font-size: 14px;
+    background: var(--paper, #fff);
+    color: var(--ink-950);
+    border: 1px solid var(--ink-200);
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 150ms;
+  }
+  .sub-input:focus { border-color: var(--signal-700); }
+  .sub-btn {
+    padding: 10px 18px;
+    background: var(--ink-950); color: var(--ink-50);
+    border: 1px solid var(--ink-950); border-radius: 8px;
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em;
+    text-transform: uppercase; cursor: pointer;
+    transition: opacity 150ms;
+  }
+  .sub-btn:hover { opacity: 0.88; }
+  .sub-btn:disabled { opacity: 0.55; cursor: default; }
+  .sub-status {
+    margin: 12px 0 0;
+    font-family: var(--font-mono); font-size: 12px;
+    color: var(--ink-500); letter-spacing: 0.03em;
+    min-height: 1em;
+  }
+  .sub-status.ok { color: var(--signal-700); }
+  .sub-status.err { color: #b91c1c; }
+</style>

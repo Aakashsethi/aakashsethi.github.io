@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { postPathParam } from '../lib/postUrl';
+import SubscribeInline from '../components/SubscribeInline.astro';
 
 // Catch-all that emits blog posts at the same URLs the legacy Jekyll site
 // produced (`/{category}/{yyyy}/{mm}/{dd}/{slug}.html`). Post-build script
@@ -118,6 +119,13 @@ const fmtDate = (d) => d.toLocaleDateString('en-US', {
         window.addEventListener('beforeunload', () => window.speechSynthesis.cancel());
       })();
     </script>
+
+    <SubscribeInline
+      eyebrow="Liked this?"
+      title="Get the next one by email."
+      lede="One email when I publish. No digests, no forwards. Unsubscribe anytime."
+      tag="post-footer"
+    />
 
     <footer class="post-footer">
       <a href="/blog/" class="post-backlink">← All writing</a>

@@ -54,7 +54,9 @@
       "Bash(cp -R fonts public/)",
       "Bash(git rm *)",
       "Bash(git mv *)",
-      "Bash(cp -r uploads/ public/uploads/)"
+      "Bash(cp -r uploads/ public/uploads/)",
+      "Bash(git fetch *)",
+      "Bash(git config *)"
     ]
   }
 }
