@@ -1,155 +1,73 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
-import { SignInModal, apiFetch, useSession } from './api.jsx';
 
 function JobTailor() {
-  const session = useSession();
-  const [jd, setJd] = useState('');
-  const [resume, setResume] = useState('');
-  const [quota, setQuota] = useState(null);
-  const [status, setStatus] = useState('idle'); // idle | running | done | error | signin_required | paused
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState(null);
-  const [signInOpen, setSignInOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  const [backendDown, setBackendDown] = useState(false);
-  const loadQuota = async () => {
-    try {
-      const r = await apiFetch('/tailor/quota.json');
-      if (r.ok) { setQuota(await r.json()); setBackendDown(false); }
-      else if (r.status >= 500) { setBackendDown(true); }
-    } catch (_) { setBackendDown(true); }
-  };
-  useEffect(() => { if (!session.loading) loadQuota(); }, [session.loading, session.authenticated]);
-
-  useEffect(() => {
-    const url = new URL(window.location.href);
-    if (url.searchParams.get('signed_in') === '1') {
-      url.searchParams.delete('signed_in');
-      window.history.replaceState(null, '', url.pathname + url.hash);
-      setSignInOpen(false);
-      session.refresh();
-    }
-  }, []);
-
-  const canRun = jd.trim().length > 20 && resume.trim().length > 20 && status !== 'running';
-
-  const submit = async () => {
-    setStatus('running'); setError(null); setResult(null); setCopied(false);
-    try {
-      const r = await apiFetch('/tailor', { method: 'POST', body: JSON.stringify({ jd, resume }) });
-      const j = await r.json();
-      if (r.status === 402) { setStatus('signin_required'); setError(j.error); setSignInOpen(true); return; }
-      if (r.status === 429) { setStatus('error'); setError(j.error || 'Daily limit reached.'); return; }
-      if (r.status === 503 && j.paused) { setStatus('paused'); setError(j.error); return; }
-      if (!r.ok) { setStatus('error'); setError(j.error || `HTTP ${r.status}`); return; }
-      setResult({ tailored: j.tailored, rationale: j.rationale });
-      setStatus('done');
-      setQuota(q => q ? { ...q, remaining: j.remaining } : q);
-    } catch (e) {
-      setStatus('error'); setError(String(e));
-    }
-  };
-
-  const copyResult = async () => {
-    if (!result) return;
-    await navigator.clipboard.writeText(result.tailored);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  };
-
   return (
-    <section className="tailor">
-      <header className="section-head">
-        <p className="mono small muted" style={{textTransform:'uppercase', letterSpacing:'0.12em'}}>live demo · job tailor</p>
-        <h1>Tailor a resume to a job description</h1>
-        <p className="lead">Paste both. Groq (llama-3.3-70b) rewrites your resume to emphasize what matches — never inventing new claims.</p>
-      </header>
+    <section className="wip-shell">
+      <p className="wip-eyebrow">Work in progress · Resume tailor</p>
+      <h1 className="wip-title">Paste a JD and your resume. Get one that speaks the same language.</h1>
+      <p className="wip-lede">
+        Coming soon. Here's what it will do and why I'm building it.
+      </p>
 
-      {backendDown && (
-        <div className="empty-state">
-          <p className="mono small muted" style={{textTransform:'uppercase', letterSpacing:'0.12em'}}>backend unreachable</p>
-          <p>The tailor backend isn't responding. If you're running locally, make sure Sinatra is up on port 4001 with <code>DATABASE_URL</code> set. In production this typically means the free-tier dyno is warming up — try again in ~30s.</p>
-        </div>
-      )}
-      {!backendDown && <QuotaBar quota={quota} session={session} onSignIn={() => setSignInOpen(true)} />}
+      <h2 className="wip-h2">The problem</h2>
+      <p>
+        Generic resumes lose. Recruiters spend six seconds on the first pass,
+        and ATS keyword filters have even shorter attention spans. But
+        rewriting the same three pages for every posting is soul-crushing
+        work — so most engineers ship the same generic PDF everywhere and
+        lose interviews they should have won.
+      </p>
+      <p>
+        The other failure mode is worse: engineers use ChatGPT to "tailor"
+        their resume, and it invents skills they don't have. HR calls them
+        out in the phone screen, and the whole application dies.
+      </p>
 
-      <div className="tailor-inputs">
-        <div className="tailor-pane">
-          <label className="mono small muted" htmlFor="jd" style={{textTransform:'uppercase', letterSpacing:'0.12em'}}>job description</label>
-          <textarea id="jd" className="tailor-textarea" placeholder="Paste the full JD here…" value={jd} onChange={(e) => setJd(e.target.value)} />
-          <span className="mono small muted char-count">{jd.length.toLocaleString()} chars</span>
-        </div>
-        <div className="tailor-pane">
-          <label className="mono small muted" htmlFor="resume" style={{textTransform:'uppercase', letterSpacing:'0.12em'}}>your resume (plain text)</label>
-          <textarea id="resume" className="tailor-textarea" placeholder="Paste your resume as plain text…" value={resume} onChange={(e) => setResume(e.target.value)} />
-          <span className="mono small muted char-count">{resume.length.toLocaleString()} chars</span>
-        </div>
-      </div>
+      <h2 className="wip-h2">What this tool does</h2>
+      <p>
+        You paste two things: the job description and your real resume. The
+        tool sends both to a fast LLM (Groq's llama-3.3-70b) with a strict
+        rewrite prompt:
+      </p>
+      <ul className="wip-list">
+        <li><b>Never invent.</b> Every skill, employer, date, and metric in the output must come from your source resume. No hallucinated experience.</li>
+        <li><b>Reorder to match.</b> Move the bullets that map to the JD to the top of each role. Drop bullets that don't apply.</li>
+        <li><b>Rephrase, don't rewrite.</b> Use the JD's terminology when you have genuine adjacent experience — "microservices" instead of "distributed services" if that's what they call it.</li>
+        <li><b>Length discipline.</b> Stay within ~10% of the original length. Recruiters know when a resume balloons after tailoring.</li>
+      </ul>
+      <p>
+        You also get a rationale — 3–5 bullets explaining what got
+        emphasized and why — so you can defend the changes in the phone
+        screen.
+      </p>
 
-      <div className="tailor-actions">
-        <button className="btn btn-primary" disabled={!canRun} onClick={submit}>
-          {status === 'running' ? 'Tailoring…' : 'Tailor my resume →'}
-        </button>
-        {status === 'running' && <span className="mono small muted">Talking to Groq… usually ~5s</span>}
-      </div>
+      <h2 className="wip-h2">Free tier and paid runs</h2>
+      <p>
+        One free run per day for anonymous users (IP-limited). Sign in with
+        a magic link and you get ten a day, plus a history of every tailor
+        you've run. Groq costs are cheap enough that the whole thing runs
+        on my nickel.
+      </p>
 
-      {status === 'error' && <p className="muted mono" style={{color:'var(--signal-700)'}}>Error: {error}</p>}
-      {status === 'signin_required' && (
-        <div className="empty-state">
-          <p className="mono small muted" style={{textTransform:'uppercase', letterSpacing:'0.12em'}}>free tier used up</p>
-          <p>{error || 'One free tailor per day for anonymous users. Sign in with a magic link to run more (10/day).'}</p>
-          <button className="btn-inline" onClick={() => setSignInOpen(true)}>Sign in <span className="arr">→</span></button>
-        </div>
-      )}
-      {status === 'paused' && (
-        <div className="empty-state">
-          <p className="mono small muted" style={{textTransform:'uppercase', letterSpacing:'0.12em'}}>feature paused</p>
-          <p>{error}</p>
-        </div>
-      )}
+      <h2 className="wip-h2">What's left to build</h2>
+      <ul className="wip-list">
+        <li>Diff view — see exactly what changed between your source and the tailored version, sentence by sentence.</li>
+        <li>Cover-letter mode — same JD + resume, but produce a 180-word intro paragraph, not a full resume rewrite.</li>
+        <li>PDF export with your chosen typography (right now it emits markdown for you to paste into your editor).</li>
+        <li>Batch mode — paste 10 JDs, get 10 tailored versions in one run.</li>
+      </ul>
 
-      {status === 'done' && result && (
-        <div className="tailor-result">
-          <div className="tailor-result-head">
-            <h2>Tailored resume</h2>
-            <button className="btn btn-secondary" onClick={copyResult}>{copied ? 'Copied ✓' : 'Copy'}</button>
-          </div>
-          <pre className="tailor-output">{result.tailored}</pre>
+      <h2 className="wip-h2">Timing</h2>
+      <p>
+        The tailor + rationale flow is wired end-to-end; I'm ironing out
+        the sign-in UX and diff view before opening it to real use.
+        Subscribe to the newsletter and I'll email when it's live.
+      </p>
 
-          {result.rationale && (
-            <>
-              <h3>Why these changes</h3>
-              <div className="tailor-rationale">{result.rationale}</div>
-            </>
-          )}
-        </div>
-      )}
-
-      <SignInModal open={signInOpen} onClose={() => setSignInOpen(false)} onSuccess={() => { setSignInOpen(false); session.refresh(); }} />
+      <p className="wip-back">
+        <a href="/">← Back to home</a>
+      </p>
     </section>
-  );
-}
-
-function QuotaBar({ quota, session, onSignIn }) {
-  if (!quota) return null;
-  const pct = quota.limit > 0 ? Math.max(0, Math.min(100, (quota.remaining / quota.limit) * 100)) : 0;
-  return (
-    <div className="quota-bar" aria-label="Daily usage remaining">
-      <div className="quota-meta">
-        <span className="mono small muted" style={{textTransform:'uppercase', letterSpacing:'0.12em'}}>
-          {quota.authenticated ? `signed in · ${session.email || ''}` : 'anonymous'}
-        </span>
-        <span className="mono small muted">{quota.remaining} of {quota.limit} left today</span>
-      </div>
-      <div className="quota-track"><div className="quota-fill" style={{width: `${pct}%`}} /></div>
-      {!quota.authenticated && (
-        <button className="btn-inline" onClick={onSignIn} style={{marginTop:'0.5rem'}}>
-          Sign in to unlock {10 - quota.limit > 0 ? `${10 - quota.limit}× more` : 'more'} runs & history <span className="arr">→</span>
-        </button>
-      )}
-    </div>
   );
 }
 
