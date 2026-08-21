@@ -53,10 +53,12 @@ const {
         status.textContent = '';
         status.className = 'sub-status';
         try {
+          // NB: not sending `tag` — Buttondown's free plan rejects tagged
+          // subscribers with 403. Re-add if you upgrade.
           const res = await fetch(`${base}/subscribe`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, tag }),
+            body: JSON.stringify({ email }),
           });
           const data = await res.json().catch(() => ({}));
           if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
