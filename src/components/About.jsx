@@ -1,42 +1,5 @@
 import React from 'react';
 
-const ROLES = [
-  { co: 'Amazon', loc: 'Hicksville, NY', role: 'L7 Product Manager', period: '2025 – Present',
-    bullets: [
-      'Own product strategy and roadmap for AI/ML initiatives; partner cross-functionally with engineering, science, design, and business teams.',
-      'Drive prioritization and execution across multi-team scope; align stakeholders on outcomes, metrics, and go-to-market.',
-    ] },
-  { co: 'Burpez', loc: 'Newark, NJ', role: 'Software Engineer', period: '2024 – 2025',
-    bullets: [
-      'Built a cloud-kitchen ops platform on the MERN stack.',
-      'React + Redux frontend; Node/Express + MongoDB; AWS Kinesis for realtime order/inventory streaming.',
-      'Scaled REST services to 5,000+ daily users.',
-    ] },
-  { co: 'Babson Acquisition Partners', loc: 'New Jersey', role: 'Barista & Baker', period: '2024 – 2025',
-    bullets: [
-      'Baked croissants daily; developed custom flavor offerings.',
-      'A year of customer-service and operations craft — feeds the systems work above.',
-    ] },
-  { co: 'Vanguard', loc: 'Malvern, PA', role: 'Software Engineer', period: '2023',
-    bullets: [
-      'Automated ETF primary-market trading systems on AWS ECS, Lambda, CodeDeploy with blue/green.',
-      'Containerized microservices via Docker; integrated CloudWatch + API Gateway.',
-      'Lifted test coverage from 45% → 85% in two quarters with Mocha + Postman.',
-    ] },
-  { co: 'Mercedes-Benz Financial Services', loc: 'Farmington Hills, MI', role: 'Technology Analyst', period: '2021 – 2022',
-    bullets: [
-      'Migrated SOAP APIs to RESTful microservices for Daimler Truck Financial Services on Java/Spring Boot — 30% latency reduction.',
-      'Automated CI/CD with JUnit; supported ServiceNow setup and migration.',
-      'Partnered with finance and account teams on customer-lifecycle ops.',
-    ] },
-  { co: 'Industry Mojo', loc: 'Short Hills, NJ', role: 'CRM & Data Operations Intern', period: '2020 – 2021',
-    bullets: [
-      'Built and tested a client-facing web portal (HTML/CSS/JS).',
-      'Automated price-list entries in Microsoft Dynamics 365.',
-      'Scrum partner on customizations to Dynamics workflows.',
-    ] },
-];
-
 function About() {
   return (
     <section id="about">
@@ -68,24 +31,6 @@ function About() {
             shutter, and I write small things to teach. If you're working on agents,
             evals, infra, fintech, or a research demo that needs a hand — let's talk.
           </p>
-
-          <h3 style={{marginTop:'var(--sp-12)',letterSpacing:'-0.02em'}}>Experience</h3>
-          <div style={{display:'flex',flexDirection:'column',gap:'var(--sp-8)',marginTop:'var(--sp-6)'}}>
-            {ROLES.map(r => (
-              <div key={r.co + r.period} style={{borderTop:'1px solid var(--hairline)',paddingTop:'var(--sp-5)'}}>
-                <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',gap:'var(--sp-4)',flexWrap:'wrap'}}>
-                  <div>
-                    <span style={{fontFamily:'var(--font-sans)',fontSize:18,fontWeight:600,letterSpacing:'-0.01em'}}>{r.role}</span>
-                    <span className="muted"> · {r.co}</span>
-                  </div>
-                  <span className="mono small muted">{r.period} · {r.loc}</span>
-                </div>
-                <ul style={{margin:'var(--sp-3) 0 0',paddingLeft:'1.2em',fontFamily:'var(--font-sans)',fontSize:14,color:'var(--fg)',lineHeight:1.6}}>
-                  {r.bullets.map((b,i) => <li key={i} style={{marginBottom:4}}>{b}</li>)}
-                </ul>
-              </div>
-            ))}
-          </div>
         </div>
 
       </div>
