@@ -56,7 +56,9 @@
       "Bash(git mv *)",
       "Bash(cp -r uploads/ public/uploads/)",
       "Bash(git fetch *)",
-      "Bash(git config *)"
+      "Bash(git config *)",
+      "Bash(ruby -c contact_server.rb)",
+      "Bash(gh workflow *)"
     ]
   }
 }

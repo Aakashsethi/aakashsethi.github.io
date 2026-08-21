@@ -1039,10 +1039,11 @@ section { padding: 0 0 var(--sp-24); }
   background: rgba(10,11,13,0.75);
   backdrop-filter: blur(6px);
   z-index: 500;
-  display: flex;
+  display: none;
   justify-content: flex-end;
   animation: fadeIn 150ms ease;
 }
+.mobile-nav-overlay.is-open { display: flex; }
 .mobile-nav {
   background: var(--bg-elev);
   border-left: 1px solid var(--border);

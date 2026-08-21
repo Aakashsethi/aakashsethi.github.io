@@ -9,7 +9,6 @@ const isConsulting = path.startsWith('/consulting');
 const tabs = [
   { id: 'work', label: 'Work', href: '/#work', active: isHome && Astro.url.hash === '#work' },
   { id: 'blog', label: 'Writing', href: '/blog/', active: isBlog },
-  { id: 'consulting', label: 'Consulting', href: '/consulting/', active: isConsulting },
   { id: 'about', label: 'About', href: '/#about', active: isHome && Astro.url.hash === '#about' },
 ];
 ---
@@ -25,7 +24,7 @@ const tabs = [
   </button>
 </header>
 
-<div class="mobile-nav-overlay" data-nav-overlay hidden>
+<div class="mobile-nav-overlay" data-nav-overlay>
   <div class="mobile-nav">
     <button class="mobile-nav-close" data-nav-close aria-label="Close menu">✕</button>
     <div class="mobile-nav-wordmark">AAKASH SETHI</div>
@@ -41,11 +40,11 @@ const tabs = [
     const open = document.querySelector('[data-nav-open]');
     const close = document.querySelector('[data-nav-close]');
     if (!overlay || !open || !close) return;
-    const show = () => { overlay.hidden = false; document.body.style.overflow = 'hidden'; };
-    const hide = () => { overlay.hidden = true; document.body.style.overflow = ''; };
+    const show = () => { overlay.classList.add('is-open'); document.body.style.overflow = 'hidden'; };
+    const hide = () => { overlay.classList.remove('is-open'); document.body.style.overflow = ''; };
     open.addEventListener('click', show);
     close.addEventListener('click', hide);
     overlay.addEventListener('click', (e) => { if (e.target === overlay) hide(); });
-    window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !overlay.hidden) hide(); });
+    window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay.classList.contains('is-open')) hide(); });
   })();
 </script>
