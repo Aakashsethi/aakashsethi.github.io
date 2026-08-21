@@ -1,0 +1,112 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { postPathParam } from '../lib/postUrl';
+
+// Catch-all that emits blog posts at the same URLs the legacy Jekyll site
+// produced (`/{category}/{yyyy}/{mm}/{dd}/{slug}.html`). Post-build script
+// flattens the resulting `.../slug/index.html` into `.../slug.html`.
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { jekyllpath: postPathParam(post) },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const fmtDate = (d) => d.toLocaleDateString('en-US', {
+  month: 'long', day: 'numeric', year: 'numeric'
+});
+---
+<Base
+  title={`${post.data.title} — Aakash Sethi`}
+  description={post.data.excerpt || post.data.title}
+>
+  <article class="post-shell">
+    <header class="post-hero">
+      <p class="mono small muted eyebrow-line">
+        {fmtDate(post.data.date)}
+        {post.data.categories?.[0] && <span class="dot-sep">·</span>}
+        {post.data.categories?.[0] && <span>{post.data.categories[0]}</span>}
+      </p>
+      <h1 class="post-h1">{post.data.title}</h1>
+      {post.data.excerpt && <p class="post-lede">{post.data.excerpt}</p>}
+    </header>
+
+    <div class="post-prose prose">
+      <Content />
+    </div>
+
+    <footer class="post-footer">
+      <a href="/blog/" class="post-backlink">← All writing</a>
+      {post.data.linkedin_url && (
+        <a href={post.data.linkedin_url} class="post-linkedin" target="_blank" rel="noreferrer">
+          Discuss on LinkedIn →
+        </a>
+      )}
+    </footer>
+  </article>
+</Base>
+
+<style is:global>
+  .post-shell { max-width: 720px; margin: 0 auto; padding: 56px clamp(16px, 5vw, 32px) 96px; }
+  .post-hero { margin-bottom: 40px; }
+  .post-hero .eyebrow-line {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-500); margin: 0 0 16px;
+  }
+  .post-hero .dot-sep { margin: 0 6px; color: var(--ink-300); }
+  .post-h1 {
+    font-family: var(--font-editorial); font-optical-sizing: auto;
+    font-weight: 600; font-size: clamp(36px, 5vw, 56px); line-height: 1.1;
+    letter-spacing: -0.03em; margin: 0 0 20px; color: var(--ink-950);
+  }
+  .post-lede {
+    font-family: var(--font-editorial); font-optical-sizing: auto; font-style: italic;
+    font-size: 22px; line-height: 1.45; color: var(--ink-700); margin: 0;
+    font-weight: 400;
+  }
+  .post-prose {
+    font-family: var(--font-sans);
+    font-size: 18px; line-height: 1.7; color: var(--ink-800);
+  }
+  .post-prose p { margin: 0 0 22px; }
+  .post-prose h2 {
+    font-family: var(--font-editorial); font-optical-sizing: auto;
+    font-weight: 600; font-size: 28px; letter-spacing: -0.02em; line-height: 1.2;
+    margin: 48px 0 16px; color: var(--ink-950);
+  }
+  .post-prose h3 {
+    font-family: var(--font-editorial); font-weight: 600; font-size: 22px;
+    letter-spacing: -0.015em; margin: 36px 0 12px; color: var(--ink-950);
+  }
+  .post-prose a { color: var(--signal-700); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .post-prose a:hover { color: var(--signal-600); }
+  .post-prose code {
+    font-family: var(--font-mono); font-size: 0.9em;
+    background: var(--ink-100); padding: 2px 6px; border-radius: 4px;
+  }
+  .post-prose pre {
+    background: var(--ink-950); color: var(--ink-100); padding: 20px;
+    border-radius: 10px; overflow-x: auto; margin: 24px 0;
+  }
+  .post-prose pre code { background: transparent; padding: 0; }
+  .post-prose blockquote {
+    border-left: 3px solid var(--signal-500); padding: 4px 0 4px 20px;
+    color: var(--ink-500); margin: 24px 0; font-style: italic;
+  }
+  .post-prose ul, .post-prose ol { padding-left: 24px; margin: 0 0 22px; }
+  .post-prose li { margin: 8px 0; }
+  .post-prose img { max-width: 100%; border-radius: 8px; margin: 24px 0; }
+  .post-prose hr { border: 0; border-top: 1px solid var(--ink-200); margin: 40px 0; }
+
+  .post-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--ink-200);
+    font-family: var(--font-mono); font-size: 13px;
+  }
+  .post-backlink, .post-linkedin { color: var(--ink-700); text-decoration: none; }
+  .post-backlink:hover, .post-linkedin:hover { color: var(--signal-700); }
+</style>

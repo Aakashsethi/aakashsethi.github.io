@@ -1,0 +1,52 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Not found — Aakash Sethi"
+  description="This page does not exist."
+>
+  <main class="nf-shell">
+    <p class="nf-eyebrow mono">404 · NOT FOUND</p>
+    <h1 class="nf-title">This page moved, or it never existed.</h1>
+    <p class="nf-lede">
+      Try one of these instead:
+    </p>
+    <ul class="nf-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/blog/">Writing (43 posts)</a></li>
+      <li><a href="/consulting/">Consulting</a></li>
+      <li><a href="/#work">Work</a></li>
+      <li><a href="/#journey">Live job search</a></li>
+    </ul>
+    <p class="nf-help mono">
+      If you got here from a link on this site, please <a href="mailto:aakash.sethi7@gmail.com">let me know</a>.
+    </p>
+  </main>
+</Base>
+
+<style is:global>
+  .nf-shell { max-width: 640px; margin: 0 auto; padding: 96px clamp(20px, 5vw, 40px); }
+  .nf-eyebrow {
+    font-size: 12px; letter-spacing: 0.14em; color: var(--ink-500);
+    text-transform: uppercase; margin: 0 0 16px;
+  }
+  .nf-title {
+    font-family: var(--font-editorial); font-optical-sizing: auto;
+    font-weight: 600; font-size: clamp(32px, 4.5vw, 48px);
+    letter-spacing: -0.02em; line-height: 1.1;
+    color: var(--ink-950); margin: 0 0 24px;
+  }
+  .nf-lede { font-size: 17px; line-height: 1.5; color: var(--ink-700); margin: 0 0 20px; }
+  .nf-links { list-style: none; padding: 0; margin: 0 0 40px; }
+  .nf-links li { padding: 10px 0; border-bottom: 1px solid var(--ink-100); }
+  .nf-links a {
+    font-family: var(--font-sans); font-size: 17px; font-weight: 500;
+    color: var(--ink-950); text-decoration: none;
+  }
+  .nf-links a:hover { color: var(--signal-700); }
+  .nf-help {
+    font-size: 13px; color: var(--ink-500);
+    padding-top: 24px; border-top: 1px solid var(--ink-100);
+  }
+  .nf-help a { color: var(--ink-700); }
+</style>

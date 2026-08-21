@@ -1,0 +1,109 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { postUrl } from '../../lib/postUrl';
+
+const rawPosts = await getCollection('blog');
+const posts = rawPosts.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const fmtDate = (d) => d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+---
+<Base
+  title="Writing — Aakash Sethi | Founder of Tnufa AI"
+  description="Technical writing on AI engineering, agentic systems, AWS, fintech, and building a consulting practice."
+>
+  <div class="blog-shell">
+    <div class="section-dots-accent top-right" aria-hidden="true">
+      <img src="/assets/hero/purple-dots-accent.png" alt="" />
+    </div>
+    <header class="blog-hero">
+      <p class="mono small muted eyebrow-line">WRITING · MYLOGS</p>
+      <h1 class="blog-h1">Ideas I keep shipping back to.</h1>
+      <p class="blog-lede">AI engineering, agentic systems, AWS architecture, fintech, and building a consulting practice. Updated as I ship.</p>
+      <p class="mono small muted">{posts.length} posts</p>
+    </header>
+
+    <div class="blog-list">
+      {posts.map(post => {
+        const cat = post.data.categories?.[0];
+        const excerpt = post.data.excerpt;
+        return (
+          <a class="post-row" href={postUrl(post)}>
+            <div class="post-row-date">
+              <div>{fmtDate(post.data.date)}</div>
+              {cat && <div class="post-row-cat">{cat}</div>}
+            </div>
+            <div>
+              <h2 class="post-row-title">{post.data.title}</h2>
+              {excerpt && <p class="post-row-excerpt">{excerpt}</p>}
+              <div class="post-row-bottom">
+                {post.data.tags?.slice(0, 3).map(t => (
+                  <span class="post-row-tag">{t}</span>
+                ))}
+              </div>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</Base>
+
+<style is:global>
+  .blog-shell {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 56px clamp(16px, 5vw, 48px) 96px;
+  }
+  .blog-hero { border-bottom: 1px solid var(--ink-100); padding-bottom: 40px; margin-bottom: 40px; }
+  .blog-hero .eyebrow-line {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-500); margin: 0 0 16px;
+  }
+  .blog-h1 {
+    font-family: var(--font-editorial); font-optical-sizing: auto;
+    font-weight: 600; font-size: clamp(40px, 6vw, 64px); line-height: 1.05;
+    letter-spacing: -0.03em; margin: 0 0 20px; color: var(--ink-950);
+  }
+  .blog-lede { font-size: 18px; line-height: 1.55; color: var(--ink-700); margin: 0 0 24px; max-width: 640px; }
+
+  .blog-list { display: block; }
+  .post-row {
+    display: grid; grid-template-columns: 130px 1fr; gap: 0 40px;
+    padding: 32px 0; border-bottom: 1px solid var(--ink-100);
+    text-decoration: none; color: inherit;
+    transition: background 150ms;
+  }
+  .post-row:first-child { border-top: 1px solid var(--ink-100); }
+  .post-row:hover { background: var(--ink-100); padding-left: 16px; padding-right: 16px; margin: 0 -16px; border-radius: 8px; }
+  .post-row-date {
+    font-family: var(--font-mono); font-size: 12px; color: var(--ink-500);
+    letter-spacing: 0.02em; padding-top: 6px; line-height: 1.5;
+  }
+  .post-row-cat { text-transform: uppercase; font-size: 10px; letter-spacing: 0.08em; margin-top: 4px; color: var(--ink-400); }
+  .post-row-title {
+    font-family: var(--font-editorial); font-optical-sizing: auto;
+    font-size: 26px; font-weight: 500; letter-spacing: -0.02em;
+    color: var(--ink-950); margin: 0 0 10px; line-height: 1.2;
+    transition: color 150ms;
+  }
+  .post-row:hover .post-row-title { color: var(--signal-700); }
+  .post-row-excerpt {
+    font-size: 15px; color: var(--ink-500); line-height: 1.6; margin: 0 0 12px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .post-row-bottom { display: flex; gap: 6px; flex-wrap: wrap; }
+  .post-row-tag {
+    font-family: var(--font-mono); font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--signal-700); background: rgba(245,165,36,0.08);
+    border: 1px solid rgba(245,165,36,0.25); border-radius: 4px;
+    padding: 3px 8px;
+  }
+
+  @media (max-width: 720px) {
+    .post-row { grid-template-columns: 1fr; gap: 8px; }
+    .post-row:hover { padding-left: 10px; padding-right: 10px; margin: 0 -10px; }
+    .blog-h1 { font-size: 40px; }
+  }
+</style>

@@ -9,3 +9,8 @@ vendor
 .env.*
 generate_site_images.py
 assets/og/_*.png
+
+# Astro
+node_modules
+dist
+.astro

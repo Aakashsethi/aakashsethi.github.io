@@ -1,0 +1,51 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+  bodyClass?: string;
+}
+const {
+  title = 'Aakash Sethi — AI Engineering & AWS Consulting',
+  description = 'AI engineering consulting, LLM/RAG architecture reviews, and AWS advisory with Aakash Sethi. Amazon L7 PM. AWS Certified Solutions Architect Pro. Founder of Tnufa AI.',
+  bodyClass = '',
+} = Astro.props;
+import '../colors_and_type.css';
+import '../styles.css';
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="author" content="Aakash Sethi" />
+<meta name="theme-color" content="#0A0B0D" />
+<link rel="canonical" href={Astro.url.href} />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/icon-32.png" />
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<link rel="alternate" type="application/rss+xml" title="Aakash Sethi — Writing" href="/feed.xml" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content="https://aakashsethi.github.io/assets/og/home-og.jpg" />
+<meta property="og:url" content={Astro.url.href} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content="https://aakashsethi.github.io/assets/og/home-og.jpg" />
+<script src="https://unpkg.com/lucide@0.395.0/dist/umd/lucide.min.js" is:inline defer></script>
+<script is:inline>
+  window.SITE_CONFIG = {
+    youtubeChannelId: "UCVdpOAxaSsi19DsGCsjr35w",
+    linkedinUrl: "https://linkedin.com/in/aakash-sethi-007",
+    githubUsername: "Aakashsethi"
+  };
+</script>
+</head>
+<body class={bodyClass}>
+<slot />
+</body>
+</html>

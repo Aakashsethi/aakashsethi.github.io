@@ -36,7 +36,25 @@
       "Bash(curl *)",
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(npm run *)",
+      "Bash(ruby -c lib/store.rb)",
+      "Bash(ruby -c lib/limiter.rb)",
+      "Bash(ruby -c lib/auth.rb)",
+      "Bash(git push *)",
+      "Bash(gh api *)",
+      "Bash(gh run *)",
+      "Bash(dig +short aakashsethi.github.io)",
+      "Bash(grep -E \"\\\\.\\(html|md\\)$\")",
+      "Bash(grep -E \"\\\\.html$|\\\\.xml$|\\\\.txt$\")",
+      "Bash(grep \"\\\\.md$\")",
+      "Bash(awk -F'-' '{$1=$2=$3=$4=\"\"; print length\\($0\\), $0}')",
+      "Bash(grep -vE \"^\\(_|node_modules|\\\\.astro|\\\\.git|src|public|data|lib|ui_kits|bin|blog|assets\\)$\")",
+      "Bash(cp -R assets/. public/assets/)",
+      "Bash(cp -R fonts public/)",
+      "Bash(git rm *)",
+      "Bash(git mv *)",
+      "Bash(cp -r uploads/ public/uploads/)"
     ]
   }
 }

@@ -1,0 +1,67 @@
+{
+  "projects": [
+    {
+      "slug": "cashnews",
+      "name": "CashNews",
+      "tagline": "Fully automated AI-avatar news channel. Publishes daily short-form video to YouTube, Instagram, and TikTok.",
+      "github_url": "https://github.com/Aakashsethi/CashNews",
+      "demo_url": "https://www.youtube.com/@AakashSethi007",
+      "demo_label": "Watch daily drop",
+      "tech": [
+        "Python",
+        "SadTalker",
+        "ElevenLabs",
+        "GCP",
+        "FFmpeg",
+        "YAML"
+      ],
+      "status": "active",
+      "highlight": "News fetch \u2192 script \u2192 TTS \u2192 avatar render \u2192 b-roll \u2192 publish. Zero human touch after topic prompt."
+    },
+    {
+      "slug": "cashnews-ios",
+      "name": "CashNews (iOS)",
+      "tagline": "Native iOS companion for the CashNews pipeline. Preview stream + read summaries on the go.",
+      "github_url": "https://github.com/Aakashsethi/CashNewsIOS",
+      "demo_url": null,
+      "tech": [
+        "Swift",
+        "SwiftUI"
+      ],
+      "status": "building",
+      "highlight": null
+    },
+    {
+      "slug": "jobboating",
+      "name": "JobBoating",
+      "tagline": "Automated pipeline that tailors a resume per JD and submits applications end-to-end.",
+      "github_url": "https://github.com/Aakashsethi/JobBoating",
+      "demo_url": "/#journey",
+      "demo_label": "Live job search",
+      "tech": [
+        "Python",
+        "Claude API",
+        "Playwright",
+        "Selenium",
+        "LaTeX",
+        "Postgres"
+      ],
+      "status": "active",
+      "highlight": "580+ applications submitted across 7 companies since 2026-07-04."
+    },
+    {
+      "slug": "tnufa",
+      "name": "Tnufa AI",
+      "tagline": "Future AI venture. Exploring skill embeddings for workforce mobility.",
+      "github_url": "https://github.com/Aakashsethi/tnufa",
+      "demo_url": null,
+      "tech": [
+        "TypeScript",
+        "Postgres",
+        "pgvector"
+      ],
+      "status": "exploring",
+      "highlight": null
+    }
+  ]
+}
