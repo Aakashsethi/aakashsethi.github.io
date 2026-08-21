@@ -13,7 +13,7 @@ function Hero({ onNav }) {
       />
       <div className="hero-inner">
         <KineticTitle
-          text="Aakash Sethi builds AI systems that ship"
+          text="I build systems that ship"
           className="hero-title"
           accentDot
         />
