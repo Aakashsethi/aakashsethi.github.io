@@ -56,10 +56,13 @@ function Footer() {
   return (
     <footer className="site-footer">
       <div className="ft-left">
+        <a href="#newsletter" className="ft-subscribe">
+          <i data-lucide="mail-plus"></i>
+          <span>Subscribe by email</span>
+        </a>
         <span className="mono small muted">Handcrafted by Aakash in New Jersey · since 2019 · {years} years and counting</span>
       </div>
       <div className="ft-right">
-        <a href="#newsletter" className="ft-link"><i data-lucide="mail-plus"></i> newsletter</a>
         <a href="https://github.com/aakashsethi" className="ft-link"><i data-lucide="github"></i> github</a>
         <a href="mailto:aakash.sethi7@gmail.com" className="ft-link"><i data-lucide="mail"></i> aakash.sethi7@gmail.com</a>
         <a href="https://linkedin.com/in/aakash-sethi-007" className="ft-link"><i data-lucide="linkedin"></i> linkedin</a>

@@ -695,6 +695,7 @@ section { padding: 0 0 var(--sp-24); }
   margin-top: var(--sp-16);
   flex-wrap: wrap; gap: var(--sp-4);
 }
+.ft-left { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
 .ft-right { display: flex; gap: var(--sp-5); }
 .ft-link {
   font-family: var(--font-mono);
@@ -705,6 +706,19 @@ section { padding: 0 0 var(--sp-24); }
 }
 .ft-link:hover { color: var(--signal-700); }
 .ft-link svg { width: 14px; height: 14px; }
+
+.ft-subscribe {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px;
+  background: var(--ink-950); color: var(--ink-50);
+  border: 1px solid var(--ink-950); border-radius: 999px;
+  font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  text-decoration: none;
+  transition: opacity 150ms, transform 150ms;
+}
+.ft-subscribe:hover { opacity: 0.88; transform: translateY(-1px); }
+.ft-subscribe svg { width: 14px; height: 14px; }
 
 /* ============ Modal ============ */
 .modal-bg {
