@@ -1,4 +1,4 @@
-/* global React, ReactDOM, Header, Footer, Hero, StatStrip, LiveStrip, Work, Education, About, Contact, ProjectModal, YouTubeFeed, LinkedInFeed, Newsletter, TrustBar, Problems */
+/* global React, ReactDOM, Header, Footer, Hero, StatStrip, LiveStrip, Work, Education, About, Contact, ProjectModal, YouTubeFeed, LinkedInFeed, Newsletter, TrustBar, Problems, JobTailor, Scheduler, Journey */
 const { useState, useEffect } = React;
 
 // Maps internal page id → URL hash fragment
@@ -10,6 +10,9 @@ const PAGE_TO_HASH = {
   education: 'education',
   about:     'about',
   contact:   'contact',
+  tailor:    'tailor',
+  scheduler: 'scheduler',
+  journey:   'journey',
 };
 
 // Reverse: hash fragment → internal page id
@@ -69,6 +72,9 @@ function App() {
         {page === 'education'   && <Education onOpen={setOpenProj} />}
         {page === 'about'       && <About />}
         {page === 'contact'     && <Contact />}
+        {page === 'tailor'      && <JobTailor />}
+        {page === 'scheduler'   && <Scheduler />}
+        {page === 'journey'     && <Journey />}
       </main>
       <Footer />
       <ProjectModal p={openProj} onClose={()=>setOpenProj(null)} />

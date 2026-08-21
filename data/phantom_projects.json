@@ -1,0 +1,37 @@
+{
+  "projects": [
+    {
+      "slug": "jobboating",
+      "name": "JobBoating",
+      "tagline": "Automated pipeline that tailors a resume per JD and submits applications end-to-end.",
+      "github_url": "https://github.com/Aakashsethi/JobBoating",
+      "demo_url": null,
+      "tech": [
+        "Python",
+        "Claude API",
+        "Playwright",
+        "Selenium",
+        "LaTeX",
+        "Postgres"
+      ],
+      "status": "active",
+      "highlight": "580+ applications submitted across 7 companies since 2026-07-04."
+    },
+    {
+      "slug": "tnufa",
+      "name": "Tnufa AI",
+      "tagline": "Workforce mobility platform powered by skill embeddings.",
+      "github_url": "https://github.com/Aakashsethi/tnufa",
+      "demo_url": "https://tnufa.ai",
+      "tech": [
+        "TypeScript",
+        "Next.js",
+        "Postgres",
+        "pgvector",
+        "OpenAI embeddings"
+      ],
+      "status": "building",
+      "highlight": "Matching engineers to roles by skill embeddings rather than keyword resumes."
+    }
+  ]
+}

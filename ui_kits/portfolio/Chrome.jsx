@@ -7,6 +7,7 @@ function Header({ active, onNav }) {
   const tabs = [
     { id: 'home',        label: 'Home' },
     { id: 'work',        label: 'Work' },
+    { id: 'journey',     label: 'Job Search' },
     { id: 'consulting',  label: 'Consulting', href: '/consulting/' },
     { id: 'blog',        label: 'Writing',    href: '/blog/' },
     { id: 'about',       label: 'About' },
@@ -54,10 +55,12 @@ function Header({ active, onNav }) {
 }
 
 function Footer() {
+  const start = new Date('2019-01-01T00:00:00Z').getTime();
+  const years = ((Date.now() - start) / (365.25 * 24 * 3600 * 1000)).toFixed(2);
   return (
     <footer className="site-footer">
       <div className="ft-left">
-        <span className="mono small muted">© 2026 · aakash sethi · made with care in new jersey</span>
+        <span className="mono small muted">Handcrafted by Aakash in New Jersey · since 2019 · {years} years and counting</span>
       </div>
       <div className="ft-right">
         <a href="#newsletter" className="ft-link"><i data-lucide="mail-plus"></i> newsletter</a>
