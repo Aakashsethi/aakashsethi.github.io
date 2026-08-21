@@ -3015,3 +3015,48 @@ body { padding-top: 76px; }
 @media (max-width: 720px) {
   .section-dots-accent { display: none; }
 }
+
+/* ── Work-in-progress explainer pages (Scheduler etc.) ── */
+.wip-shell {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 72px clamp(20px, 5vw, 32px) 120px;
+}
+.wip-eyebrow {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--ink-500); margin: 0 0 18px;
+}
+.wip-title {
+  font-family: var(--font-editorial); font-optical-sizing: auto;
+  font-weight: 500; font-size: clamp(32px, 5vw, 48px);
+  line-height: 1.08; letter-spacing: -0.03em;
+  color: var(--ink-950); margin: 0 0 20px;
+}
+.wip-lede {
+  font-family: var(--font-editorial); font-style: italic;
+  font-size: 20px; line-height: 1.5; color: var(--ink-700);
+  margin: 0 0 40px; max-width: 60ch;
+}
+.wip-h2 {
+  font-family: var(--font-editorial); font-optical-sizing: auto;
+  font-weight: 600; font-size: 24px; letter-spacing: -0.02em; line-height: 1.2;
+  color: var(--ink-950); margin: 40px 0 14px;
+}
+.wip-shell p {
+  font-family: var(--font-reading), var(--font-editorial), Georgia, serif;
+  font-size: 17px; line-height: 1.65; color: var(--ink-800);
+  margin: 0 0 16px; max-width: 62ch;
+}
+.wip-list {
+  font-family: var(--font-reading), var(--font-editorial), Georgia, serif;
+  font-size: 17px; line-height: 1.65; color: var(--ink-800);
+  padding-left: 22px; margin: 0 0 20px; max-width: 62ch;
+}
+.wip-list li { margin-bottom: 8px; }
+.wip-back {
+  margin-top: 56px;
+  font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.wip-back a { color: var(--ink-500); text-decoration: none; }
+.wip-back a:hover { color: var(--signal-700); }
