@@ -7,7 +7,7 @@ module Tailor
 
   ANON_DAILY_MAX   = 1     # tighter free tier — 1 per IP per day
   AUTHED_DAILY_MAX = 10    # authenticated users get more room
-  MODEL_DEFAULT    = 'llama-3.3-70b-versatile'
+  MODEL_DEFAULT    = 'openai/gpt-oss-120b'
   TIMEOUT_SECS     = 45
 
   PROMPT_SYSTEM = <<~SYS
