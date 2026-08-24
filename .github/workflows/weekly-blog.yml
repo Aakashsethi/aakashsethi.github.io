@@ -33,7 +33,7 @@ jobs:
           set -e
           git config user.name 'aakash-bot'
           git config user.email 'aakash.sethi7+bot@gmail.com'
-          new_file=$(git ls-files --others --exclude-standard _posts/ | head -n 1)
+          new_file=$(git ls-files --others --exclude-standard src/content/blog/ | head -n 1)
           if [ -z "$new_file" ]; then
             echo "No new post generated — nothing to commit."
             exit 0
@@ -43,7 +43,7 @@ jobs:
           echo "Committing $new_file ($words words)"
           git add "$new_file"
           # Include any newly generated blog image
-          new_image=$(git ls-files --others --exclude-standard assets/blog/ | head -n 1 || true)
+          new_image=$(git ls-files --others --exclude-standard public/assets/blog/ | head -n 1 || true)
           if [ -n "$new_image" ]; then
             echo "Also committing image: $new_image"
             git add "$new_image"

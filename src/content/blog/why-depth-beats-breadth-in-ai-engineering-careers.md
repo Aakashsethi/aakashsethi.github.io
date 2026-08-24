@@ -1,5 +1,4 @@
 ---
-layout: single
 title: "Why depth beats breadth in AI engineering careers"
 date: 2026-08-23 13:22:55 +0000
 categories: ["Career"]

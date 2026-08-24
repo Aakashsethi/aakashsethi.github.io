@@ -58,7 +58,9 @@
       "Bash(git fetch *)",
       "Bash(git config *)",
       "Bash(ruby -c contact_server.rb)",
-      "Bash(gh workflow *)"
+      "Bash(gh workflow *)",
+      "Bash(git pull *)",
+      "Bash(git stash *)"
     ]
   }
 }

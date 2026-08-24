@@ -17,8 +17,8 @@ GROQ_API_KEY = ENV.fetch('GROQ_API_KEY')
 GROQ_MODEL   = ENV.fetch('GROQ_MODEL', 'openai/gpt-oss-120b')
 FAL_KEY      = ENV['FAL_KEY']  # optional — skip image gen if unset
 FAL_MODEL    = ENV.fetch('FAL_MODEL', 'fal-ai/flux/schnell')
-POSTS_DIR    = ENV.fetch('POSTS_DIR', '_posts')
-IMAGES_DIR   = ENV.fetch('IMAGES_DIR', 'assets/blog')
+POSTS_DIR    = ENV.fetch('POSTS_DIR', 'src/content/blog')
+IMAGES_DIR   = ENV.fetch('IMAGES_DIR', 'public/assets/blog')
 
 CATEGORY_WEIGHTS = {
   'AI Engineering'   => 30,
@@ -133,15 +133,11 @@ def format_frontmatter(title:, date:, category:, tags:, excerpt:, image_url: nil
   image_line = image_url ? "image_url: \"#{image_url}\"\n" : ''
   <<~YAML
     ---
-    layout: single
     title: "#{title.gsub('"', "'")}"
     date: #{date}
     categories: ["#{category}"]
     tags: [#{yaml_tags.join(', ')}]
     #{image_line.chomp}
-    author_profile: true
-    read_time: true
-    share: true
     excerpt: "#{excerpt.gsub('"', "'").gsub("\n", ' ')}"
     ---
   YAML
@@ -150,7 +146,10 @@ end
 def write_post(payload, category, image_url: nil)
   now = Time.now.utc
   slug  = slugify(payload.fetch('title'))
-  filename = "#{now.strftime('%Y-%m-%d')}-#{slug}.md"
+  # Astro content collection derives the URL slug from the filename (no date
+  # prefix). The Jekyll-compat URL comes from `date` + `categories[0]` in
+  # frontmatter, computed in src/lib/postUrl.ts at build time.
+  filename = "#{slug}.md"
   path = File.join(POSTS_DIR, filename)
 
   frontmatter = format_frontmatter(
