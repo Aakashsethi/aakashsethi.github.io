@@ -1,0 +1,507 @@
+---
+import Base from '../../layouts/Base.astro';
+
+// Wireframe screens for the CashNews iOS companion app. Each screen
+// renders inside a shared iPhone frame so the whole flow reads as a
+// storyboard on desktop and stacks cleanly on mobile.
+//
+// SwiftUI source lives at ios/CashNewsPreview/ — same view hierarchy,
+// same copy, so anyone poking at the Xcode project sees the same
+// thing this page renders.
+
+const screens = [
+  {
+    id: 'feed',
+    title: 'Feed',
+    caption: 'Landing screen. Latest drop up top, older drops below.',
+  },
+  {
+    id: 'player',
+    title: 'Player',
+    caption: 'Portrait video + live transcript. Tap the transcript to jump.',
+  },
+  {
+    id: 'summary',
+    title: 'Summary',
+    caption: 'Text summary of the day\'s stories. Read + share; skip the video.',
+  },
+  {
+    id: 'settings',
+    title: 'Settings',
+    caption: 'Sources, notification cadence, avatar voice.',
+  },
+];
+
+// Feed items — 4 mock daily drops
+const feedItems = [
+  { date: 'Aug 25', title: 'Fed signals cut', tag: 'MACRO', duration: '1:42' },
+  { date: 'Aug 24', title: 'NVIDIA earnings beat', tag: 'AI', duration: '2:04' },
+  { date: 'Aug 23', title: 'OpenAI ship day', tag: 'AI', duration: '1:58' },
+  { date: 'Aug 22', title: 'Housing starts drop', tag: 'MACRO', duration: '1:37' },
+];
+
+// Transcript lines for the Player screen
+const transcript = [
+  { t: '00:00', text: 'The Fed just gave us the clearest signal yet.' },
+  { t: '00:07', text: 'Rate cuts back on the table for September.' },
+  { t: '00:14', text: 'Markets priced in three cuts by year-end.' },
+  { t: '00:22', text: 'Here\'s the twist nobody\'s talking about.' },
+];
+
+// Summary bullets
+const summary = [
+  'Fed minutes hint at a September rate cut — first since 2023.',
+  'CPI came in at 2.3%, below the 2.5% consensus.',
+  'Bond yields dropped 12bps on the news; equities rallied.',
+  '"The disinflation trend is now durable." — Fed Chair Powell.',
+];
+---
+<Base
+  title="CashNews iOS · Preview — Aakash Sethi"
+  description="SwiftUI wireframe for the CashNews iOS companion app. Feed, player, summary, and settings screens."
+>
+  <div class="ios-preview">
+    <header class="ios-hero">
+      <p class="ios-eyebrow">Wireframe · Building</p>
+      <h1 class="ios-title">CashNews for iOS.</h1>
+      <p class="ios-lede">
+        Native SwiftUI companion to the CashNews pipeline. Landscape below is the four-screen
+        storyboard — Feed, Player, Summary, Settings. Same view hierarchy the Xcode project
+        implements.
+      </p>
+      <p class="ios-meta">
+        <span>Swift 5.9</span>
+        <span class="ios-dot">·</span>
+        <span>SwiftUI</span>
+        <span class="ios-dot">·</span>
+        <span>iOS 17+</span>
+        <span class="ios-dot">·</span>
+        <a href="https://github.com/Aakashsethi/CashNewsIOS" target="_blank" rel="noreferrer">GitHub repo →</a>
+      </p>
+    </header>
+
+    <div class="ios-storyboard">
+      {screens.map(s => (
+        <figure class="ios-screen" id={`screen-${s.id}`}>
+          <div class="iphone-frame">
+            <div class="iphone-notch" aria-hidden="true"></div>
+            <div class="iphone-screen">
+              <div class="ios-status-bar">
+                <span>9:41</span>
+                <div class="ios-status-right">
+                  <span aria-hidden="true">●●●</span>
+                  <span aria-hidden="true">📶</span>
+                  <span aria-hidden="true">100%</span>
+                </div>
+              </div>
+
+              {s.id === 'feed' && (
+                <div class="app feed">
+                  <div class="app-nav">
+                    <h2>Today</h2>
+                    <button aria-label="Settings" class="app-nav-btn">⚙︎</button>
+                  </div>
+                  <a class="feed-hero" href="#screen-player">
+                    <div class="feed-hero-thumb">
+                      <span class="feed-hero-play">▶</span>
+                      <span class="feed-hero-badge">LIVE · 2 hrs ago</span>
+                    </div>
+                    <p class="feed-hero-title">Fed signals cut, markets rally</p>
+                    <p class="feed-hero-meta">2:04 · 3 stories</p>
+                  </a>
+                  <p class="feed-section">Recent drops</p>
+                  {feedItems.map(f => (
+                    <div class="feed-row">
+                      <div class="feed-row-thumb"><span>▶</span></div>
+                      <div class="feed-row-body">
+                        <p class="feed-row-title">{f.title}</p>
+                        <p class="feed-row-meta"><span class="tag">{f.tag}</span> {f.date} · {f.duration}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {s.id === 'player' && (
+                <div class="app player">
+                  <div class="app-nav">
+                    <button aria-label="Back" class="app-nav-btn">←</button>
+                    <button aria-label="Share" class="app-nav-btn">↗</button>
+                  </div>
+                  <div class="player-video">
+                    <div class="player-avatar" aria-hidden="true">
+                      <span>👤</span>
+                    </div>
+                    <div class="player-controls">
+                      <div class="player-progress"><div class="player-progress-bar"></div></div>
+                      <div class="player-time"><span>0:47</span><span>2:04</span></div>
+                    </div>
+                  </div>
+                  <p class="player-title">Fed signals cut, markets rally</p>
+                  <p class="player-transcript-header">Transcript · tap to jump</p>
+                  <ol class="player-transcript">
+                    {transcript.map((t, i) => (
+                      <li class={i === 1 ? 'is-active' : ''}>
+                        <span class="tx-time">{t.t}</span>
+                        <span class="tx-text">{t.text}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+
+              {s.id === 'summary' && (
+                <div class="app summary">
+                  <div class="app-nav">
+                    <button aria-label="Back" class="app-nav-btn">←</button>
+                    <button aria-label="Share" class="app-nav-btn">↗</button>
+                  </div>
+                  <p class="summary-eyebrow">Aug 25 · Daily brief</p>
+                  <h3 class="summary-title">Fed signals cut, markets rally</h3>
+                  <ul class="summary-list">
+                    {summary.map(s => <li>{s}</li>)}
+                  </ul>
+                  <div class="summary-cta">
+                    <button class="summary-btn primary">Read full source</button>
+                    <button class="summary-btn ghost">Save for later</button>
+                  </div>
+                </div>
+              )}
+
+              {s.id === 'settings' && (
+                <div class="app settings">
+                  <div class="app-nav">
+                    <h2>Settings</h2>
+                    <button aria-label="Close" class="app-nav-btn">✕</button>
+                  </div>
+                  <p class="settings-section">Sources</p>
+                  <div class="settings-row">
+                    <span>Bloomberg</span>
+                    <span class="toggle on"></span>
+                  </div>
+                  <div class="settings-row">
+                    <span>Reuters</span>
+                    <span class="toggle on"></span>
+                  </div>
+                  <div class="settings-row">
+                    <span>WSJ</span>
+                    <span class="toggle off"></span>
+                  </div>
+                  <p class="settings-section">Notifications</p>
+                  <div class="settings-row">
+                    <span>Daily drop</span>
+                    <span class="settings-value">9:00 AM ET</span>
+                  </div>
+                  <div class="settings-row">
+                    <span>Breaking only</span>
+                    <span class="toggle off"></span>
+                  </div>
+                  <p class="settings-section">Avatar voice</p>
+                  <div class="settings-row">
+                    <span>ElevenLabs · Rachel</span>
+                    <span class="settings-chevron">›</span>
+                  </div>
+                </div>
+              )}
+
+              <div class="ios-home-indicator" aria-hidden="true"></div>
+            </div>
+          </div>
+          <figcaption>
+            <p class="ios-screen-title">{s.title}</p>
+            <p class="ios-screen-caption">{s.caption}</p>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <section class="ios-notes">
+      <h2 class="ios-notes-title">Implementation notes</h2>
+      <ul class="ios-notes-list">
+        <li><b>Feed backend:</b> app pulls a signed CDN JSON (drops.json) generated by the CashNews pipeline at publish time — no server round-trips per user.</li>
+        <li><b>Player:</b> AVPlayerViewController in portrait; transcript is a JSON sibling of the video (words + timestamps).</li>
+        <li><b>Summary:</b> served alongside the transcript. Full-source link opens Safari — no in-app browser.</li>
+        <li><b>Settings:</b> stored in @AppStorage. Source toggles + notification cadence write to UserDefaults; avatar voice reads a signed list from the same pipeline.</li>
+        <li><b>Design:</b> system fonts (SF Pro), warm-neutral palette that matches the site.</li>
+      </ul>
+    </section>
+
+    <p class="ios-back">
+      <a href="/">← Back to home</a>
+    </p>
+  </div>
+</Base>
+
+<style is:global>
+  .ios-preview {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 72px clamp(20px, 5vw, 32px) 120px;
+  }
+  .ios-hero { margin-bottom: 56px; max-width: 720px; }
+  .ios-eyebrow {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink-500); margin: 0 0 18px;
+  }
+  .ios-title {
+    font-family: var(--font-editorial); font-optical-sizing: auto;
+    font-weight: 500; font-size: clamp(36px, 5vw, 52px); line-height: 1.05;
+    letter-spacing: -0.03em; color: var(--ink-950); margin: 0 0 18px;
+  }
+  .ios-lede {
+    font-family: var(--font-editorial); font-style: italic;
+    font-size: 19px; line-height: 1.5; color: var(--ink-700);
+    margin: 0 0 20px; max-width: 60ch;
+  }
+  .ios-meta {
+    font-family: var(--font-mono); font-size: 12px; color: var(--ink-500);
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0;
+  }
+  .ios-meta a { color: var(--signal-700); text-decoration: none; }
+  .ios-meta a:hover { text-decoration: underline; }
+  .ios-dot { color: var(--ink-300); }
+
+  .ios-storyboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px 32px;
+    margin: 40px 0 72px;
+  }
+  .ios-screen { margin: 0; display: flex; flex-direction: column; align-items: center; }
+
+  /* iPhone frame */
+  .iphone-frame {
+    width: 280px; height: 574px;
+    background: #1c1917;
+    border-radius: 40px;
+    padding: 8px;
+    box-shadow: 0 20px 60px rgba(28,25,23,0.18), 0 4px 12px rgba(28,25,23,0.08);
+    position: relative;
+  }
+  .iphone-notch {
+    position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+    width: 88px; height: 22px;
+    background: #1c1917;
+    border-radius: 12px;
+    z-index: 3;
+  }
+  .iphone-screen {
+    width: 100%; height: 100%;
+    background: #fafaf9;
+    border-radius: 32px;
+    overflow: hidden;
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+  .ios-status-bar {
+    padding: 12px 22px 6px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'SF Pro Text', -apple-system, sans-serif;
+    font-size: 11px; font-weight: 600; color: #1c1917;
+    padding-top: 14px;
+  }
+  .ios-status-right { display: flex; gap: 5px; font-size: 9px; }
+  .ios-home-indicator {
+    position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%);
+    width: 100px; height: 4px; border-radius: 2px;
+    background: #1c1917; opacity: 0.6;
+  }
+
+  .app {
+    flex: 1; padding: 8px 16px 24px; overflow-y: auto;
+    font-family: 'SF Pro Text', -apple-system, 'Segoe UI', sans-serif;
+    color: #1c1917;
+  }
+  .app-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin: 4px 0 12px;
+  }
+  .app-nav h2 {
+    font-family: 'SF Pro Display', -apple-system, sans-serif;
+    font-size: 20px; font-weight: 700; margin: 0; letter-spacing: -0.02em;
+  }
+  .app-nav-btn {
+    background: transparent; border: 0; font-size: 15px; color: #1c1917;
+    cursor: pointer; padding: 4px 6px;
+  }
+
+  /* Feed */
+  .feed-hero {
+    display: block; text-decoration: none; color: inherit;
+    background: #292524; border-radius: 14px; padding: 12px;
+    margin-bottom: 16px;
+  }
+  .feed-hero-thumb {
+    height: 130px; border-radius: 8px;
+    background: linear-gradient(135deg, #57534d 0%, #292524 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .feed-hero-play { font-size: 30px; color: #fafaf9; }
+  .feed-hero-badge {
+    position: absolute; top: 8px; left: 8px;
+    background: rgba(250,250,249,0.14); color: #fafaf9;
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.08em; padding: 3px 6px; border-radius: 4px;
+  }
+  .feed-hero-title { color: #fafaf9; font-size: 15px; font-weight: 600; margin: 10px 0 2px; }
+  .feed-hero-meta { color: #d6d3d1; font-size: 11px; margin: 0; }
+  .feed-section {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em;
+    color: #78716c; text-transform: uppercase; margin: 12px 0 8px;
+  }
+  .feed-row {
+    display: flex; gap: 10px; align-items: center; padding: 8px 0;
+    border-bottom: 1px solid #e7e5e4;
+  }
+  .feed-row:last-child { border-bottom: 0; }
+  .feed-row-thumb {
+    width: 44px; height: 44px; border-radius: 8px;
+    background: #d6d3d1; color: #57534d;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+  .feed-row-body { flex: 1; min-width: 0; }
+  .feed-row-title { font-size: 13px; font-weight: 500; margin: 0 0 3px; }
+  .feed-row-meta { font-size: 10px; color: #78716c; margin: 0; display: flex; gap: 6px; align-items: center; }
+  .tag {
+    font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.08em;
+    color: #b45309; background: rgba(245,165,36,0.14);
+    padding: 1px 5px; border-radius: 3px;
+  }
+
+  /* Player */
+  .player-video {
+    background: #1c1917; border-radius: 12px; height: 240px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 12px; margin-bottom: 12px;
+  }
+  .player-avatar {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    font-size: 60px; color: #d6d3d1;
+  }
+  .player-controls { color: #fafaf9; font-family: var(--font-mono); }
+  .player-progress {
+    height: 3px; background: rgba(250,250,249,0.2); border-radius: 2px;
+    overflow: hidden; margin-bottom: 6px;
+  }
+  .player-progress-bar { height: 100%; width: 38%; background: #fafaf9; border-radius: 2px; }
+  .player-time { display: flex; justify-content: space-between; font-size: 9px; }
+  .player-title { font-size: 15px; font-weight: 600; margin: 0 0 12px; }
+  .player-transcript-header {
+    font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em;
+    color: #78716c; text-transform: uppercase; margin: 0 0 6px;
+  }
+  .player-transcript { list-style: none; padding: 0; margin: 0; }
+  .player-transcript li {
+    display: flex; gap: 8px; padding: 6px 0;
+    font-size: 12px; line-height: 1.4; color: #57534d;
+    border-bottom: 1px solid #f5f5f4;
+  }
+  .player-transcript li:last-child { border-bottom: 0; }
+  .player-transcript li.is-active { color: #1c1917; font-weight: 500; }
+  .tx-time {
+    font-family: var(--font-mono); font-size: 9px; color: #a6a09b;
+    min-width: 32px;
+  }
+
+  /* Summary */
+  .summary-eyebrow {
+    font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em;
+    color: #78716c; text-transform: uppercase; margin: 4px 0 8px;
+  }
+  .summary-title {
+    font-family: 'SF Pro Display', -apple-system, sans-serif;
+    font-size: 20px; font-weight: 600; letter-spacing: -0.02em;
+    margin: 0 0 14px; line-height: 1.15;
+  }
+  .summary-list {
+    padding: 0; margin: 0 0 16px; list-style: none;
+  }
+  .summary-list li {
+    font-size: 13px; line-height: 1.5; color: #44403b;
+    padding: 8px 0 8px 14px; position: relative;
+    border-top: 1px solid #f5f5f4;
+  }
+  .summary-list li:first-child { border-top: 0; }
+  .summary-list li::before {
+    content: ''; position: absolute; left: 0; top: 15px;
+    width: 4px; height: 4px; border-radius: 2px; background: #b45309;
+  }
+  .summary-cta { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+  .summary-btn {
+    padding: 10px; border-radius: 10px; border: 0;
+    font-family: 'SF Pro Text', -apple-system, sans-serif;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+  .summary-btn.primary { background: #1c1917; color: #fafaf9; }
+  .summary-btn.ghost { background: transparent; color: #1c1917; border: 1px solid #d6d3d1; }
+
+  /* Settings */
+  .settings-section {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em;
+    color: #78716c; text-transform: uppercase; margin: 14px 0 6px;
+  }
+  .settings-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0; border-bottom: 1px solid #f5f5f4;
+    font-size: 13px;
+  }
+  .settings-row:last-child { border-bottom: 0; }
+  .settings-value {
+    font-family: var(--font-mono); font-size: 11px; color: #78716c;
+  }
+  .settings-chevron { color: #a6a09b; font-size: 16px; }
+  .toggle {
+    width: 34px; height: 20px; border-radius: 12px; position: relative;
+    background: #d6d3d1; transition: background 200ms;
+  }
+  .toggle.on { background: #b45309; }
+  .toggle::after {
+    content: ''; position: absolute; top: 2px; width: 16px; height: 16px;
+    border-radius: 50%; background: #fafaf9; transition: transform 200ms;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+  .toggle.on::after { transform: translateX(16px); }
+  .toggle.off::after { transform: translateX(2px); }
+  .toggle.on::after { left: 0; transform: translateX(16px); }
+  .toggle.off::after { left: 0; }
+
+  /* Captions */
+  .ios-screen figcaption {
+    margin-top: 20px; text-align: center; max-width: 260px;
+  }
+  .ios-screen-title {
+    font-family: var(--font-editorial); font-weight: 600;
+    font-size: 18px; letter-spacing: -0.02em; margin: 0 0 4px;
+    color: var(--ink-950);
+  }
+  .ios-screen-caption {
+    font-family: var(--font-reading), Georgia, serif;
+    font-size: 13px; line-height: 1.5; color: var(--ink-500); margin: 0;
+  }
+
+  /* Notes */
+  .ios-notes {
+    border-top: 1px solid var(--ink-100); padding-top: 40px;
+    max-width: 720px; margin: 40px auto 0;
+  }
+  .ios-notes-title {
+    font-family: var(--font-editorial); font-weight: 500;
+    font-size: 24px; letter-spacing: -0.02em; margin: 0 0 16px;
+    color: var(--ink-950);
+  }
+  .ios-notes-list {
+    font-family: var(--font-reading), Georgia, serif;
+    font-size: 16px; line-height: 1.65; color: var(--ink-800);
+    padding-left: 22px; margin: 0;
+  }
+  .ios-notes-list li { margin-bottom: 10px; max-width: 62ch; }
+
+  .ios-back {
+    margin-top: 48px; font-family: var(--font-mono); font-size: 12px;
+    letter-spacing: 0.08em; text-transform: uppercase; max-width: 720px; margin-left: auto; margin-right: auto;
+  }
+  .ios-back a { color: var(--ink-500); text-decoration: none; }
+  .ios-back a:hover { color: var(--signal-700); }
+</style>

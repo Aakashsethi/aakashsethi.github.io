@@ -3,33 +3,21 @@
     {
       "slug": "cashnews",
       "name": "CashNews",
-      "tagline": "Fully automated AI-avatar news channel. Publishes daily short-form video to YouTube, Instagram, and TikTok.",
+      "tagline": "Fully automated AI-avatar news channel — daily short-form video published to YouTube, Instagram, and TikTok, plus a native iOS companion in progress.",
       "github_url": "https://github.com/Aakashsethi/CashNews",
-      "demo_url": "https://www.youtube.com/@AakashSethi007",
-      "demo_label": "Watch daily drop",
+      "demo_url": "/ios-preview/",
+      "demo_label": "Preview iOS app",
       "tech": [
         "Python",
         "SadTalker",
         "ElevenLabs",
         "GCP",
         "FFmpeg",
-        "YAML"
-      ],
-      "status": "active",
-      "highlight": "News fetch \u2192 script \u2192 TTS \u2192 avatar render \u2192 b-roll \u2192 publish. Zero human touch after topic prompt."
-    },
-    {
-      "slug": "cashnews-ios",
-      "name": "CashNews (iOS)",
-      "tagline": "Native iOS companion for the CashNews pipeline. Preview stream + read summaries on the go.",
-      "github_url": "https://github.com/Aakashsethi/CashNewsIOS",
-      "demo_url": null,
-      "tech": [
         "Swift",
         "SwiftUI"
       ],
-      "status": "building",
-      "highlight": null
+      "status": "active",
+      "highlight": "Pipeline: news fetch \u2192 script \u2192 TTS \u2192 avatar render \u2192 b-roll \u2192 publish. Zero human touch after topic prompt. The iOS app streams the daily drop and reads the underlying summary on the go."
     },
     {
       "slug": "jobboating",
