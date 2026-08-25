@@ -128,6 +128,31 @@ function TailorFlow() {
           inside each section so the highest-relevance ones surface first — matches are
           highlighted so you can see exactly why. Download the tailored <code>.tex</code>.
         </p>
+        <div className="tf-flow" role="list" aria-label="Data flow">
+          <span role="listitem" className="tf-flow-step">
+            <span className="tf-flow-dot" aria-hidden="true"></span>
+            <span className="tf-flow-key">PDF</span>
+            <span className="tf-flow-val">this tab</span>
+          </span>
+          <span className="tf-flow-arrow" aria-hidden="true">→</span>
+          <span role="listitem" className="tf-flow-step">
+            <span className="tf-flow-dot" aria-hidden="true"></span>
+            <span className="tf-flow-key">pdf.js parse</span>
+            <span className="tf-flow-val">in-memory</span>
+          </span>
+          <span className="tf-flow-arrow" aria-hidden="true">→</span>
+          <span role="listitem" className="tf-flow-step">
+            <span className="tf-flow-dot" aria-hidden="true"></span>
+            <span className="tf-flow-key">Score + rank</span>
+            <span className="tf-flow-val">local</span>
+          </span>
+          <span className="tf-flow-arrow" aria-hidden="true">→</span>
+          <span role="listitem" className="tf-flow-step">
+            <span className="tf-flow-dot" aria-hidden="true"></span>
+            <span className="tf-flow-key">LaTeX out</span>
+            <span className="tf-flow-val">your download</span>
+          </span>
+        </div>
       </header>
 
       <div className="tf-inputs">

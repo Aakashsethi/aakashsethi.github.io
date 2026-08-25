@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
+import { ComplianceBar } from './ComplianceBar.jsx';
 import { JourneyFunnel } from './JourneyFunnel.jsx';
 import { TailorFlow } from './TailorFlow.jsx';
 import { AppTracker } from './AppTracker.jsx';
@@ -38,12 +39,15 @@ function Journey() {
 
   return (
     <section className="jb-shell">
+      <ComplianceBar />
+
       <header className="jb-hero">
         <p className="jb-eyebrow">JobBoating · live tools</p>
         <h1 className="jb-title">Automate the boring half of the job hunt.</h1>
         <p className="jb-hero-lede">
           A running log of my public search, a browser-only PDF→LaTeX converter that feeds the
-          tailoring pipeline, and a lightweight tracker for yours.
+          tailoring pipeline, and a lightweight tracker for yours. Every action stays on your
+          device — see <a href="#compliance">the compliance strip</a> above.
         </p>
       </header>
 

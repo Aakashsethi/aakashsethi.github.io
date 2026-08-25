@@ -34,25 +34,38 @@ function AppTracker() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(rows)); } catch {}
   }, [rows, loaded]);
 
+  const nowIso = () => new Date().toISOString();
+  const nowShort = () => nowIso().slice(0, 10);
+
   const add = (e) => {
     e.preventDefault();
     const company = form.company.trim();
     const role = form.role.trim();
     if (!company) return;
+    const now = nowIso();
     setRows((r) => [
-      { id: crypto.randomUUID(), company, role, stage: form.stage, added: new Date().toISOString().slice(0, 10) },
+      {
+        id: crypto.randomUUID(),
+        company,
+        role,
+        stage: form.stage,
+        added: nowShort(),
+        log: [{ ts: now, event: `Added — stage: ${form.stage}` }],
+      },
       ...r,
     ]);
     setForm({ company: '', role: '', stage: 'applied' });
   };
 
   const cycleStage = (id) => {
+    const now = nowIso();
     setRows((r) =>
       r.map((row) => {
         if (row.id !== id) return row;
         const idx = STAGES.indexOf(row.stage);
         const next = STAGES[(idx + 1) % STAGES.length];
-        return { ...row, stage: next };
+        const log = [{ ts: now, event: `Stage: ${row.stage} → ${next}` }, ...(row.log || [])];
+        return { ...row, stage: next, log };
       })
     );
   };
@@ -97,8 +110,20 @@ function AppTracker() {
         <h2 className="jb-h2">Your application tracker</h2>
         <p className="jb-copy">
           Add a row per application. Cycle its stage as things move. Everything lives in your
-          browser's localStorage — no account, no server. Export to CSV whenever you want.
+          browser's localStorage — no account, no server. Every stage change is timestamped for
+          your own audit trail. Export to CSV whenever you want.
         </p>
+        <div className="jb-storage-bar">
+          <span className="jb-storage-icon" aria-hidden="true">◉</span>
+          <span className="jb-storage-key">Data at rest</span>
+          <span className="jb-storage-val">localStorage · your device</span>
+          <span className="jb-storage-sep">·</span>
+          <span className="jb-storage-key">Rows</span>
+          <span className="jb-storage-val">{rows.length}</span>
+          <span className="jb-storage-sep">·</span>
+          <span className="jb-storage-key">Egress</span>
+          <span className="jb-storage-val">0 bytes</span>
+        </div>
       </header>
 
       <form className="jb-tracker-form" onSubmit={add}>
@@ -154,7 +179,22 @@ function AppTracker() {
               <div className="jb-tracker-body">
                 <p className="jb-tracker-company">{row.company}</p>
                 {row.role && <p className="jb-tracker-role">{row.role}</p>}
-                <p className="jb-tracker-added jb-mono jb-muted">Added {row.added}</p>
+                <p className="jb-tracker-added jb-mono jb-muted">
+                  Added {row.added} · id {row.id.slice(0, 8)}
+                </p>
+                {row.log && row.log.length > 1 && (
+                  <details className="jb-audit">
+                    <summary>Audit log · {row.log.length} events</summary>
+                    <ol className="jb-audit-list">
+                      {row.log.map((entry, i) => (
+                        <li key={i}>
+                          <span className="jb-mono jb-muted">{entry.ts.slice(0, 19).replace('T', ' ')}Z</span>
+                          <span>{entry.event}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </details>
+                )}
               </div>
               <div className="jb-tracker-actions">
                 <button
