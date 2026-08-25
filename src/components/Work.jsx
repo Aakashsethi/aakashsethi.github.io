@@ -59,17 +59,17 @@ function PhantomProjects() {
 function LiveDemos() {
   const demos = [
     {
-      slug: 'tailor',
-      name: 'JobTailor',
-      tagline: 'Paste a JD + your resume. Get a tailored resume in ~5s (Groq).',
-      tech: ['React', 'Sinatra', 'Groq', 'Postgres'],
-      href: '#tailor',
+      slug: 'jobboating',
+      name: 'JobBoating',
+      tagline: 'Public funnel + PDF→LaTeX tailor + application tracker. All in-browser.',
+      tech: ['React', 'pdf.js', 'localStorage'],
+      href: '#journey',
     },
     {
       slug: 'scheduler',
       name: 'Deep-work Scheduler',
       tagline: 'Weekly grid to plan deep-work vs meetings. Enforces core hours + per-day minimums.',
-      tech: ['React', 'Sinatra', 'Postgres'],
+      tech: ['React'],
       href: '#scheduler',
     },
   ];
