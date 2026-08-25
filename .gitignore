@@ -17,3 +17,6 @@ dist
 
 # Claude Code local overrides — user-scoped, not part of the repo
 .claude/settings.local.json
+
+# IDE local metadata
+.idea/
