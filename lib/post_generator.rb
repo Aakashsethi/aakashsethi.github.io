@@ -106,7 +106,7 @@ module PostGenerator
 
   def self.call_claude(prompt)
     api_key = ENV.fetch('GROQ_API_KEY')
-    model = ENV.fetch('GROQ_MODEL', 'llama-3.3-70b-versatile')
+    model = ENV.fetch('GROQ_MODEL', 'openai/gpt-oss-120b')
     res = HTTParty.post(
       'https://api.groq.com/openai/v1/chat/completions',
       headers: {

@@ -51,6 +51,14 @@ set :bind, '0.0.0.0'
 
 def blank?(s) = s.nil? || s.to_s.strip.empty?
 
+# Cheap liveness probe. Hit periodically by the keep-alive workflow to
+# prevent Render's free-tier dyno from sleeping (which introduces a
+# 30-60s cold-start on the next real request).
+get '/health' do
+  content_type :json
+  { ok: true, ts: Time.now.to_i }.to_json
+end
+
 post '/contact' do
   content_type :json
 
