@@ -1,36 +1,18 @@
 ---
 import Base from '../../layouts/Base.astro';
 
-// Wireframe screens for the CashNews iOS companion app. Each screen
-// renders inside a shared iPhone frame so the whole flow reads as a
-// storyboard on desktop and stacks cleanly on mobile.
+// Wireframe for the CashNews iOS companion app. Editorial layout —
+// hero screen (Feed) up top, three-across trio below, then a "where
+// it's live" section that embeds the actual YouTube uploads playlist
+// so visitors can watch the same daily drop the app plays.
 //
-// SwiftUI source lives at ios/CashNewsPreview/ — same view hierarchy,
-// same copy, so anyone poking at the Xcode project sees the same
-// thing this page renders.
+// SwiftUI source at ios/CashNewsPreview/ mirrors this hierarchy.
 
-const screens = [
-  {
-    id: 'feed',
-    title: 'Feed',
-    caption: 'Landing screen. Latest drop up top, older drops below.',
-  },
-  {
-    id: 'player',
-    title: 'Player',
-    caption: 'Portrait video + live transcript. Tap the transcript to jump.',
-  },
-  {
-    id: 'summary',
-    title: 'Summary',
-    caption: 'Text summary of the day\'s stories. Read + share; skip the video.',
-  },
-  {
-    id: 'settings',
-    title: 'Settings',
-    caption: 'Sources, notification cadence, avatar voice.',
-  },
-];
+// Channel ID from data/site_config.json — uploads playlist is
+// UU + channel_id[2:] (i.e. UC → UU).
+const CHANNEL_ID = 'UCVdpOAxaSsi19DsGCsjr35w';
+const UPLOADS_PLAYLIST = `UU${CHANNEL_ID.slice(2)}`;
+const CHANNEL_URL = 'https://www.youtube.com/@AakashSethi007';
 
 // Feed items — 4 mock daily drops
 const feedItems = [
@@ -40,7 +22,6 @@ const feedItems = [
   { date: 'Aug 22', title: 'Housing starts drop', tag: 'MACRO', duration: '1:37' },
 ];
 
-// Transcript lines for the Player screen
 const transcript = [
   { t: '00:00', text: 'The Fed just gave us the clearest signal yet.' },
   { t: '00:07', text: 'Rate cuts back on the table for September.' },
@@ -48,79 +29,102 @@ const transcript = [
   { t: '00:22', text: 'Here\'s the twist nobody\'s talking about.' },
 ];
 
-// Summary bullets
 const summary = [
   'Fed minutes hint at a September rate cut — first since 2023.',
   'CPI came in at 2.3%, below the 2.5% consensus.',
   'Bond yields dropped 12bps on the news; equities rallied.',
   '"The disinflation trend is now durable." — Fed Chair Powell.',
 ];
+
+const smallScreens = [
+  { id: 'player', title: 'Player', caption: 'Portrait video with a tap-to-jump transcript.' },
+  { id: 'summary', title: 'Summary', caption: 'Bulleted brief for readers who\'d rather skim.' },
+  { id: 'settings', title: 'Settings', caption: 'Sources, notification cadence, avatar voice.' },
+];
 ---
 <Base
   title="CashNews iOS · Preview — Aakash Sethi"
-  description="SwiftUI wireframe for the CashNews iOS companion app. Feed, player, summary, and settings screens."
+  description="SwiftUI wireframe for the CashNews iOS companion app, alongside the live daily drops streaming on YouTube."
 >
-  <div class="ios-preview">
-    <header class="ios-hero">
-      <p class="ios-eyebrow">Wireframe · Building</p>
-      <h1 class="ios-title">CashNews for iOS.</h1>
-      <p class="ios-lede">
-        Native SwiftUI companion to the CashNews pipeline. Landscape below is the four-screen
-        storyboard — Feed, Player, Summary, Settings. Same view hierarchy the Xcode project
-        implements.
+  <div class="cn-shell">
+    <!-- Hero -->
+    <header class="cn-hero">
+      <p class="cn-eyebrow">Wireframe · CashNews for iOS</p>
+      <h1 class="cn-title">A companion app for a channel that runs itself.</h1>
+      <p class="cn-lede">
+        Native SwiftUI. Reads the same signed <code>drops.json</code> the automated pipeline
+        publishes at broadcast time — so the app is always one refresh behind the video.
       </p>
-      <p class="ios-meta">
+      <p class="cn-meta">
         <span>Swift 5.9</span>
-        <span class="ios-dot">·</span>
+        <span class="cn-sep">/</span>
         <span>SwiftUI</span>
-        <span class="ios-dot">·</span>
+        <span class="cn-sep">/</span>
         <span>iOS 17+</span>
-        <span class="ios-dot">·</span>
+        <span class="cn-sep">/</span>
         <a href="https://github.com/Aakashsethi/CashNewsIOS" target="_blank" rel="noreferrer">GitHub repo →</a>
       </p>
     </header>
 
-    <div class="ios-storyboard">
-      {screens.map(s => (
-        <figure class="ios-screen" id={`screen-${s.id}`}>
+    <!-- Hero Feed screen -->
+    <section class="cn-hero-screen">
+      <div class="cn-hero-frame-wrap">
+        <div class="iphone-frame">
+          <div class="iphone-notch" aria-hidden="true"></div>
+          <div class="iphone-screen">
+            <div class="ios-status-bar">
+              <span>9:41</span>
+              <span class="ios-status-icons" aria-hidden="true"></span>
+            </div>
+            <div class="app feed">
+              <div class="app-nav">
+                <h2>Today</h2>
+                <button aria-label="Settings" class="app-nav-btn">⚙︎</button>
+              </div>
+              <div class="feed-hero">
+                <div class="feed-hero-thumb">
+                  <span class="feed-hero-play">▶</span>
+                  <span class="feed-hero-badge">LIVE · 2 hrs ago</span>
+                </div>
+                <p class="feed-hero-title">Fed signals cut, markets rally</p>
+                <p class="feed-hero-meta">2:04 · 3 stories</p>
+              </div>
+              <p class="feed-section">Recent drops</p>
+              {feedItems.map(f => (
+                <div class="feed-row">
+                  <div class="feed-row-thumb"><span>▶</span></div>
+                  <div class="feed-row-body">
+                    <p class="feed-row-title">{f.title}</p>
+                    <p class="feed-row-meta"><span class="tag">{f.tag}</span> {f.date} · {f.duration}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div class="ios-home-indicator" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+      <div class="cn-hero-caption">
+        <p class="cn-screen-number">01</p>
+        <h2 class="cn-screen-title">The feed.</h2>
+        <p class="cn-screen-copy">
+          The app opens on today's drop — always. Cover fills the frame; the older week lives
+          beneath it as a lightweight list. Nothing to configure, nothing to swipe past.
+        </p>
+      </div>
+    </section>
+
+    <!-- Trio of smaller screens -->
+    <section class="cn-trio">
+      {smallScreens.map((s, idx) => (
+        <figure class="cn-screen">
           <div class="iphone-frame">
             <div class="iphone-notch" aria-hidden="true"></div>
             <div class="iphone-screen">
               <div class="ios-status-bar">
                 <span>9:41</span>
-                <div class="ios-status-right">
-                  <span aria-hidden="true">●●●</span>
-                  <span aria-hidden="true">📶</span>
-                  <span aria-hidden="true">100%</span>
-                </div>
+                <span class="ios-status-icons" aria-hidden="true"></span>
               </div>
-
-              {s.id === 'feed' && (
-                <div class="app feed">
-                  <div class="app-nav">
-                    <h2>Today</h2>
-                    <button aria-label="Settings" class="app-nav-btn">⚙︎</button>
-                  </div>
-                  <a class="feed-hero" href="#screen-player">
-                    <div class="feed-hero-thumb">
-                      <span class="feed-hero-play">▶</span>
-                      <span class="feed-hero-badge">LIVE · 2 hrs ago</span>
-                    </div>
-                    <p class="feed-hero-title">Fed signals cut, markets rally</p>
-                    <p class="feed-hero-meta">2:04 · 3 stories</p>
-                  </a>
-                  <p class="feed-section">Recent drops</p>
-                  {feedItems.map(f => (
-                    <div class="feed-row">
-                      <div class="feed-row-thumb"><span>▶</span></div>
-                      <div class="feed-row-body">
-                        <p class="feed-row-title">{f.title}</p>
-                        <p class="feed-row-meta"><span class="tag">{f.tag}</span> {f.date} · {f.duration}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
 
               {s.id === 'player' && (
                 <div class="app player">
@@ -130,7 +134,10 @@ const summary = [
                   </div>
                   <div class="player-video">
                     <div class="player-avatar" aria-hidden="true">
-                      <span>👤</span>
+                      <svg viewBox="0 0 24 24" width="60" height="60" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="8" r="4"/>
+                        <path d="M4 21a8 8 0 0 1 16 0"/>
+                      </svg>
                     </div>
                     <div class="player-controls">
                       <div class="player-progress"><div class="player-progress-bar"></div></div>
@@ -138,7 +145,7 @@ const summary = [
                     </div>
                   </div>
                   <p class="player-title">Fed signals cut, markets rally</p>
-                  <p class="player-transcript-header">Transcript · tap to jump</p>
+                  <p class="player-transcript-header">Transcript</p>
                   <ol class="player-transcript">
                     {transcript.map((t, i) => (
                       <li class={i === 1 ? 'is-active' : ''}>
@@ -175,32 +182,14 @@ const summary = [
                     <button aria-label="Close" class="app-nav-btn">✕</button>
                   </div>
                   <p class="settings-section">Sources</p>
-                  <div class="settings-row">
-                    <span>Bloomberg</span>
-                    <span class="toggle on"></span>
-                  </div>
-                  <div class="settings-row">
-                    <span>Reuters</span>
-                    <span class="toggle on"></span>
-                  </div>
-                  <div class="settings-row">
-                    <span>WSJ</span>
-                    <span class="toggle off"></span>
-                  </div>
+                  <div class="settings-row"><span>Bloomberg</span><span class="toggle on"></span></div>
+                  <div class="settings-row"><span>Reuters</span><span class="toggle on"></span></div>
+                  <div class="settings-row"><span>WSJ</span><span class="toggle off"></span></div>
                   <p class="settings-section">Notifications</p>
-                  <div class="settings-row">
-                    <span>Daily drop</span>
-                    <span class="settings-value">9:00 AM ET</span>
-                  </div>
-                  <div class="settings-row">
-                    <span>Breaking only</span>
-                    <span class="toggle off"></span>
-                  </div>
+                  <div class="settings-row"><span>Daily drop</span><span class="settings-value">9:00 AM ET</span></div>
+                  <div class="settings-row"><span>Breaking only</span><span class="toggle off"></span></div>
                   <p class="settings-section">Avatar voice</p>
-                  <div class="settings-row">
-                    <span>ElevenLabs · Rachel</span>
-                    <span class="settings-chevron">›</span>
-                  </div>
+                  <div class="settings-row"><span>ElevenLabs · Rachel</span><span class="settings-chevron">›</span></div>
                 </div>
               )}
 
@@ -208,74 +197,178 @@ const summary = [
             </div>
           </div>
           <figcaption>
-            <p class="ios-screen-title">{s.title}</p>
-            <p class="ios-screen-caption">{s.caption}</p>
+            <p class="cn-screen-number">{String(idx + 2).padStart(2, '0')}</p>
+            <p class="cn-screen-title-sm">{s.title}</p>
+            <p class="cn-screen-copy-sm">{s.caption}</p>
           </figcaption>
         </figure>
       ))}
-    </div>
+    </section>
 
-    <section class="ios-notes">
-      <h2 class="ios-notes-title">Implementation notes</h2>
-      <ul class="ios-notes-list">
-        <li><b>Feed backend:</b> app pulls a signed CDN JSON (drops.json) generated by the CashNews pipeline at publish time — no server round-trips per user.</li>
-        <li><b>Player:</b> AVPlayerViewController in portrait; transcript is a JSON sibling of the video (words + timestamps).</li>
-        <li><b>Summary:</b> served alongside the transcript. Full-source link opens Safari — no in-app browser.</li>
-        <li><b>Settings:</b> stored in @AppStorage. Source toggles + notification cadence write to UserDefaults; avatar voice reads a signed list from the same pipeline.</li>
-        <li><b>Design:</b> system fonts (SF Pro), warm-neutral palette that matches the site.</li>
+    <!-- Where it's deployed — YouTube shorts -->
+    <section class="cn-deploy">
+      <div class="cn-deploy-head">
+        <p class="cn-eyebrow">Where it's live</p>
+        <h2 class="cn-h2">The channel the app plays.</h2>
+        <p class="cn-copy">
+          The pipeline publishes to
+          <a href={CHANNEL_URL} target="_blank" rel="noreferrer">YouTube</a> as short-form
+          video, then syndicates the same cut to Instagram Reels and TikTok. The iOS app
+          reads a signed CDN JSON published at the same time, so the app is always in sync
+          with the video.
+        </p>
+      </div>
+
+      <div class="cn-youtube-wrap">
+        <div class="cn-youtube-frame">
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/videoseries?list=${UPLOADS_PLAYLIST}&modestbranding=1&rel=0`}
+            title="CashNews — latest daily drops"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <p class="cn-youtube-caption mono">
+          Latest daily drops · updated at publish time · <a href={CHANNEL_URL} target="_blank" rel="noreferrer">Open channel →</a>
+        </p>
+      </div>
+
+      <div class="cn-platforms">
+        <a class="cn-platform" href={CHANNEL_URL} target="_blank" rel="noreferrer">
+          <span class="cn-platform-name">YouTube</span>
+          <span class="cn-platform-handle">@AakashSethi007</span>
+        </a>
+        <a class="cn-platform" href="https://www.instagram.com/aakashsethi007/" target="_blank" rel="noreferrer">
+          <span class="cn-platform-name">Instagram</span>
+          <span class="cn-platform-handle">@aakashsethi007</span>
+        </a>
+        <a class="cn-platform" href="https://www.tiktok.com/@aakashsethi007" target="_blank" rel="noreferrer">
+          <span class="cn-platform-name">TikTok</span>
+          <span class="cn-platform-handle">@aakashsethi007</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Implementation notes -->
+    <section class="cn-notes">
+      <h2 class="cn-h2">Under the hood.</h2>
+      <ul class="cn-notes-list">
+        <li><b>Feed backend:</b> the app pulls a signed CDN JSON (<code>drops.json</code>) generated by the CashNews pipeline at publish time. No per-user round-trips.</li>
+        <li><b>Player:</b> <code>AVPlayerViewController</code> in portrait; transcript is a sibling JSON with word-level timestamps.</li>
+        <li><b>Summary:</b> served alongside the transcript. Full-source link opens Safari — no in-app browser to maintain.</li>
+        <li><b>Settings:</b> <code>@AppStorage</code> for source toggles and cadence; voice picker reads a signed list from the same pipeline.</li>
+        <li><b>Design:</b> SF Pro system fonts, warm-neutral palette matching the site.</li>
       </ul>
     </section>
 
-    <p class="ios-back">
+    <p class="cn-back">
       <a href="/">← Back to home</a>
     </p>
   </div>
 </Base>
 
 <style is:global>
-  .ios-preview {
-    max-width: 1080px;
+  .cn-shell {
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 72px clamp(20px, 5vw, 32px) 120px;
+    padding: 88px clamp(20px, 5vw, 40px) 128px;
   }
-  .ios-hero { margin-bottom: 56px; max-width: 720px; }
-  .ios-eyebrow {
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em;
-    text-transform: uppercase; color: var(--ink-500); margin: 0 0 18px;
-  }
-  .ios-title {
-    font-family: var(--font-editorial); font-optical-sizing: auto;
-    font-weight: 500; font-size: clamp(36px, 5vw, 52px); line-height: 1.05;
-    letter-spacing: -0.03em; color: var(--ink-950); margin: 0 0 18px;
-  }
-  .ios-lede {
-    font-family: var(--font-editorial); font-style: italic;
-    font-size: 19px; line-height: 1.5; color: var(--ink-700);
-    margin: 0 0 20px; max-width: 60ch;
-  }
-  .ios-meta {
-    font-family: var(--font-mono); font-size: 12px; color: var(--ink-500);
-    display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0;
-  }
-  .ios-meta a { color: var(--signal-700); text-decoration: none; }
-  .ios-meta a:hover { text-decoration: underline; }
-  .ios-dot { color: var(--ink-300); }
 
-  .ios-storyboard {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 40px 32px;
-    margin: 40px 0 72px;
+  /* Hero copy */
+  .cn-hero { max-width: 720px; margin-bottom: 72px; }
+  .cn-eyebrow {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--ink-500); margin: 0 0 20px;
   }
-  .ios-screen { margin: 0; display: flex; flex-direction: column; align-items: center; }
+  .cn-title {
+    font-family: var(--font-editorial); font-optical-sizing: auto;
+    font-weight: 500; font-size: clamp(38px, 5.5vw, 60px); line-height: 1.02;
+    letter-spacing: -0.035em; color: var(--ink-950); margin: 0 0 22px;
+  }
+  .cn-lede {
+    font-family: var(--font-editorial); font-style: italic;
+    font-size: 21px; line-height: 1.48; color: var(--ink-700);
+    margin: 0 0 22px; max-width: 62ch; font-weight: 400;
+  }
+  .cn-lede code {
+    font-family: var(--font-mono); font-size: 0.9em; font-style: normal;
+    color: var(--ink-800); background: var(--ink-100);
+    padding: 2px 6px; border-radius: 4px;
+  }
+  .cn-meta {
+    font-family: var(--font-mono); font-size: 12px; color: var(--ink-500);
+    letter-spacing: 0.06em; display: flex; flex-wrap: wrap; gap: 10px;
+    align-items: center; margin: 0;
+  }
+  .cn-meta a { color: var(--signal-700); text-decoration: none; }
+  .cn-meta a:hover { text-decoration: underline; }
+  .cn-sep { color: var(--ink-300); }
+
+  /* Hero screen — Feed */
+  .cn-hero-screen {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: clamp(32px, 6vw, 72px);
+    align-items: center;
+    padding: 56px 0;
+    margin: 0 0 40px;
+    border-top: 1px solid var(--ink-100);
+    border-bottom: 1px solid var(--ink-100);
+  }
+  .cn-hero-frame-wrap { display: flex; justify-content: center; }
+  .cn-hero-caption { max-width: 480px; }
+  .cn-screen-number {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em;
+    color: var(--ink-400); margin: 0 0 12px;
+  }
+  .cn-screen-title {
+    font-family: var(--font-editorial); font-optical-sizing: auto;
+    font-weight: 500; font-size: 34px; line-height: 1.1;
+    letter-spacing: -0.025em; color: var(--ink-950); margin: 0 0 16px;
+  }
+  .cn-screen-copy {
+    font-family: var(--font-reading), var(--font-editorial), Georgia, serif;
+    font-size: 17px; line-height: 1.6; color: var(--ink-700);
+    margin: 0; max-width: 52ch;
+  }
+
+  /* Trio grid */
+  .cn-trio {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(24px, 3vw, 40px);
+    margin: 0 0 96px;
+  }
+  .cn-screen { margin: 0; display: flex; flex-direction: column; align-items: center; }
+  .cn-screen figcaption {
+    margin-top: 24px; text-align: center; max-width: 280px;
+  }
+  .cn-screen-title-sm {
+    font-family: var(--font-editorial); font-weight: 500;
+    font-size: 20px; letter-spacing: -0.02em; color: var(--ink-950);
+    margin: 8px 0 6px;
+  }
+  .cn-screen-copy-sm {
+    font-family: var(--font-reading), Georgia, serif;
+    font-size: 14px; line-height: 1.55; color: var(--ink-500); margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .cn-hero-screen { grid-template-columns: 1fr; }
+    .cn-trio { grid-template-columns: 1fr; gap: 48px; }
+  }
 
   /* iPhone frame */
   .iphone-frame {
     width: 280px; height: 574px;
     background: #1c1917;
-    border-radius: 40px;
+    border-radius: 44px;
     padding: 8px;
-    box-shadow: 0 20px 60px rgba(28,25,23,0.18), 0 4px 12px rgba(28,25,23,0.08);
+    box-shadow:
+      0 30px 60px -20px rgba(28,25,23,0.25),
+      0 8px 20px -8px rgba(28,25,23,0.15),
+      inset 0 0 0 1px rgba(255,255,255,0.05);
     position: relative;
   }
   .iphone-notch {
@@ -287,151 +380,166 @@ const summary = [
   }
   .iphone-screen {
     width: 100%; height: 100%;
-    background: #fafaf9;
-    border-radius: 32px;
+    background: #ffffff;
+    border-radius: 36px;
     overflow: hidden;
     position: relative;
     display: flex; flex-direction: column;
   }
   .ios-status-bar {
-    padding: 12px 22px 6px;
+    padding: 14px 24px 4px;
     display: flex; justify-content: space-between; align-items: center;
-    font-family: 'SF Pro Text', -apple-system, sans-serif;
-    font-size: 11px; font-weight: 600; color: #1c1917;
-    padding-top: 14px;
+    font-family: -apple-system, 'SF Pro Text', 'Segoe UI', sans-serif;
+    font-size: 12px; font-weight: 600; color: #1c1917;
   }
-  .ios-status-right { display: flex; gap: 5px; font-size: 9px; }
+  .ios-status-icons {
+    width: 40px; height: 12px;
+    background:
+      radial-gradient(circle 2px at 4px 6px, #1c1917 100%, transparent 0),
+      radial-gradient(circle 2px at 12px 6px, #1c1917 100%, transparent 0),
+      radial-gradient(circle 2px at 20px 6px, #1c1917 100%, transparent 0);
+    background-repeat: no-repeat;
+  }
   .ios-home-indicator {
     position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%);
-    width: 100px; height: 4px; border-radius: 2px;
-    background: #1c1917; opacity: 0.6;
+    width: 108px; height: 4px; border-radius: 2px;
+    background: #1c1917; opacity: 0.7;
   }
 
+  /* App content */
   .app {
-    flex: 1; padding: 8px 16px 24px; overflow-y: auto;
-    font-family: 'SF Pro Text', -apple-system, 'Segoe UI', sans-serif;
+    flex: 1; padding: 10px 18px 28px; overflow-y: auto;
+    font-family: -apple-system, 'SF Pro Text', 'Segoe UI', sans-serif;
     color: #1c1917;
   }
+  .app::-webkit-scrollbar { display: none; }
   .app-nav {
     display: flex; justify-content: space-between; align-items: center;
-    margin: 4px 0 12px;
+    margin: 6px 0 14px;
   }
   .app-nav h2 {
-    font-family: 'SF Pro Display', -apple-system, sans-serif;
-    font-size: 20px; font-weight: 700; margin: 0; letter-spacing: -0.02em;
+    font-family: -apple-system, 'SF Pro Display', sans-serif;
+    font-size: 22px; font-weight: 700; margin: 0; letter-spacing: -0.025em;
   }
   .app-nav-btn {
-    background: transparent; border: 0; font-size: 15px; color: #1c1917;
+    background: transparent; border: 0; font-size: 16px; color: #1c1917;
     cursor: pointer; padding: 4px 6px;
   }
 
   /* Feed */
   .feed-hero {
-    display: block; text-decoration: none; color: inherit;
-    background: #292524; border-radius: 14px; padding: 12px;
-    margin-bottom: 16px;
+    background: #1c1917; border-radius: 16px; padding: 12px;
+    margin-bottom: 20px;
   }
   .feed-hero-thumb {
-    height: 130px; border-radius: 8px;
-    background: linear-gradient(135deg, #57534d 0%, #292524 100%);
+    height: 148px; border-radius: 10px;
+    background: linear-gradient(135deg, #44403b 0%, #1c1917 100%);
     display: flex; align-items: center; justify-content: center;
     position: relative;
   }
-  .feed-hero-play { font-size: 30px; color: #fafaf9; }
+  .feed-hero-play { font-size: 32px; color: #fafaf9; }
   .feed-hero-badge {
-    position: absolute; top: 8px; left: 8px;
+    position: absolute; top: 10px; left: 10px;
     background: rgba(250,250,249,0.14); color: #fafaf9;
-    font-family: var(--font-mono); font-size: 9px;
-    letter-spacing: 0.08em; padding: 3px 6px; border-radius: 4px;
+    font-family: -apple-system, 'SF Mono', ui-monospace, monospace;
+    font-size: 9px; letter-spacing: 0.1em; padding: 4px 7px; border-radius: 4px;
+    font-weight: 500;
   }
-  .feed-hero-title { color: #fafaf9; font-size: 15px; font-weight: 600; margin: 10px 0 2px; }
+  .feed-hero-title { color: #fafaf9; font-size: 16px; font-weight: 600; margin: 12px 0 3px; letter-spacing: -0.015em; }
   .feed-hero-meta { color: #d6d3d1; font-size: 11px; margin: 0; }
   .feed-section {
-    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em;
-    color: #78716c; text-transform: uppercase; margin: 12px 0 8px;
+    font-family: -apple-system, 'SF Mono', ui-monospace, monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    color: #78716c; text-transform: uppercase; margin: 14px 0 10px;
   }
   .feed-row {
-    display: flex; gap: 10px; align-items: center; padding: 8px 0;
-    border-bottom: 1px solid #e7e5e4;
+    display: flex; gap: 12px; align-items: center; padding: 10px 0;
+    border-bottom: 1px solid #f5f5f4;
   }
   .feed-row:last-child { border-bottom: 0; }
   .feed-row-thumb {
-    width: 44px; height: 44px; border-radius: 8px;
-    background: #d6d3d1; color: #57534d;
+    width: 46px; height: 46px; border-radius: 10px;
+    background: #e7e5e4; color: #57534d;
     display: flex; align-items: center; justify-content: center;
-    font-size: 13px;
+    font-size: 14px;
   }
   .feed-row-body { flex: 1; min-width: 0; }
-  .feed-row-title { font-size: 13px; font-weight: 500; margin: 0 0 3px; }
-  .feed-row-meta { font-size: 10px; color: #78716c; margin: 0; display: flex; gap: 6px; align-items: center; }
+  .feed-row-title { font-size: 14px; font-weight: 500; margin: 0 0 3px; letter-spacing: -0.01em; }
+  .feed-row-meta { font-size: 11px; color: #78716c; margin: 0; display: flex; gap: 8px; align-items: center; }
   .tag {
-    font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.08em;
-    color: #b45309; background: rgba(245,165,36,0.14);
-    padding: 1px 5px; border-radius: 3px;
+    font-family: -apple-system, 'SF Mono', ui-monospace, monospace;
+    font-size: 9px; letter-spacing: 0.1em; font-weight: 500;
+    color: #78716c; background: #f5f5f4;
+    padding: 2px 6px; border-radius: 4px;
   }
 
   /* Player */
   .player-video {
-    background: #1c1917; border-radius: 12px; height: 240px;
+    background: #1c1917; border-radius: 14px; height: 240px;
     display: flex; flex-direction: column; justify-content: space-between;
-    padding: 12px; margin-bottom: 12px;
+    padding: 14px; margin-bottom: 16px;
   }
   .player-avatar {
     flex: 1; display: flex; align-items: center; justify-content: center;
-    font-size: 60px; color: #d6d3d1;
+    color: #78716c;
   }
-  .player-controls { color: #fafaf9; font-family: var(--font-mono); }
+  .player-controls { color: #fafaf9; }
   .player-progress {
     height: 3px; background: rgba(250,250,249,0.2); border-radius: 2px;
-    overflow: hidden; margin-bottom: 6px;
+    overflow: hidden; margin-bottom: 8px;
   }
   .player-progress-bar { height: 100%; width: 38%; background: #fafaf9; border-radius: 2px; }
-  .player-time { display: flex; justify-content: space-between; font-size: 9px; }
-  .player-title { font-size: 15px; font-weight: 600; margin: 0 0 12px; }
+  .player-time {
+    display: flex; justify-content: space-between;
+    font-family: -apple-system, 'SF Mono', ui-monospace, monospace;
+    font-size: 10px;
+  }
+  .player-title { font-size: 15px; font-weight: 600; margin: 0 0 14px; letter-spacing: -0.015em; }
   .player-transcript-header {
-    font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em;
-    color: #78716c; text-transform: uppercase; margin: 0 0 6px;
+    font-family: -apple-system, 'SF Mono', ui-monospace, monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    color: #78716c; text-transform: uppercase; margin: 0 0 8px;
   }
   .player-transcript { list-style: none; padding: 0; margin: 0; }
   .player-transcript li {
-    display: flex; gap: 8px; padding: 6px 0;
-    font-size: 12px; line-height: 1.4; color: #57534d;
+    display: flex; gap: 10px; padding: 8px 0;
+    font-size: 12px; line-height: 1.45; color: #78716c;
     border-bottom: 1px solid #f5f5f4;
   }
   .player-transcript li:last-child { border-bottom: 0; }
   .player-transcript li.is-active { color: #1c1917; font-weight: 500; }
   .tx-time {
-    font-family: var(--font-mono); font-size: 9px; color: #a6a09b;
-    min-width: 32px;
+    font-family: -apple-system, 'SF Mono', ui-monospace, monospace;
+    font-size: 10px; color: #a6a09b;
+    min-width: 34px;
   }
 
   /* Summary */
   .summary-eyebrow {
-    font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em;
-    color: #78716c; text-transform: uppercase; margin: 4px 0 8px;
+    font-family: -apple-system, 'SF Mono', ui-monospace, monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    color: #78716c; text-transform: uppercase; margin: 4px 0 10px;
   }
   .summary-title {
-    font-family: 'SF Pro Display', -apple-system, sans-serif;
-    font-size: 20px; font-weight: 600; letter-spacing: -0.02em;
-    margin: 0 0 14px; line-height: 1.15;
+    font-family: -apple-system, 'SF Pro Display', sans-serif;
+    font-size: 21px; font-weight: 600; letter-spacing: -0.025em;
+    margin: 0 0 16px; line-height: 1.15;
   }
-  .summary-list {
-    padding: 0; margin: 0 0 16px; list-style: none;
-  }
+  .summary-list { padding: 0; margin: 0 0 18px; list-style: none; }
   .summary-list li {
     font-size: 13px; line-height: 1.5; color: #44403b;
-    padding: 8px 0 8px 14px; position: relative;
+    padding: 10px 0 10px 16px; position: relative;
     border-top: 1px solid #f5f5f4;
   }
   .summary-list li:first-child { border-top: 0; }
   .summary-list li::before {
-    content: ''; position: absolute; left: 0; top: 15px;
-    width: 4px; height: 4px; border-radius: 2px; background: #b45309;
+    content: ''; position: absolute; left: 0; top: 17px;
+    width: 5px; height: 5px; border-radius: 50%; background: #78716c;
   }
-  .summary-cta { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+  .summary-cta { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
   .summary-btn {
-    padding: 10px; border-radius: 10px; border: 0;
-    font-family: 'SF Pro Text', -apple-system, sans-serif;
+    padding: 12px; border-radius: 12px; border: 0;
+    font-family: -apple-system, 'SF Pro Text', sans-serif;
     font-size: 13px; font-weight: 600; cursor: pointer;
   }
   .summary-btn.primary { background: #1c1917; color: #fafaf9; }
@@ -439,69 +547,116 @@ const summary = [
 
   /* Settings */
   .settings-section {
-    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em;
-    color: #78716c; text-transform: uppercase; margin: 14px 0 6px;
+    font-family: -apple-system, 'SF Mono', ui-monospace, monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    color: #78716c; text-transform: uppercase; margin: 16px 0 8px;
   }
   .settings-row {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 12px 0; border-bottom: 1px solid #f5f5f4;
+    padding: 14px 0; border-bottom: 1px solid #f5f5f4;
     font-size: 13px;
   }
   .settings-row:last-child { border-bottom: 0; }
   .settings-value {
-    font-family: var(--font-mono); font-size: 11px; color: #78716c;
+    font-family: -apple-system, 'SF Mono', ui-monospace, monospace;
+    font-size: 11px; color: #78716c;
   }
-  .settings-chevron { color: #a6a09b; font-size: 16px; }
+  .settings-chevron { color: #a6a09b; font-size: 18px; }
   .toggle {
-    width: 34px; height: 20px; border-radius: 12px; position: relative;
+    width: 36px; height: 22px; border-radius: 12px; position: relative;
     background: #d6d3d1; transition: background 200ms;
   }
-  .toggle.on { background: #b45309; }
+  .toggle.on { background: #1c1917; }
   .toggle::after {
-    content: ''; position: absolute; top: 2px; width: 16px; height: 16px;
-    border-radius: 50%; background: #fafaf9; transition: transform 200ms;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    content: ''; position: absolute; top: 2px; width: 18px; height: 18px;
+    border-radius: 50%; background: #ffffff; transition: transform 200ms;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
   }
-  .toggle.on::after { transform: translateX(16px); }
-  .toggle.off::after { transform: translateX(2px); }
   .toggle.on::after { left: 0; transform: translateX(16px); }
-  .toggle.off::after { left: 0; }
+  .toggle.off::after { left: 0; transform: translateX(2px); }
 
-  /* Captions */
-  .ios-screen figcaption {
-    margin-top: 20px; text-align: center; max-width: 260px;
+  /* Deploy section */
+  .cn-deploy {
+    margin: 0 0 96px;
+    padding: 72px 0;
+    border-top: 1px solid var(--ink-100);
+    border-bottom: 1px solid var(--ink-100);
   }
-  .ios-screen-title {
-    font-family: var(--font-editorial); font-weight: 600;
-    font-size: 18px; letter-spacing: -0.02em; margin: 0 0 4px;
-    color: var(--ink-950);
+  .cn-deploy-head { max-width: 640px; margin: 0 auto 40px; text-align: center; }
+  .cn-h2 {
+    font-family: var(--font-editorial); font-optical-sizing: auto;
+    font-weight: 500; font-size: clamp(28px, 3.5vw, 38px);
+    line-height: 1.1; letter-spacing: -0.025em; color: var(--ink-950);
+    margin: 12px 0 18px;
   }
-  .ios-screen-caption {
-    font-family: var(--font-reading), Georgia, serif;
-    font-size: 13px; line-height: 1.5; color: var(--ink-500); margin: 0;
+  .cn-copy {
+    font-family: var(--font-reading), var(--font-editorial), Georgia, serif;
+    font-size: 17px; line-height: 1.6; color: var(--ink-700);
+    margin: 0; max-width: 60ch; margin-left: auto; margin-right: auto;
+  }
+  .cn-copy a { color: var(--signal-700); text-decoration: none; }
+  .cn-copy a:hover { text-decoration: underline; }
+  .cn-youtube-wrap { max-width: 720px; margin: 0 auto 32px; }
+  .cn-youtube-frame {
+    position: relative; width: 100%; aspect-ratio: 16 / 9;
+    border-radius: 12px; overflow: hidden;
+    background: var(--ink-100);
+    box-shadow: 0 20px 40px -20px rgba(28,25,23,0.2);
+  }
+  .cn-youtube-frame iframe {
+    position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+  }
+  .cn-youtube-caption {
+    margin: 16px 0 0; text-align: center; font-size: 12px;
+    color: var(--ink-500); letter-spacing: 0.04em;
+  }
+  .cn-youtube-caption a { color: var(--signal-700); text-decoration: none; }
+  .cn-youtube-caption a:hover { text-decoration: underline; }
+
+  .cn-platforms {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; max-width: 720px; margin: 0 auto;
+  }
+  .cn-platform {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 20px 16px;
+    border: 1px solid var(--ink-100); border-radius: 10px;
+    text-decoration: none; transition: border-color 150ms, transform 150ms;
+    background: transparent;
+  }
+  .cn-platform:hover { border-color: var(--ink-300); transform: translateY(-2px); }
+  .cn-platform-name {
+    font-family: var(--font-editorial); font-weight: 500;
+    font-size: 16px; letter-spacing: -0.01em; color: var(--ink-950);
+  }
+  .cn-platform-handle {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.04em; color: var(--ink-500);
+  }
+  @media (max-width: 640px) {
+    .cn-platforms { grid-template-columns: 1fr; }
   }
 
   /* Notes */
-  .ios-notes {
-    border-top: 1px solid var(--ink-100); padding-top: 40px;
-    max-width: 720px; margin: 40px auto 0;
-  }
-  .ios-notes-title {
-    font-family: var(--font-editorial); font-weight: 500;
-    font-size: 24px; letter-spacing: -0.02em; margin: 0 0 16px;
-    color: var(--ink-950);
-  }
-  .ios-notes-list {
+  .cn-notes { max-width: 720px; margin: 0 auto; }
+  .cn-notes .cn-h2 { text-align: left; margin-bottom: 20px; }
+  .cn-notes-list {
     font-family: var(--font-reading), Georgia, serif;
-    font-size: 16px; line-height: 1.65; color: var(--ink-800);
+    font-size: 17px; line-height: 1.65; color: var(--ink-800);
     padding-left: 22px; margin: 0;
   }
-  .ios-notes-list li { margin-bottom: 10px; max-width: 62ch; }
-
-  .ios-back {
-    margin-top: 48px; font-family: var(--font-mono); font-size: 12px;
-    letter-spacing: 0.08em; text-transform: uppercase; max-width: 720px; margin-left: auto; margin-right: auto;
+  .cn-notes-list li { margin-bottom: 12px; max-width: 62ch; }
+  .cn-notes-list code {
+    font-family: var(--font-mono); font-size: 0.88em;
+    color: var(--ink-950); background: var(--ink-100);
+    padding: 1px 6px; border-radius: 4px;
   }
-  .ios-back a { color: var(--ink-500); text-decoration: none; }
-  .ios-back a:hover { color: var(--signal-700); }
+
+  .cn-back {
+    margin-top: 64px; text-align: center;
+    font-family: var(--font-mono); font-size: 12px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .cn-back a { color: var(--ink-500); text-decoration: none; }
+  .cn-back a:hover { color: var(--signal-700); }
 </style>
