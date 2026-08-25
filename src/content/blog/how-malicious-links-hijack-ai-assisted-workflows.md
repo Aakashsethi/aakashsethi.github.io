@@ -4,9 +4,6 @@ title: "How Malicious Links Hijack AI-Assisted Workflows — A Real Incident"
 date: 2026-06-09
 categories: ["AI Engineering"]
 tags: [CyberSecurity, AIEngineering, PromptInjection, MalwareAttack, DevSecurity, SocialEngineering, AITools, SecureCoding, ZeroTrust]
-author_profile: true
-read_time: true
-share: true
 cover_image: /assets/posts/2026-06-09-how-malicious-links-hijack-ai-assisted-workflows.png
 cover_image_alt: 'How Malicious Links Hijack AI-Assisted Workflows — A Real Incident — cover art'
 cover_image_width: 1200

@@ -1,14 +1,13 @@
 import React from 'react';
+import { WipPage } from './WipPage.jsx';
 
 function JobTailor() {
   return (
-    <section className="wip-shell">
-      <p className="wip-eyebrow">Work in progress · Resume tailor</p>
-      <h1 className="wip-title">Paste a JD and your resume. Get one that speaks the same language.</h1>
-      <p className="wip-lede">
-        Coming soon. Here's what it will do and why I'm building it.
-      </p>
-
+    <WipPage
+      eyebrow="Work in progress · Resume tailor"
+      title="Paste a JD and your resume. Get one that speaks the same language."
+      lede="Coming soon. Here's what it will do and why I'm building it."
+    >
       <h2 className="wip-h2">The problem</h2>
       <p>
         Generic resumes lose. Recruiters spend six seconds on the first pass,
@@ -63,11 +62,7 @@ function JobTailor() {
         the sign-in UX and diff view before opening it to real use.
         Subscribe to the newsletter and I'll email when it's live.
       </p>
-
-      <p className="wip-back">
-        <a href="/">← Back to home</a>
-      </p>
-    </section>
+    </WipPage>
   );
 }
 

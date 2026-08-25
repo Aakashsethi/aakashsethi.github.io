@@ -4,9 +4,6 @@ date: 2026-08-23 13:22:55 +0000
 categories: ["Career"]
 tags: [career, ai engineering, skill depth, productivity, learning, software architecture]
 image_url: "/assets/blog/2026-08-23-why-depth-beats-breadth-in-ai-engineering-careers.jpg"
-author_profile: true
-read_time: true
-share: true
 excerpt: "I explain how focusing on a few high‑impact skills, measurable outcomes, and disciplined learning accelerates promotion and opens doors beyond the usual résumé checklist."
 ---
 

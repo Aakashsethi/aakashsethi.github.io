@@ -4,9 +4,6 @@ title: "OpenAI and Broadcom unveil LLM-optimized inference chip"
 date: 2026-06-24
 categories: ["AI Engineering"]
 tags: [AIEngineering, LLMOps, MachineLearning, AWS, Fintech]
-author_profile: true
-read_time: true
-share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7475578582870925313"
 cover_image: /assets/posts/2026-06-24-openai-and-broadcom-unveil-llm-optimized-inference-chip.png
 cover_image_alt: 'OpenAI and Broadcom unveil LLM-optimized inference chip — cover art'

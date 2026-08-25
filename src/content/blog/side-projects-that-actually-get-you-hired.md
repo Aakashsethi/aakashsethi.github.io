@@ -4,9 +4,6 @@ title: "Side Projects That Actually Get You Hired"
 date: 2026-06-01
 categories: ["Career"]
 tags: [SoftwareEngineering, AIEngineering, CareerAdvice, TechJobs, SideProjects, Career, TechCareers]
-author_profile: true
-read_time: true
-share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7467233599323488256"
 ---
 

@@ -5,9 +5,6 @@ date: 2026-08-16 13:21:57 +0000
 categories: ["AI Engineering"]
 tags: [ai engineering, model versioning, data lineage, production systems, mlops]
 image_url: "/assets/blog/2026-08-16-why-model-versioning-and-data-lineage-matter-more-than-raw-accuracy-in.jpg"
-author_profile: true
-read_time: true
-share: true
 excerpt: "I show how tracing data origins and versioning inference pipelines prevents costly regressions, using real incidents from my work at Vanguard and Tnufa.ai."
 ---
 

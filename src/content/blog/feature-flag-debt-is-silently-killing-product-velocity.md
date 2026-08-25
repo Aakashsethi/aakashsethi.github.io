@@ -5,9 +5,6 @@ date: 2026-07-01
 categories: ["Product"]
 tags: [product, feature-flags, technical-debt, software-engineering, devops, aws]
 image_url: "/assets/blog/2026-07-01-feature-flag-debt-is-silently-killing-product-velocity.jpg"
-author_profile: true
-read_time: true
-share: true
 excerpt: "I show how unchecked feature flags become hidden technical debt, inflate CI times, and cause costly outages, then give a concrete audit process you can start this week."
 ---
 

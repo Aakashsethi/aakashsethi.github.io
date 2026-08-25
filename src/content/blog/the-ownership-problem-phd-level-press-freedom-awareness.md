@@ -4,9 +4,6 @@ title: "The Ownership Problem — A Structural Account of Press Freedom"
 date: 2026-05-31
 categories: ["Society & Tech"]
 tags: [FreePressMatters, MediaFreedom, IndependentMedia, PoliticalEconomy, MediaTheory, Habermas, Chomsky, Journalism]
-author_profile: true
-read_time: true
-share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7466906444240580608"
 excerpt: "Most Americans believe they have access to a free press. They have access to a market of information products manufactured by six corporate parents. The distinction is the whole argument — and the lever set for fixing it is more concrete than the debate suggests."
 ---

@@ -1,10 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-
-const SUBSCRIBE_ENDPOINT = typeof window !== 'undefined' &&
-  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-  ? 'http://localhost:4001/subscribe'
-  : 'https://portfolio-contact-j70g.onrender.com/subscribe';
+import { subscribeEmail } from '../lib/subscribe.js';
 
 function Newsletter() {
   const [email, setEmail]     = useState('');
@@ -19,19 +15,9 @@ function Newsletter() {
     setMsg('');
 
     try {
-      // NB: not sending `tag` — Buttondown's free plan rejects tagged
-      // subscribers with 403.
-      const res = await fetch(SUBSCRIBE_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: trimmed }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || 'Subscription failed.');
+      const result = await subscribeEmail(trimmed);
       setStatus('done');
-      setMsg(data.already
-        ? '✓ You\'re already on the list — thank you for the support.'
-        : '✓ You\'re in. A welcome note is on its way.');
+      setMsg(result.message);
       setEmail('');
       if (typeof window.gtag === 'function') {
         window.gtag('event', 'newsletter_subscribe', { source: 'home' });

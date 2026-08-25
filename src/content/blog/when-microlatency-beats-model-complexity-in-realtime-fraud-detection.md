@@ -5,9 +5,6 @@ date: 2026-07-01 01:18:56 +0000
 categories: ["Fintech"]
 tags: [fintech, fraud detection, latency, aws, real‑time systems, engineering]
 image_url: "/assets/blog/2026-07-01-when-microlatency-beats-model-complexity-in-realtime-fraud-detection.jpg"
-author_profile: true
-read_time: true
-share: true
 excerpt: "I show how a 150 ms blind spot cost a major bank millions, then walk through the engineering choices that shrink latency below 100 ms without sacrificing detection quality."
 ---
 

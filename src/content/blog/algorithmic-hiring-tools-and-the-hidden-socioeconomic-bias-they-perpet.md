@@ -5,9 +5,6 @@ date: 2026-07-01
 categories: ["Society & Tech"]
 tags: [algorithmic bias, hiring, societal impact, data ethics, machine learning]
 
-author_profile: true
-read_time: true
-share: true
 excerpt: "I show how feature choices, opaque models, and real‑world data combine to keep privileged candidates ahead, then give a concrete script you can run this week to expose disparity."
 ---
 

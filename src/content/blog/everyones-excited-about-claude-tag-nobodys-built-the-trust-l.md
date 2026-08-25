@@ -4,9 +4,6 @@ title: "Everyone's Excited About Claude Tag. Nobody's Built the Trust Layer."
 date: 2026-06-26
 categories: ["AI Engineering"]
 tags: [AIEngineering, LLMOps, AWS, ClaudeTag, AgentInfrastructure]
-author_profile: true
-read_time: true
-share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7476277606548684801"
 cover_image: /assets/posts/2026-06-26-everyones-excited-about-claude-tag-nobodys-built-the-trust-l.png
 cover_image_alt: "Everyone's Excited About Claude Tag. Nobody's Built the Trust Layer. — cover art"

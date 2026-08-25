@@ -5,9 +5,6 @@ date: 2026-07-01
 categories: ["AI Engineering"]
 tags: [ai engineering, model monitoring, observability, mlops, production systems]
 image_url: "/assets/blog/2026-07-01-why-model-monitoring-pipelines-fail-and-how-i-built-a-resilient-observ.jpg"
-author_profile: true
-read_time: true
-share: true
 excerpt: "I dissect a production alert that exposed data drift, explain why common validation falls short, and share a layered monitoring architecture that turned flaky models into reliable services."
 ---
 

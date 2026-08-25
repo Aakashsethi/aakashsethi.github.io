@@ -4,9 +4,6 @@ title: "Leadership in Logistics — Vendor Leverage vs Internal Fraud"
 date: 2026-06-03
 categories: ["Product"]
 tags: [Logistics, SupplyChain, Leadership, ProcurementFraud, VendorManagement, Operations, EBITDA]
-author_profile: true
-read_time: true
-share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7468039442675523584"
 cover_image: /assets/posts/2026-06-03-leadership-in-logistics-vendor-leverage-vs-internal-fraud.png
 cover_image_alt: 'Leadership in Logistics — Vendor Leverage vs Internal Fraud — cover art'

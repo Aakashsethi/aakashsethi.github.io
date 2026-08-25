@@ -5,9 +5,6 @@ date: 2026-07-01 01:17:21 +0000
 categories: ["Career"]
 tags: [career, internal mobility, skill graph, data driven, software engineering, leadership]
 image_url: "/assets/blog/2026-07-01-why-internal-mobility-programs-stall-and-how-a-datadriven-skill-graph-.jpg"
-author_profile: true
-read_time: true
-share: true
 excerpt: "I dissect a costly promotion bug from my time at Vanguard, explain why raw data rarely moves people, and share a reproducible three‑step experiment that raised internal hires by 12 percent."
 ---
 

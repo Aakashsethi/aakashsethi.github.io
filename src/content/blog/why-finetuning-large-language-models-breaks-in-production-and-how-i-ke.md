@@ -5,9 +5,6 @@ date: 2026-08-09 13:38:58 +0000
 categories: ["AI Engineering"]
 tags: [ai engineering, large language models, fine‑tuning, production reliability, data drift, observability]
 image_url: "/assets/blog/2026-08-09-why-finetuning-large-language-models-breaks-in-production-and-how-i-ke.jpg"
-author_profile: true
-read_time: true
-share: true
 excerpt: "I show how data drift, latency, and hidden costs sabotage fine‑tuned LLMs in production and present a repeatable workflow that restores reliability."
 ---
 

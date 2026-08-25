@@ -5,9 +5,6 @@ date: 2026-07-19 14:17:01 +0000
 categories: ["Career"]
 tags: [career, software engineering, cloud cost, overengineering, professional growth]
 image_url: "/assets/blog/2026-07-19-why-overengineering-hurts-your-career-more-than-you-realize.jpg"
-author_profile: true
-read_time: true
-share: true
 excerpt: "I show how a single over‑engineered feature inflated our AWS bill by $120,000, then outline a data‑driven framework to spot and prune hidden complexity before it stalls your growth."
 ---
 

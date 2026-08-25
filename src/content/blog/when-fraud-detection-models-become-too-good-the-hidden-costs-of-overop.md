@@ -5,9 +5,6 @@ date: 2026-07-07 16:36:31 +0000
 categories: ["Fintech"]
 tags: [fintech, fraud detection, machine learning, risk management, operational debt, user experience]
 image_url: "/assets/blog/2026-07-07-when-fraud-detection-models-become-too-good-the-hidden-costs-of-overop.jpg"
-author_profile: true
-read_time: true
-share: true
 excerpt: "I examine how chasing ever‑lower false‑positive rates in fintech fraud detection erodes user experience, builds operational debt, and creates regulatory blind spots, then I share concrete steps to balance risk and agility."
 ---
 

@@ -4,9 +4,6 @@ title: "Why AI skill‑matching platforms stumble on bias, data gaps, and busine
 date: 2026-07-01
 categories: ["Society & Tech"]
 tags: [ai, skill matching, bias, data pipelines, hiring tech, career mobility]
-author_profile: true
-read_time: true
-share: true
 excerpt: "I examine how data pipelines, embedding bias, and short‑term metrics sabotage AI‑driven skill matching, and I share a concrete experiment that cut candidate drop‑off by 12 percent."
 ---
 

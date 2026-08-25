@@ -4,9 +4,6 @@ title: "Anthropic says Alibaba illicitly extracted Claude AI model capabilities"
 date: 2026-06-25
 categories: ["AI Engineering"]
 tags: [AIEngineering, LLMOps, AISecurity, MachineLearning, CloudEngineering]
-author_profile: true
-read_time: true
-share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7475759784307376128"
 cover_image: /assets/posts/2026-06-25-anthropic-says-alibaba-illicitly-extracted-claude-ai-model-c.png
 cover_image_alt: 'Anthropic says Alibaba illicitly extracted Claude AI model capabilities — cover art'

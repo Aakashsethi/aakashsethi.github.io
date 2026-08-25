@@ -4,9 +4,6 @@ title: "ECHO PROTOCOL — I Built a Game Where You Play as Alan Turing's Last AI
 date: 2026-06-20
 categories: ["AI Engineering"]
 tags: [AIEngineering, LLM, GameDev, PromptEngineering, BuildInPublic]
-author_profile: true
-read_time: true
-share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7474219629775781888"
 cover_image: /assets/posts/2026-06-20-echo-protocol-i-built-a-game-where-you-play-as-alan-turings-.png
 cover_image_alt: "ECHO PROTOCOL — I Built a Game Where You Play as Alan Turing's Last AI, Interrogated by a Live Gemini Model — cover art"

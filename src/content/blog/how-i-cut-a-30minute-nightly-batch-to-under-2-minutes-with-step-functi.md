@@ -5,9 +5,6 @@ date: 2026-08-02 14:19:58 +0000
 categories: ["AWS & Cloud"]
 tags: [aws, step functions, fargate, batch processing, cost optimization, devops]
 image_url: "/assets/blog/2026-08-02-how-i-cut-a-30minute-nightly-batch-to-under-2-minutes-with-step-functi.jpg"
-author_profile: true
-read_time: true
-share: true
 excerpt: "I describe how I replaced a monolithic EC2‑based batch job with a serverless Step Functions workflow and Fargate tasks, slashing runtime from 30 minutes to 2 minutes while cutting cost by 70 %."
 ---
 

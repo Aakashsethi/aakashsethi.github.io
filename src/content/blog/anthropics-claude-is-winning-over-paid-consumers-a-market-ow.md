@@ -4,9 +4,6 @@ title: "Anthropic’s Claude is winning over paid consumers, a market owned by C
 date: 2026-06-25
 categories: ["AI Engineering"]
 tags: [AIEngineering, LLM, Claude, SoftwareEngineering, AWS]
-author_profile: true
-read_time: true
-share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7476091968637370368"
 cover_image: /assets/posts/2026-06-25-anthropics-claude-is-winning-over-paid-consumers-a-market-ow.png
 cover_image_alt: 'Anthropic’s Claude is winning over paid consumers, a market owned by ChatGPT — cover art'

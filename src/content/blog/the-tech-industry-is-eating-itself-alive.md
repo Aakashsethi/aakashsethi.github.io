@@ -4,9 +4,6 @@ title: "The Tech Industry Is Eating Itself Alive"
 date: 2026-06-01
 categories: ["AI Engineering"]
 tags: [AIEngineering, ArtificialIntelligence, TechIndustry, MachineLearning, SoftwareEngineering, LLM]
-author_profile: true
-read_time: true
-share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7467234914644447232"
 cover_image: /assets/posts/2026-06-01-the-tech-industry-is-eating-itself-alive.png
 cover_image_alt: 'The Tech Industry Is Eating Itself Alive — cover art'

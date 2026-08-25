@@ -14,7 +14,8 @@ require 'date'
 require 'fileutils'
 
 GROQ_API_KEY = ENV.fetch('GROQ_API_KEY')
-GROQ_MODEL   = ENV.fetch('GROQ_MODEL', 'openai/gpt-oss-120b')
+require_relative '../lib/groq_config'
+GROQ_MODEL   = GroqConfig::MODEL
 FAL_KEY      = ENV['FAL_KEY']  # optional — skip image gen if unset
 FAL_MODEL    = ENV.fetch('FAL_MODEL', 'fal-ai/flux/schnell')
 POSTS_DIR    = ENV.fetch('POSTS_DIR', 'src/content/blog')

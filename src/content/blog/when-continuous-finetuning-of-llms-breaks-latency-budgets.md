@@ -5,9 +5,6 @@ date: 2026-07-12 14:20:20 +0000
 categories: ["AI Engineering"]
 tags: [ai engineering, large language models, latency, model drift, production ml, monitoring]
 image_url: "/assets/blog/2026-07-12-when-continuous-finetuning-of-llms-breaks-latency-budgets.jpg"
-author_profile: true
-read_time: true
-share: true
 excerpt: "I recount how a well‑intentioned pipeline that retrained a language model every hour blew our response time, and how distillation, caching, and disciplined monitoring restored performance."
 ---
 

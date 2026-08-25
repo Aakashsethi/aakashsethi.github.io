@@ -5,9 +5,6 @@ date: 2026-07-01
 categories: ["AI Engineering"]
 tags: [ai engineering, model drift, production ml, data pipelines, ci/cd, monitoring]
 
-author_profile: true
-read_time: true
-share: true
 excerpt: "I dissect a real outage caused by unnoticed model drift, then lay out a deterministic data pipeline, versioning scheme, and automated alerts that keep AI services reliable."
 ---
 

@@ -4,9 +4,6 @@ title: "Agentic RAG — It’s an Architectural Shift, Not an Upgrade"
 date: 2026-06-02
 categories: ["AI Engineering"]
 tags: [AIEngineering, RAG, AgenticAI, LLM, ProductionAI, SoftwareEngineering, MachineLearning]
-author_profile: true
-read_time: true
-share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7467620205540802561"
 cover_image: /assets/posts/2026-06-02-agentic-rag-its-an-architectural-shift-not-an-upgrade.png
 cover_image_alt: 'Agentic RAG — It’s an Architectural Shift, Not an Upgrade — cover art'

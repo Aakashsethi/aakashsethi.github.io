@@ -31,52 +31,37 @@ const {
   <p class="sub-status" data-sub-status aria-live="polite"></p>
 </aside>
 
-<script is:inline>
-  (() => {
-    const PROD = 'https://portfolio-contact-j70g.onrender.com';
-    const base = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
-      ? `http://${location.hostname}:4001` : PROD;
+<script>
+  import { subscribeEmail } from '../lib/subscribe.js';
 
-    for (const form of document.querySelectorAll('[data-sub-form]')) {
-      const root = form.closest('[data-sub]');
-      const input = root.querySelector('[data-sub-input]');
-      const btn = root.querySelector('[data-sub-btn]');
-      const status = root.querySelector('[data-sub-status]');
-      const tag = form.getAttribute('data-tag') || 'site';
+  for (const form of document.querySelectorAll('[data-sub-form]')) {
+    const root = form.closest('[data-sub]');
+    const input = root.querySelector('[data-sub-input]');
+    const btn = root.querySelector('[data-sub-btn]');
+    const status = root.querySelector('[data-sub-status]');
 
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = (input.value || '').trim();
-        if (!email) return;
-        btn.disabled = true;
-        btn.textContent = 'Sending…';
-        status.textContent = '';
-        status.className = 'sub-status';
-        try {
-          // NB: not sending `tag` — Buttondown's free plan rejects tagged
-          // subscribers with 403. Re-add if you upgrade.
-          const res = await fetch(`${base}/subscribe`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email }),
-          });
-          const data = await res.json().catch(() => ({}));
-          if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
-          status.textContent = data.already
-            ? "✓ You're already on the list — thanks for the support."
-            : "✓ You're in. A welcome note is on its way.";
-          status.classList.add('ok');
-          input.value = '';
-        } catch (err) {
-          status.textContent = err.message || 'Something went wrong. Try again shortly.';
-          status.classList.add('err');
-        } finally {
-          btn.disabled = false;
-          btn.textContent = 'Subscribe →';
-        }
-      });
-    }
-  })();
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = (input.value || '').trim();
+      if (!email) return;
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+      status.textContent = '';
+      status.className = 'sub-status';
+      try {
+        const result = await subscribeEmail(email);
+        status.textContent = result.message;
+        status.classList.add('ok');
+        input.value = '';
+      } catch (err) {
+        status.textContent = err.message || 'Something went wrong. Try again shortly.';
+        status.classList.add('err');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Subscribe →';
+      }
+    });
+  }
 </script>
 
 <style is:global>

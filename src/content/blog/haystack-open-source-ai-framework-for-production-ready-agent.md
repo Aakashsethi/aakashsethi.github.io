@@ -4,9 +4,6 @@ title: "Haystack: Open-Source AI Framework for Production Ready Agents, RAG"
 date: 2026-06-26
 categories: ["AI Engineering"]
 tags: [AIEngineering, RAG, MLOps, OpenSource, SoftwareEngineering]
-author_profile: true
-read_time: true
-share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7476182572578897920"
 cover_image: /assets/posts/2026-06-26-haystack-open-source-ai-framework-for-production-ready-agent.png
 cover_image_alt: 'Haystack: Open-Source AI Framework for Production Ready Agents, RAG — cover art'

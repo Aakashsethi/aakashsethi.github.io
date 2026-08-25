@@ -5,9 +5,6 @@ date: 2026-07-26 14:21:56 +0000
 categories: ["Fintech"]
 tags: [fintech, creditrisk, consistency, latency, engineering, dataops]
 image_url: "/assets/blog/2026-07-26-why-consistency-beats-raw-speed-in-realtime-creditrisk-scoring.jpg"
-author_profile: true
-read_time: true
-share: true
 excerpt: "A production race‑condition at a consumer‑finance app taught me that guaranteeing data consistency reduces false‑positive declines more than shaving milliseconds off latency."
 ---
 

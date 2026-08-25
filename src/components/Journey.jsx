@@ -1,14 +1,13 @@
 import React from 'react';
+import { WipPage } from './WipPage.jsx';
 
 function Journey() {
   return (
-    <section className="wip-shell">
-      <p className="wip-eyebrow">Work in progress · Job-search journey</p>
-      <h1 className="wip-title">The job search, in public. Numbers, funnels, and lessons in real time.</h1>
-      <p className="wip-lede">
-        Coming soon. Here's what it will do and why I'm building it.
-      </p>
-
+    <WipPage
+      eyebrow="Work in progress · Job-search journey"
+      title="The job search, in public. Numbers, funnels, and lessons in real time."
+      lede="Coming soon. Here's what it will do and why I'm building it."
+    >
       <h2 className="wip-h2">Why publish a job search</h2>
       <p>
         Job hunts are the most opaque process in a technical career. Everyone
@@ -63,11 +62,7 @@ function Journey() {
         I track applications in. Subscribe and I'll email when the live
         version goes up.
       </p>
-
-      <p className="wip-back">
-        <a href="/">← Back to home</a>
-      </p>
-    </section>
+    </WipPage>
   );
 }
 

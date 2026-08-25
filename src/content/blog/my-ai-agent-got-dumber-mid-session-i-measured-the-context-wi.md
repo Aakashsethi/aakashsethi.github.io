@@ -4,9 +4,6 @@ title: "My AI agent got dumber mid-session. I measured the context window before
 date: 2026-06-20
 categories: ["AI Engineering"]
 tags: [AIEngineering, LLMOps, MCP, ContextEngineering, SoftwareEngineering]
-author_profile: true
-read_time: true
-share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7474159235619074048"
 cover_image: /assets/posts/2026-06-20-my-ai-agent-got-dumber-mid-session-i-measured-the-context-wi.png
 cover_image_alt: 'My AI agent got dumber mid-session. I measured the context window before blaming MCP. — cover art'

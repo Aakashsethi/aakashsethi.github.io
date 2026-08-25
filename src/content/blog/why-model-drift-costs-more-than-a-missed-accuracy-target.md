@@ -5,9 +5,6 @@ date: 2026-07-18 20:56:05 +0000
 categories: ["AI Engineering"]
 tags: [ai engineering, model drift, mlops, production ai, software architecture]
 image_url: "/assets/blog/2026-07-18-why-model-drift-costs-more-than-a-missed-accuracy-target.jpg"
-author_profile: true
-read_time: true
-share: true
 excerpt: "I show how silent model drift ate $200k from a fintech pipeline, why traditional metrics miss the pain, and a five‑step plan to embed versioned data and automated alerts in any production AI system."
 ---
 

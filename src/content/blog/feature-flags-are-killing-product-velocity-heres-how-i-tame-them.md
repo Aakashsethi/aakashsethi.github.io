@@ -5,9 +5,6 @@ date: 2026-07-01
 categories: ["Product"]
 tags: [product, feature flags, delivery, software engineering, process]
 
-author_profile: true
-read_time: true
-share: true
 excerpt: "I show why uncontrolled feature flags slow delivery and outline a disciplined system that restores speed."
 ---
 

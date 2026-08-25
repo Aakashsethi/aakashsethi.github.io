@@ -4,9 +4,6 @@ title: "SOC 2 Compliance in the Age of AI — The Gap No One Is Talking About"
 date: 2026-06-02
 categories: ["AI Engineering"]
 tags: [SOC2, EnterpriseCompliance, AIGovernance, NIST, EUAI, SecurityArchitecture, EnterpriseAI, CloudSecurity]
-author_profile: true
-read_time: true
-share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7466927032795471872"
 cover_image: /assets/posts/2026-06-02-soc-2-compliance-in-the-age-of-ai-the-gap-no-one-is-talking-about.png
 cover_image_alt: 'SOC 2 Compliance in the Age of AI — The Gap No One Is Talking About — cover art'

@@ -4,9 +4,6 @@ title: "Why chasing sub‑millisecond latency in payment APIs often backfires"
 date: 2026-07-01
 categories: ["Fintech"]
 tags: [fintech, payment systems, latency, architecture, aws, microservices]
-author_profile: true
-read_time: true
-share: true
 excerpt: "I show how the obsession with sub‑millisecond response times can erode reliability and auditability, and I outline a layered architecture that delivers speed without sacrificing compliance."
 ---
 

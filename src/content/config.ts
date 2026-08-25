@@ -13,13 +13,7 @@ const blog = defineCollection({
     image_url: z.string().optional(),
     image_width: z.union([z.string(), z.number()]).optional(),
     image_height: z.union([z.string(), z.number()]).optional(),
-    author: z.string().optional(),
     linkedin_url: z.string().optional(),
-    read_time: z.union([z.string(), z.number(), z.boolean()]).optional(),
-    author_profile: z.boolean().optional(),
-    share: z.boolean().optional(),
-    layout: z.string().optional(),   // ignored; kept for backwards frontmatter
-    permalink: z.string().optional(), // ignored
   }),
 });
 

@@ -1,14 +1,13 @@
 import React from 'react';
+import { WipPage } from './WipPage.jsx';
 
 function Scheduler() {
   return (
-    <section className="wip-shell">
-      <p className="wip-eyebrow">Work in progress · Deep-work scheduler</p>
-      <h1 className="wip-title">A weekly grid that defends deep work from the rest of the calendar.</h1>
-      <p className="wip-lede">
-        Coming soon. Here's what it will do and why I'm building it.
-      </p>
-
+    <WipPage
+      eyebrow="Work in progress · Deep-work scheduler"
+      title="A weekly grid that defends deep work from the rest of the calendar."
+      lede="Coming soon. Here's what it will do and why I'm building it."
+    >
       <h2 className="wip-h2">The problem</h2>
       <p>
         Most calendar tools treat every hour as fungible. A 25-minute status
@@ -63,11 +62,7 @@ function Scheduler() {
         the next iteration. iCal and templates come after. Subscribe to the
         newsletter and you'll get the note when it lands.
       </p>
-
-      <p className="wip-back">
-        <a href="/">← Back to home</a>
-      </p>
-    </section>
+    </WipPage>
   );
 }
 

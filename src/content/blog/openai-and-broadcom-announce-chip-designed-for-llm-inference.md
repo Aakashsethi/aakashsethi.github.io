@@ -4,9 +4,6 @@ title: "OpenAI and Broadcom announce chip designed for LLM inference at scale"
 date: 2026-06-24
 categories: ["AI Engineering"]
 tags: [AIEngineering, LLM, MachineLearning, CloudComputing, TechCareers]
-author_profile: true
-read_time: true
-share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7475699382965833728"
 cover_image: /assets/posts/2026-06-24-openai-and-broadcom-announce-chip-designed-for-llm-inference.png
 cover_image_alt: 'OpenAI and Broadcom announce chip designed for LLM inference at scale — cover art'

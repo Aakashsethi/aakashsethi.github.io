@@ -5,9 +5,6 @@ date: 2026-07-02 00:36:26 +0000
 categories: ["AI Engineering"]
 tags: [ai engineering, mlops, data versioning, production systems, reproducibility]
 image_url: "/assets/blog/2026-07-02-why-data-versioning-matters-more-than-model-versioning-in-production-m.jpg"
-author_profile: true
-read_time: true
-share: true
 excerpt: "I argue that disciplined data versioning prevents costly regressions, and I show how to build a reproducible pipeline with DVC, LakeFS, and concrete metrics."
 ---
 

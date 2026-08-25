@@ -4,9 +4,6 @@ title: "Bridging IFTTT to Your Local AI Assistant with an MCP Proxy"
 date: 2026-06-20
 categories: ["AI Engineering"]
 tags: [AIEngineering, MCP, SoftwareEngineering, DevTools, AI]
-author_profile: true
-read_time: true
-share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7474129038882635776"
 cover_image: /assets/posts/2026-06-20-bridging-ifttt-to-your-local-ai-assistant-with-an-mcp-proxy.png
 cover_image_alt: 'Bridging IFTTT to Your Local AI Assistant with an MCP Proxy — cover art'

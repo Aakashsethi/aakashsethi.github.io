@@ -4,9 +4,6 @@ title: "What the First Amendment Actually Protects (And What It Doesn't)"
 date: 2026-06-01
 categories: ["Society & Tech"]
 tags: [FirstAmendment, MediaPolicy, Section230, DSA, PressFreedom, AlgorithmicCensorship, MediaRegulation, FreeSpeech]
-author_profile: true
-read_time: true
-share: true
 linkedin_url: "https://www.linkedin.com/feed/update/urn%3Ali%3Ashare%3A7466924770756980736"
 cover_image: /assets/posts/2026-06-01-what-the-first-amendment-actually-protects-and-what-it-doesnt.png
 cover_image_alt: "What the First Amendment Actually Protects (And What It Doesn't) — cover art"

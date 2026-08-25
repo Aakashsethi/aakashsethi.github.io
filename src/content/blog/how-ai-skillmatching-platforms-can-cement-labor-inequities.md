@@ -4,9 +4,6 @@ title: "How AI skill‑matching platforms can cement labor inequities"
 date: 2026-07-01
 categories: ["Society & Tech"]
 tags: [ai, labor market, bias, skill matching, society, tech]
-author_profile: true
-read_time: true
-share: true
 excerpt: "I examine a real‑world bug in a matching engine, show how similarity metrics encode socioeconomic signals, and give three concrete steps to audit bias in AI hiring tools."
 ---
 

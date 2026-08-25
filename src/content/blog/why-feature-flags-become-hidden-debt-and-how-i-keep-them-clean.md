@@ -5,9 +5,6 @@ date: 2026-07-09 17:26:27 +0000
 categories: ["Product"]
 tags: [feature flags, technical debt, saas, software engineering, devops]
 image_url: "/assets/blog/2026-07-09-why-feature-flags-become-hidden-debt-and-how-i-keep-them-clean.jpg"
-author_profile: true
-read_time: true
-share: true
 excerpt: "I describe a $150k outage caused by a stale flag, explain how flags accumulate hidden dependencies, and lay out a repeatable cleanup process that scales for SaaS teams."
 ---
 

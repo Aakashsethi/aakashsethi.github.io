@@ -1,0 +1,69 @@
+name: Groq model canary
+
+# Weekly ping to Groq with the current model id. If Groq returns 404,
+# open (or reuse) a repo issue so a model deprecation doesn't blow up
+# silently for a week the way llama-3.3-70b-versatile did.
+#
+# Reads the model from lib/groq_config.rb — same source both
+# lib/tailor.rb and bin/generate_weekly_post.rb use — so canary and
+# production always test the same string.
+
+on:
+  schedule:
+    - cron: '0 15 * * 1'   # 11:00 ET Mondays
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve model from lib/groq_config.rb
+        id: model
+        run: |
+          MODEL=$(ruby -e "require './lib/groq_config'; print GroqConfig::MODEL")
+          echo "id=$MODEL" >> "$GITHUB_OUTPUT"
+          echo "Model: $MODEL"
+
+      - name: Ping Groq with a minimal completion
+        id: ping
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          MODEL: ${{ steps.model.outputs.id }}
+        run: |
+          set +e
+          resp=$(curl -sS -o /tmp/body -w "%{http_code}" \
+            --max-time 30 \
+            -X POST "https://api.groq.com/openai/v1/chat/completions" \
+            -H "Authorization: Bearer $GROQ_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{\"model\":\"$MODEL\",\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}],\"max_tokens\":1}")
+          echo "HTTP $resp"
+          cat /tmp/body
+          echo
+          echo "status=$resp" >> "$GITHUB_OUTPUT"
+
+      - name: Open issue on failure
+        if: steps.ping.outputs.status != '200'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MODEL: ${{ steps.model.outputs.id }}
+          STATUS: ${{ steps.ping.outputs.status }}
+        run: |
+          set -e
+          TITLE="Groq model \`$MODEL\` failed canary (HTTP $STATUS)"
+          # Reuse an existing open canary issue if one is already filed.
+          existing=$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number' || true)
+          if [ -n "$existing" ] && [ "$existing" != "null" ]; then
+            gh issue comment "$existing" --body "Canary still failing: HTTP $STATUS at $(date -u +%FT%TZ)."
+          else
+            gh issue create \
+              --title "$TITLE" \
+              --body "The weekly Groq canary hit HTTP \`$STATUS\` for model \`$MODEL\`. Likely a deprecation — check https://console.groq.com/docs/models and update \`lib/groq_config.rb\`." \
+              --label "bug,infra"
+          fi
