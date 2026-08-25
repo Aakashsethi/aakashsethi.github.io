@@ -117,7 +117,11 @@ module PostGenerator
         model: model,
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.7,
-        max_tokens: 1024
+        # gpt-oss-120b is a reasoning model — it consumes tokens on
+        # internal reasoning before emitting user-visible content.
+        # 1024 was enough for the old llama-3.3 non-reasoning model
+        # and would cap out on reasoning tokens alone here.
+        max_tokens: 4096
       }.to_json,
       timeout: 60
     )
