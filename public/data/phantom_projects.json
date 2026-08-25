@@ -22,20 +22,21 @@
     {
       "slug": "jobboating",
       "name": "JobBoating",
-      "tagline": "Automated pipeline that tailors a resume per JD and submits applications end-to-end.",
+      "tagline": "Automated pipeline that tailors a resume per JD and submits applications end-to-end. Public funnel + browser-only tailor and tracker live on the site.",
       "github_url": "https://github.com/Aakashsethi/JobBoating",
       "demo_url": "/#journey",
-      "demo_label": "Live job search",
+      "demo_label": "Open live tools",
       "tech": [
         "Python",
         "Claude API",
         "Playwright",
         "Selenium",
         "LaTeX",
-        "Postgres"
+        "Postgres",
+        "pdf.js"
       ],
       "status": "active",
-      "highlight": "580+ applications submitted across 7 companies since 2026-07-04."
+      "highlight": "580+ applications submitted across 7 companies since 2026-07-04. In-browser: PDF → LaTeX conversion + keyword-matched tailoring against any JD, plus a localStorage application tracker."
     },
     {
       "slug": "tnufa",

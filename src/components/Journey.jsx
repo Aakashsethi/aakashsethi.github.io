@@ -1,15 +1,15 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { JourneyFunnel } from './JourneyFunnel.jsx';
-import { PdfToLatex } from './PdfToLatex.jsx';
+import { TailorFlow } from './TailorFlow.jsx';
 import { AppTracker } from './AppTracker.jsx';
 
 // JobBoating hub — three tabs, all client-side. Route lives at /#journey
 // via the existing hash router.
 const TABS = [
-  { id: 'funnel',  label: 'Live funnel',  hint: 'Public log of the automation' },
-  { id: 'pdf',     label: 'PDF → LaTeX',  hint: 'Convert a resume, in-browser' },
-  { id: 'tracker', label: 'Tracker',      hint: 'Your own applications, local' },
+  { id: 'funnel',  label: 'Live funnel', hint: 'Public log of the automation' },
+  { id: 'tailor',  label: 'Tailor',      hint: 'PDF resume → JD-matched LaTeX' },
+  { id: 'tracker', label: 'Tracker',     hint: 'Your own applications, local' },
 ];
 
 function Journey() {
@@ -64,7 +64,7 @@ function Journey() {
 
       <div className="jb-panel">
         {tab === 'funnel'  && <JourneyFunnel />}
-        {tab === 'pdf'     && <PdfToLatex />}
+        {tab === 'tailor'  && <TailorFlow />}
         {tab === 'tracker' && <AppTracker />}
       </div>
 

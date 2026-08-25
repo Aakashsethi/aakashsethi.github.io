@@ -5,7 +5,6 @@ import { Contact } from './Contact.jsx';
 import { Education } from './Education.jsx';
 import { Hero, StatStrip } from './Hero.jsx';
 import { Problems, TrustBar } from './HomeSections.jsx';
-import { JobTailor } from './JobTailor.jsx';
 import { Journey } from './Journey.jsx';
 import { LinkedInFeed } from './LinkedInFeed.jsx';
 import { LiveStrip } from './LiveStrip.jsx';
@@ -25,7 +24,6 @@ const PAGE_TO_HASH = {
   education: 'education',
   about:     'about',
   contact:   'contact',
-  tailor:    'tailor',
   scheduler: 'scheduler',
   journey:   'journey',
 };
@@ -86,7 +84,6 @@ function App() {
         {page === 'education'   && <Education onOpen={setOpenProj} />}
         {page === 'about'       && <About />}
         {page === 'contact'     && <Contact />}
-        {page === 'tailor'      && <JobTailor />}
         {page === 'scheduler'   && <Scheduler />}
         {page === 'journey'     && <Journey />}
       </main>
