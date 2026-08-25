@@ -6,10 +6,6 @@ body {
   font-family: var(--font-sans);
   color: var(--fg);
   background-color: #ffffff;
-  background-image: url('/assets/hero/hex-grid.svg');
-  background-repeat: repeat;
-  background-size: 60px 52px;
-  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
 }
 button { font: inherit; }
