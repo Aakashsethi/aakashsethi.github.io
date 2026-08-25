@@ -1,11 +1,8 @@
 name: LinkedIn daily post
 
 on:
-  # Cron disabled: the external TRIGGER_URL service hardcodes a deprecated
-  # Groq model (llama-3.3-70b-versatile → 404). Re-enable the schedule
-  # after that service updates its model id.
-  # schedule:
-  #   - cron: '0 13 * * *'   # 09:00 ET (13:00 UTC) daily
+  schedule:
+    - cron: '0 13 * * *'   # 09:00 ET (13:00 UTC) daily
   workflow_dispatch:        # manual trigger still works for testing
 
 jobs:
